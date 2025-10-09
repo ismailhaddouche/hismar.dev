@@ -4,8 +4,7 @@ hismar.dev - Portfolio de Terminal
 Un sitio web de portfolio personal para desarrolladores que simula una interfaz de terminal de Linux.
 Ofrece una experiencia interactiva de línea de comandos, permitiendo la navegación tanto con un menú clicable como mediante la introducción de comandos por teclado.
 
-Features
-🖥️ LCaracterísticas
+Características
 🖥️ Simulación de Terminal Linux: Apariencia y sensación auténtica de una terminal con un tema oscuro.
 ⌨️ Interfaz de Línea de Comandos: Ejecuta comandos escribiéndolos.
 🖱️ Menú Clicable: Navega por las secciones usando la barra de menú.
