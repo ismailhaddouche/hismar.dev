@@ -179,6 +179,32 @@ body {
     color: #00ff00;
 }
 
+.output-line {
+    margin-bottom: 3px;
+    padding-left: 20px;
+}
+
+.output-normal {
+    color: #ccc;
+}
+
+.output-info {
+    color: #00aaff;
+}
+
+.output-error {
+    color: #ff4444;
+}
+
+.output-hint {
+    color: #ffaa00;
+    font-style: italic;
+}
+
+.output-success {
+    color: #44ff44;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .terminal-header {
