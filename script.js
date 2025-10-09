@@ -425,10 +425,7 @@ function createAboutSection() {
     // Cara pixel art (lado derecho)
     const faceSection = document.createElement('div');
     faceSection.className = 'about-face';
-    faceSection.innerHTML = `
-        <div class="face-title">👤 Perfil Interactivo</div>
-        ${createPixelFace()}
-    `;
+    faceSection.innerHTML = createPixelFace();
     
     // Añadir al contenedor
     aboutContainer.appendChild(infoSection);
@@ -632,7 +629,6 @@ function createSkillsSection() {
 function createPixelBrain() {
     return `
         <div class="pixel-brain-container">
-            <div class="brain-title">🧠 Absorbiendo conocimientos...</div>
             <div class="pixel-brain" id="brain">
                 <div class="brain-row">
                     <div class="brain-pixel bg"></div><div class="brain-pixel bg"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel bg"></div>
@@ -827,7 +823,6 @@ function createProjectsSection() {
 function createTetrisAnimation() {
     return `
         <div class="tetris-container">
-            <div class="tetris-title">🎮 Encajando proyectos...</div>
             <div class="tetris-screen">
                 <div class="tetris-grid" id="tetris-grid">
                     <!-- Grid se generará dinámicamente -->
@@ -1031,7 +1026,6 @@ function createEducationSection() {
 function createCraneAnimation() {
     return `
         <div class="crane-container">
-            <div class="crane-title">🏗️ Apilando formación académica...</div>
             <div class="crane-scene">
                 <div class="crane" id="crane">
                     <div class="crane-arm" id="crane-arm">

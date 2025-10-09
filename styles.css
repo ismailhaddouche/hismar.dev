@@ -870,26 +870,36 @@ body {
 .output-error { color: #ff6b6b; }
 .output-hint { color: #feca57; }
 
-/* ABOUT Section Styles */
-.about-container {
+/* Secciones de comandos - Panel principal + Sidebar */
+.about-container,
+.skills-container,
+.projects-container,
+.education-container {
     display: flex;
     gap: 20px;
     padding: 20px;
     align-items: flex-start;
+    min-height: 200px;
 }
 
-.about-info {
-    flex: 2;
-    order: 2;
-}
-
-.about-face {
+/* Sidebar (animaciones) */
+.about-face,
+.skills-brain-section,
+.projects-tetris-section,
+.education-crane-section {
     flex: 1;
-    order: 1;
+    order: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    background: rgba(0,10,0,0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(0,255,0,0.05);
+    min-height: 160px;
 }
+
+/* .about-face ya definido arriba */
 
 .info-header .name {
     color: #00ff00;
@@ -962,41 +972,38 @@ body {
 .pixel-face .nose { background: #654321; }
 .pixel-face .mouth { background: #222; }
 
-/* SKILLS Section Styles */
-.skills-container {
-    display: flex;
-    gap: 20px;
+/* Panel principal (contenido) */
+.about-info,
+.skills-tech-section,
+.projects-list-section,
+.education-list-section {
+    flex: 2;
+    order: 1;
+    background: rgba(0,20,0,0.2);
     padding: 20px;
-    align-items: flex-start;
+    border-radius: 8px;
+    border: 1px solid rgba(0,255,0,0.1);
 }
 
 .skills-brain-section {
     flex: 1;
-    order: 1;
+    order: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .skills-tech-section {
     flex: 2;
-    order: 2;
+    order: 1;
 }
 
 .pixel-brain-container {
     text-align: center;
 }
 
-.face-title,
-.brain-title,
-.tetris-title,
-.crane-title {
-    color: #4ecdc4;
-    margin-bottom: 16px;
-    font-size: 16px;
-    text-align: center;
-    font-weight: bold;
-}
+/* Títulos de animación eliminados para diseño más limpio */
 
 .pixel-brain {
     width: 140px;
@@ -1105,15 +1112,16 @@ body {
 
 .projects-tetris-section {
     flex: 1;
-    order: 1;
+    order: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .projects-list-section {
     flex: 2;
-    order: 2;
+    order: 1;
 }
 
 .tetris-container {
@@ -1231,15 +1239,16 @@ body {
 
 .education-crane-section {
     flex: 1;
-    order: 1;
+    order: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .education-list-section {
     flex: 2;
-    order: 2;
+    order: 1;
 }
 
 .crane-container {
@@ -1452,19 +1461,20 @@ body {
         gap: 16px;
     }
     
-    /* En móviles, animación arriba y contenido abajo */
+    /* En móviles, contenido arriba y animación abajo */
     .about-info,
     .skills-tech-section,
     .projects-list-section,
     .education-list-section {
-        order: 2;
+        order: 1;
+        margin-bottom: 16px;
     }
     
     .about-face,
     .skills-brain-section,
     .projects-tetris-section,
     .education-crane-section {
-        order: 1;
+        order: 2;
     }
     
     .pixel-face,
