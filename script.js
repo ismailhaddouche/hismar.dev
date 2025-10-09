@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeMenuButtons();
     initializeControlButtons();
     initializeCommandInput();
+    initializeScrollEvents();
     
     // Ejecutar comando about por defecto (página de inicio)
     safeTimeout(() => {
@@ -86,6 +87,51 @@ function clearAllAnimations() {
     
     // Limpiar queue de ejecución
     commandExecutionQueue = [];
+}
+
+// Función helper para scroll automático mejorado
+function autoScrollConsole() {
+    const consoleOutput = document.getElementById('console-output');
+    if (consoleOutput) {
+        setTimeout(() => {
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            checkScrollIndicator();
+        }, 50);
+    }
+}
+
+// Verificar si mostrar indicador de scroll
+function checkScrollIndicator() {
+    const consoleOutput = document.getElementById('console-output');
+    const scrollIndicator = document.getElementById('scroll-indicator');
+    
+    if (!consoleOutput || !scrollIndicator) return;
+    
+    const isScrollable = consoleOutput.scrollHeight > consoleOutput.clientHeight;
+    const isAtBottom = Math.abs(consoleOutput.scrollHeight - consoleOutput.clientHeight - consoleOutput.scrollTop) < 5;
+    
+    if (isScrollable && !isAtBottom) {
+        scrollIndicator.classList.add('show');
+    } else {
+        scrollIndicator.classList.remove('show');
+    }
+}
+
+// Inicializar eventos de scroll
+function initializeScrollEvents() {
+    const consoleOutput = document.getElementById('console-output');
+    const scrollIndicator = document.getElementById('scroll-indicator');
+    
+    if (consoleOutput) {
+        consoleOutput.addEventListener('scroll', checkScrollIndicator);
+        
+        // Hacer click en el indicador para scroll automático al final
+        if (scrollIndicator) {
+            scrollIndicator.addEventListener('click', () => {
+                autoScrollConsole();
+            });
+        }
+    }
 }
 
 // Sandbox: wrapper seguro para setTimeout
@@ -308,7 +354,7 @@ function createAboutSection() {
     initializeEyeTracking();
     
     // Scroll y finalizar animación
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    autoScrollConsole();
     safeTimeout(() => {
         isAnimating = false;
     }, 500);
@@ -1042,7 +1088,7 @@ function addCommandToOutput(command) {
     consoleOutput.appendChild(commandLine);
     
     // Auto-scroll al final
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    autoScrollConsole();
 }
 
 // Agregar línea de output con diferentes tipos
@@ -1054,7 +1100,7 @@ function addOutputLine(text, type = 'normal') {
     consoleOutput.appendChild(outputLine);
     
     // Auto-scroll al final
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    autoScrollConsole();
     
     return outputLine;
 }

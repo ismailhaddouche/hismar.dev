@@ -85,8 +85,11 @@ body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    overflow-x: hidden;
     font-size: 14px;
     line-height: 1.5;
+    max-height: calc(100vh - 120px);
+    scroll-behavior: smooth;
 }
 
 .console-controls {
@@ -773,9 +776,61 @@ body {
 .accent { color: #80ff80; }
 
 /* Scrollbar styling for console */
-.console-output::-webkit-scrollbar { width: 10px; }
-.console-output::-webkit-scrollbar-track { background: #070707; }
-.console-output::-webkit-scrollbar-thumb { background: rgba(0,255,0,0.08); border-radius: 8px; }
+.console-output::-webkit-scrollbar { 
+    width: 12px; 
+}
+.console-output::-webkit-scrollbar-track { 
+    background: #0a0a0a; 
+    border-radius: 6px;
+    margin: 4px;
+}
+.console-output::-webkit-scrollbar-thumb { 
+    background: rgba(0,255,0,0.3); 
+    border-radius: 6px;
+    border: 2px solid #0a0a0a;
+}
+.console-output::-webkit-scrollbar-thumb:hover { 
+    background: rgba(0,255,0,0.5); 
+}
+.console-output::-webkit-scrollbar-thumb:active { 
+    background: rgba(0,255,0,0.7); 
+}
+
+/* Scrollbar para Firefox */
+.console-output {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,255,0,0.3) #0a0a0a;
+}
+
+/* Indicador de scroll */
+.scroll-indicator {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,255,0,0.1);
+    color: #00ff00;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(0,255,0,0.3);
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+    backdrop-filter: blur(10px);
+}
+
+.scroll-indicator.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+}
 
 /* Command output styles */
 .command-line {
@@ -1353,6 +1408,11 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .console-output {
+        max-height: calc(100vh - 140px);
+        padding: 15px;
+    }
+    
     .about-container,
     .skills-container,
     .projects-container,
@@ -1366,6 +1426,14 @@ body {
     .tetris-screen,
     .crane-scene {
         margin: 0 auto;
+    }
+    
+    /* Scrollbar más visible en móvil */
+    .console-output::-webkit-scrollbar { 
+        width: 14px; 
+    }
+    .console-output::-webkit-scrollbar-thumb { 
+        background: rgba(0,255,0,0.4); 
     }
 }
 
