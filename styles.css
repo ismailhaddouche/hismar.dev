@@ -128,6 +128,57 @@ body {
     background-color: #111;
 }
 
+.prompt-line {
+    display: flex;
+    align-items: center;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+.prompt-prefix {
+    color: #00ff00;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.command-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+.command-input::selection {
+    background-color: #00ff00;
+    color: #000;
+}
+
+.cursor {
+    color: #00ff00;
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Command Output Styles */
+.command-line {
+    margin-bottom: 5px;
+    color: #ccc;
+}
+
+.command-text {
+    color: #00ff00;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .terminal-header {
@@ -138,6 +189,10 @@ body {
     
     .console-output {
         padding: 15px;
+        font-size: 12px;
+    }
+    
+    .prompt-line, .command-input {
         font-size: 12px;
     }
 }
