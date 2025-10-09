@@ -49,6 +49,10 @@ function initializeControlButtons() {
     skipBtn.addEventListener('click', function() {
         skipAnimation = true;
         console.log('Saltando animación');
+        // Resetear después de un momento para próximos comandos
+        safeTimeout(() => {
+            skipAnimation = false;
+        }, 1000);
     });
     
     clearBtn.addEventListener('click', function() {
@@ -98,6 +102,105 @@ function autoScrollConsole() {
             checkScrollIndicator();
         }, 50);
     }
+}
+
+// Animación de tipeo letra por letra
+function typeText(element, text, speed = 20, callback = null, showCursor = true) {
+    let index = 0;
+    element.textContent = '';
+    element.style.visibility = 'visible';
+    
+    // Si skip está activado, mostrar todo inmediatamente
+    if (skipAnimation) {
+        element.textContent = text;
+        element.classList.remove('typing-cursor');
+        if (callback) callback();
+        return null;
+    }
+    
+    // Agregar cursor mientras se escribe
+    if (showCursor) {
+        element.classList.add('typing-cursor');
+    }
+    
+    const typeInterval = setInterval(() => {
+        if (skipAnimation || index >= text.length) {
+            // Completar inmediatamente si se activa skip o termina
+            element.textContent = text;
+            element.classList.remove('typing-cursor');
+            clearInterval(typeInterval);
+            if (callback) callback();
+            return;
+        }
+        
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            autoScrollConsole();
+        }
+    }, speed);
+    
+    // Agregar al sistema de limpieza
+    activeAnimationIntervals.push(typeInterval);
+    return typeInterval;
+}
+
+// Animación de tipeo para HTML
+function typeHTML(element, html, speed = 20, callback = null) {
+    element.innerHTML = '';
+    element.style.visibility = 'visible';
+    
+    // Crear elemento temporal para procesar HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    const textContent = tempDiv.textContent || tempDiv.innerText || '';
+    
+    let index = 0;
+    const typeInterval = setInterval(() => {
+        if (index < textContent.length) {
+            // Agregar carácter por carácter manteniendo estructura HTML básica
+            const currentText = textContent.substring(0, index + 1);
+            element.textContent = currentText;
+            index++;
+            autoScrollConsole();
+        } else {
+            // Al finalizar, establecer el HTML completo
+            element.innerHTML = html;
+            clearInterval(typeInterval);
+            if (callback) callback();
+        }
+    }, speed);
+    
+    activeAnimationIntervals.push(typeInterval);
+    return typeInterval;
+}
+
+// Animación de tipeo línea por línea
+function typeLines(container, lines, lineSpeed = 30, charSpeed = 15, callback = null) {
+    let currentLineIndex = 0;
+    
+    function typeNextLine() {
+        if (currentLineIndex >= lines.length) {
+            if (callback) callback();
+            return;
+        }
+        
+        const line = lines[currentLineIndex];
+        const lineElement = document.createElement('div');
+        lineElement.className = line.className || 'output-line';
+        lineElement.style.visibility = 'hidden';
+        container.appendChild(lineElement);
+        
+        // Pequeño delay antes de empezar a escribir la línea
+        safeTimeout(() => {
+            typeText(lineElement, line.text, charSpeed, () => {
+                currentLineIndex++;
+                safeTimeout(typeNextLine, lineSpeed);
+            });
+        }, 50);
+    }
+    
+    typeNextLine();
 }
 
 // Verificar si mostrar indicador de scroll
@@ -314,38 +417,7 @@ function createAboutSection() {
     faceSection.className = 'about-face';
     faceSection.innerHTML = createPixelFace();
     
-    // Contenido de información
-    const currentDate = new Date();
-    const birthDate = new Date('1988-05-14');
-    const age = Math.floor((currentDate - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
-    
-    infoSection.innerHTML = `
-        <div class="info-header">
-            <h2 class="name">Ismail Haddouche Rhali</h2>
-        </div>
-        <div class="info-details">
-            <div class="info-item">
-                <span class="label">Edad:</span>
-                <span class="value">${age} años</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Profesión:</span>
-                <span class="value">Developer/DevOp</span>
-            </div>
-            <div class="info-item">
-                <span class="label">GitHub:</span>
-                <a href="https://github.com/ismailhaddouche" target="_blank" class="link">github.com/ismailhaddouche</a>
-            </div>
-            <div class="info-item">
-                <span class="label">LinkedIn:</span>
-                <a href="https://linkedin.com/in/ismailhaddouche" target="_blank" class="link">linkedin.com/in/ismailhaddouche</a>
-            </div>
-        </div>
-        <div class="info-description">
-            <p>Desarrollador apasionado de la tecnología y la informática. Friki de los videojuegos de mesa, el anime y la lectura de fantasía. Fan de Zerocalcare. Y más friki aún del cloud computing, estructura de sistemas y la ciberseguridad.</p>
-        </div>
-    `;
-    
+    // Añadir al contenedor
     aboutContainer.appendChild(infoSection);
     aboutContainer.appendChild(faceSection);
     consoleOutput.appendChild(aboutContainer);
@@ -353,11 +425,53 @@ function createAboutSection() {
     // Inicializar seguimiento del mouse para los ojos
     initializeEyeTracking();
     
-    // Scroll y finalizar animación
-    autoScrollConsole();
-    safeTimeout(() => {
-        isAnimating = false;
-    }, 500);
+    // Crear contenido con animación de tipeo
+    const currentDate = new Date();
+    const birthDate = new Date('1988-05-14');
+    const age = Math.floor((currentDate - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+    
+    // Crear elementos paso a paso con animación
+    const infoHeader = document.createElement('div');
+    infoHeader.className = 'info-header';
+    const nameElement = document.createElement('h2');
+    nameElement.className = 'name';
+    infoHeader.appendChild(nameElement);
+    infoSection.appendChild(infoHeader);
+    
+    // Animar nombre
+    typeText(nameElement, 'Ismail Haddouche Rhali', 40, () => {
+        
+        // Crear sección de detalles
+        const infoDetails = document.createElement('div');
+        infoDetails.className = 'info-details';
+        infoSection.appendChild(infoDetails);
+        
+        // Definir líneas de información
+        const infoLines = [
+            { text: `Edad: ${age} años`, className: 'info-item' },
+            { text: 'Profesión: Developer/DevOp', className: 'info-item' },
+            { text: 'GitHub: github.com/ismailhaddouche', className: 'info-item' },
+            { text: 'LinkedIn: linkedin.com/in/ismailhaddouche', className: 'info-item' }
+        ];
+        
+        // Animar líneas de información
+        typeLines(infoDetails, infoLines, 200, 25, () => {
+            
+            // Crear descripción
+            const descContainer = document.createElement('div');
+            descContainer.className = 'info-description';
+            const descParagraph = document.createElement('p');
+            descContainer.appendChild(descParagraph);
+            infoSection.appendChild(descContainer);
+            
+            // Animar descripción
+            const description = 'Desarrollador apasionado de la tecnología y la informática. Friki de los videojuegos de mesa, el anime y la lectura de fantasía. Fan de Zerocalcare. Y más friki aún del cloud computing, estructura de sistemas y la ciberseguridad.';
+            
+            typeText(descParagraph, description, 20, () => {
+                isAnimating = false;
+            });
+        });
+    });
 }
 
 function createPixelFace() {
@@ -1020,55 +1134,104 @@ function createHelpSection() {
     
     const helpContainer = document.createElement('div');
     helpContainer.className = 'help-container';
-    
-    helpContainer.innerHTML = `
-        <div class="help-header">
-            <h2>📚 Comandos Disponibles</h2>
-        </div>
-        <div class="help-commands">
-            <div class="help-command">
-                <span class="cmd-name">about</span>
-                <span class="cmd-description">Información personal y contacto</span>
-            </div>
-            <div class="help-command">
-                <span class="cmd-name">skills</span>
-                <span class="cmd-description">Habilidades técnicas y tecnologías</span>
-            </div>
-            <div class="help-command">
-                <span class="cmd-name">projects</span>
-                <span class="cmd-description">Proyectos y trabajos realizados</span>
-            </div>
-            <div class="help-command">
-                <span class="cmd-name">education</span>
-                <span class="cmd-description">Formación académica y certificaciones</span>
-            </div>
-            <div class="help-command">
-                <span class="cmd-name">help</span>
-                <span class="cmd-description">Muestra esta ayuda</span>
-            </div>
-            <div class="help-command">
-                <span class="cmd-name">clear</span>
-                <span class="cmd-description">Limpia la pantalla de la terminal</span>
-            </div>
-        </div>
-        <div class="help-tips">
-            <h3>💡 Tips:</h3>
-            <ul>
-                <li>Usa las <span class="key">↑</span> <span class="key">↓</span> para navegar por el historial</li>
-                <li>Presiona <span class="key">Tab</span> para autocompletar comandos</li>
-                <li>Usa los botones del menú superior para navegación rápida</li>
-                <li>Botón <span class="key">⏭️</span> para saltar animaciones</li>
-                <li>Botón <span class="key">🗑️</span> para limpiar la terminal</li>
-            </ul>
-        </div>
-    `;
-    
     consoleOutput.appendChild(helpContainer);
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
     
-    safeTimeout(() => {
-        isAnimating = false;
-    }, 300);
+    // Header con animación
+    const helpHeader = document.createElement('div');
+    helpHeader.className = 'help-header';
+    const headerTitle = document.createElement('h2');
+    helpHeader.appendChild(headerTitle);
+    helpContainer.appendChild(helpHeader);
+    
+    typeText(headerTitle, '📚 Comandos Disponibles', 30, () => {
+        
+        // Contenedor de comandos
+        const commandsContainer = document.createElement('div');
+        commandsContainer.className = 'help-commands';
+        helpContainer.appendChild(commandsContainer);
+        
+        // Lista de comandos
+        const commands = [
+            { name: 'about', desc: 'Información personal y contacto' },
+            { name: 'skills', desc: 'Habilidades técnicas y tecnologías' },
+            { name: 'projects', desc: 'Proyectos y trabajos realizados' },
+            { name: 'education', desc: 'Formación académica y certificaciones' },
+            { name: 'help', desc: 'Muestra esta ayuda' },
+            { name: 'clear', desc: 'Limpia la pantalla de la terminal' }
+        ];
+        
+        let commandIndex = 0;
+        
+        function addNextCommand() {
+            if (commandIndex >= commands.length) {
+                // Agregar tips después de comandos
+                addTipsSection();
+                return;
+            }
+            
+            const cmd = commands[commandIndex];
+            const cmdElement = document.createElement('div');
+            cmdElement.className = 'help-command';
+            
+            const cmdName = document.createElement('span');
+            cmdName.className = 'cmd-name';
+            const cmdDesc = document.createElement('span');
+            cmdDesc.className = 'cmd-description';
+            
+            cmdElement.appendChild(cmdName);
+            cmdElement.appendChild(cmdDesc);
+            commandsContainer.appendChild(cmdElement);
+            
+            // Animar nombre del comando
+            typeText(cmdName, cmd.name, 20, () => {
+                // Animar descripción
+                typeText(cmdDesc, cmd.desc, 15, () => {
+                    commandIndex++;
+                    safeTimeout(addNextCommand, 100);
+                });
+            });
+        }
+        
+        function addTipsSection() {
+            const tipsContainer = document.createElement('div');
+            tipsContainer.className = 'help-tips';
+            helpContainer.appendChild(tipsContainer);
+            
+            const tipsTitle = document.createElement('h3');
+            tipsContainer.appendChild(tipsTitle);
+            
+            typeText(tipsTitle, '💡 Tips:', 30, () => {
+                const tipsList = document.createElement('ul');
+                tipsContainer.appendChild(tipsList);
+                
+                const tips = [
+                    'Usa las ↑ ↓ para navegar por el historial',
+                    'Presiona Tab para autocompletar comandos',
+                    'Usa los botones del menú superior para navegación rápida',
+                    'Botón ⏭️ para saltar animaciones',
+                    'Botón 🗑️ para limpiar la terminal'
+                ];
+                
+                const tipLines = tips.map(tip => ({ text: tip, className: 'tip-line' }));
+                
+                // Crear elementos li para cada tip
+                tipLines.forEach((tip, index) => {
+                    const li = document.createElement('li');
+                    tipsList.appendChild(li);
+                    
+                    safeTimeout(() => {
+                        typeText(li, tip.text, 12, () => {
+                            if (index === tipLines.length - 1) {
+                                isAnimating = false;
+                            }
+                        });
+                    }, index * 300);
+                });
+            });
+        }
+        
+        safeTimeout(addNextCommand, 200);
+    });
 }
 
 function executeUnknownCommand(command) {
@@ -1084,23 +1247,39 @@ function addCommandToOutput(command) {
     const consoleOutput = document.getElementById('console-output');
     const commandLine = document.createElement('div');
     commandLine.className = 'command-line';
-    commandLine.innerHTML = `<span class="prompt-prefix">hismar@dev:~$ </span><span class="command-text">${command}</span>`;
+    
+    const promptPrefix = document.createElement('span');
+    promptPrefix.className = 'prompt-prefix';
+    promptPrefix.textContent = 'hismar@dev:~$ ';
+    
+    const commandText = document.createElement('span');
+    commandText.className = 'command-text';
+    
+    commandLine.appendChild(promptPrefix);
+    commandLine.appendChild(commandText);
     consoleOutput.appendChild(commandLine);
     
-    // Auto-scroll al final
+    // Animar el comando escribiéndose
+    typeText(commandText, command, 50);
     autoScrollConsole();
 }
 
 // Agregar línea de output con diferentes tipos
-function addOutputLine(text, type = 'normal') {
+function addOutputLine(text, type = 'normal', useTyping = true) {
     const consoleOutput = document.getElementById('console-output');
     const outputLine = document.createElement('div');
     outputLine.className = `output-line output-${type}`;
-    outputLine.textContent = text;
     consoleOutput.appendChild(outputLine);
     
-    // Auto-scroll al final
-    autoScrollConsole();
+    if (useTyping) {
+        outputLine.style.visibility = 'hidden';
+        // Usar velocidad diferente según el tipo
+        const speed = type === 'info' ? 25 : 15;
+        typeText(outputLine, text, speed);
+    } else {
+        outputLine.textContent = text;
+        autoScrollConsole();
+    }
     
     return outputLine;
 }

@@ -838,6 +838,19 @@ body {
     color: #00ff00;
 }
 
+/* Cursor parpadeante para efecto de tipeo */
+.typing-cursor::after {
+    content: '█';
+    color: #00ff00;
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
 .prompt-prefix {
     color: #00ff00;
     font-weight: bold;
