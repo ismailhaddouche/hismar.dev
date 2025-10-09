@@ -56,3 +56,14 @@ Desarrollo de aplicaciones multiplataforma ILERNA 2023/2025
 Grado en Informática UNED 2025/presente
 
 
+Orden de construcción:
+0 creación de estructura de archivos
+1 estructura header + consola
+2 menu en el header con los comandos
+3 consola con sus dos botones de skip y clear
+4 prompt de consola para introducir comandos
+5 logica del script para crear una especie de sandbox de los comandos usados para que no interfiera la nimacion de uno con el otro
+6 Construccion de los comandos con su contenido
+7 formateo y revision del contenido y de las animaciones
+8 Debugueo
+
