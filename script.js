@@ -565,15 +565,24 @@ function createSkillsSection() {
     const skillsContainer = document.createElement('div');
     skillsContainer.className = 'skills-container';
     
-    // Crear sección del cerebro pixel art
+    // Crear sección de tecnologías (panel principal izquierdo)
+    const techSection = document.createElement('div');
+    techSection.className = 'skills-tech-section';
+    
+    // Crear sección del cerebro pixel art (sidebar derecho)  
     const brainSection = document.createElement('div');
     brainSection.className = 'skills-brain-section';
     brainSection.innerHTML = createPixelBrain();
     
-    // Crear sección de tecnologías
-    const techSection = document.createElement('div');
-    techSection.className = 'skills-tech-section';
+    // Añadir al contenedor
+    skillsContainer.appendChild(techSection);
+    skillsContainer.appendChild(brainSection);
+    consoleOutput.appendChild(skillsContainer);
     
+    // Inicializar animación del cerebro
+    initializeBrainAnimation();
+    
+    // Crear contenido con animación de tipeo
     const skillsData = [
         {
             category: 'Lenguajes',
@@ -597,33 +606,64 @@ function createSkillsSection() {
         }
     ];
     
-    let techHTML = '<div class="skills-categories">';
-    skillsData.forEach(category => {
-        techHTML += `
-            <div class="skill-category">
-                <h3 class="category-title" style="color: ${category.color}">${category.category}</h3>
-                <div class="skill-badges">
-                    ${category.skills.map(skill => `<span class="skill-badge" style="border-color: ${category.color}">${skill}</span>`).join('')}
-                </div>
-            </div>
-        `;
-    });
-    techHTML += '</div>';
+    // Crear categorías con animación
+    const categoriesContainer = document.createElement('div');
+    categoriesContainer.className = 'skills-categories';
+    techSection.appendChild(categoriesContainer);
     
-    techSection.innerHTML = techHTML;
+    let categoryIndex = 0;
     
-    skillsContainer.appendChild(brainSection);
-    skillsContainer.appendChild(techSection);
-    consoleOutput.appendChild(skillsContainer);
+    function addNextCategory() {
+        if (categoryIndex >= skillsData.length) {
+            isAnimating = false;
+            return;
+        }
+        
+        const categoryData = skillsData[categoryIndex];
+        const categoryElement = document.createElement('div');
+        categoryElement.className = 'skill-category';
+        
+        const categoryTitle = document.createElement('h3');
+        categoryTitle.className = 'category-title';
+        categoryTitle.style.color = categoryData.color;
+        
+        const badgesContainer = document.createElement('div');
+        badgesContainer.className = 'skill-badges';
+        
+        categoryElement.appendChild(categoryTitle);
+        categoryElement.appendChild(badgesContainer);
+        categoriesContainer.appendChild(categoryElement);
+        
+        // Animar título de categoría
+        typeText(categoryTitle, categoryData.category, 30, () => {
+            
+            // Animar badges de habilidades
+            let skillIndex = 0;
+            
+            function addNextSkill() {
+                if (skillIndex >= categoryData.skills.length) {
+                    categoryIndex++;
+                    safeTimeout(addNextCategory, 300);
+                    return;
+                }
+                
+                const skill = categoryData.skills[skillIndex];
+                const badge = document.createElement('span');
+                badge.className = 'skill-badge';
+                badge.style.borderColor = categoryData.color;
+                badgesContainer.appendChild(badge);
+                
+                typeText(badge, skill, 20, () => {
+                    skillIndex++;
+                    safeTimeout(addNextSkill, 100);
+                });
+            }
+            
+            safeTimeout(addNextSkill, 200);
+        });
+    }
     
-    // Inicializar animación del cerebro
-    initializeBrainAnimation();
-    
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
-    
-    safeTimeout(() => {
-        isAnimating = false;
-    }, 500);
+    safeTimeout(addNextCategory, 500);
 }
 
 function createPixelBrain() {
@@ -804,20 +844,72 @@ function createProjectsSection() {
     });
     projectsHTML += '</div>';
     
-    projectsListSection.innerHTML = projectsHTML;
-    
-    projectsContainer.appendChild(tetrisSection);
+    // Cambiar el orden: contenido izquierda, animación derecha
     projectsContainer.appendChild(projectsListSection);
+    projectsContainer.appendChild(tetrisSection);
     consoleOutput.appendChild(projectsContainer);
     
     // Inicializar animación Tetris
     initializeTetrisAnimation();
     
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    // Crear lista de proyectos con animación de tipeo
+    const projectsList = document.createElement('div');
+    projectsList.className = 'projects-list';
+    projectsListSection.appendChild(projectsList);
     
-    safeTimeout(() => {
-        isAnimating = false;
-    }, 500);
+    let projectIndex = 0;
+    
+    function addNextProject() {
+        if (projectIndex >= projectsData.length) {
+            isAnimating = false;
+            return;
+        }
+        
+        const project = projectsData[projectIndex];
+        const projectElement = document.createElement('div');
+        projectElement.className = 'project-item';
+        projectElement.style.borderColor = project.color;
+        
+        const projectName = document.createElement('h3');
+        projectName.className = 'project-name';
+        projectName.style.color = project.color;
+        
+        const projectDesc = document.createElement('p');
+        projectDesc.className = 'project-description';
+        
+        const projectTechContainer = document.createElement('div');
+        projectTechContainer.className = 'project-tech';
+        
+        const techLabel = document.createElement('span');
+        techLabel.className = 'tech-label';
+        techLabel.textContent = 'Tecnologías: ';
+        
+        const techList = document.createElement('span');
+        techList.className = 'tech-list';
+        techList.style.color = project.color;
+        
+        projectTechContainer.appendChild(techLabel);
+        projectTechContainer.appendChild(techList);
+        
+        projectElement.appendChild(projectName);
+        projectElement.appendChild(projectDesc);
+        projectElement.appendChild(projectTechContainer);
+        projectsList.appendChild(projectElement);
+        
+        // Animar nombre del proyecto
+        typeText(projectName, project.name, 25, () => {
+            // Animar descripción
+            typeText(projectDesc, project.description, 12, () => {
+                // Animar tecnologías
+                typeText(techList, project.tech, 20, () => {
+                    projectIndex++;
+                    safeTimeout(addNextProject, 300);
+                });
+            });
+        });
+    }
+    
+    safeTimeout(addNextProject, 500);
 }
 
 function createTetrisAnimation() {
@@ -1007,20 +1099,62 @@ function createEducationSection() {
     });
     educationHTML += '</div>';
     
-    educationListSection.innerHTML = educationHTML;
-    
-    educationContainer.appendChild(craneSection);
+    // Cambiar el orden: contenido izquierda, animación derecha
     educationContainer.appendChild(educationListSection);
+    educationContainer.appendChild(craneSection);
     consoleOutput.appendChild(educationContainer);
     
     // Inicializar animación de grúa
     initializeCraneAnimation();
     
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    // Crear lista de educación con animación de tipeo
+    const educationList = document.createElement('div');
+    educationList.className = 'education-list';
+    educationListSection.appendChild(educationList);
     
-    safeTimeout(() => {
-        isAnimating = false;
-    }, 500);
+    let educationIndex = 0;
+    
+    function addNextEducation() {
+        if (educationIndex >= educationData.length) {
+            isAnimating = false;
+            return;
+        }
+        
+        const edu = educationData[educationIndex];
+        const educationElement = document.createElement('div');
+        educationElement.className = `education-item brick-${educationIndex}`;
+        educationElement.style.borderColor = edu.color;
+        
+        const eduTitle = document.createElement('h3');
+        eduTitle.className = 'education-title';
+        eduTitle.style.color = edu.color;
+        
+        const eduInstitution = document.createElement('p');
+        eduInstitution.className = 'education-institution';
+        
+        const eduPeriod = document.createElement('span');
+        eduPeriod.className = 'education-period';
+        eduPeriod.style.color = edu.color;
+        
+        educationElement.appendChild(eduTitle);
+        educationElement.appendChild(eduInstitution);
+        educationElement.appendChild(eduPeriod);
+        educationList.appendChild(educationElement);
+        
+        // Animar título
+        typeText(eduTitle, edu.title, 25, () => {
+            // Animar institución
+            typeText(eduInstitution, edu.institution, 20, () => {
+                // Animar período
+                typeText(eduPeriod, edu.period, 30, () => {
+                    educationIndex++;
+                    safeTimeout(addNextEducation, 400);
+                });
+            });
+        });
+    }
+    
+    safeTimeout(addNextEducation, 500);
 }
 
 function createCraneAnimation() {
