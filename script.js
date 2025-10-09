@@ -18,11 +18,19 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCommandInput();
     initializeScrollEvents();
     
-    // Ejecutar comando about por defecto (página de inicio)
+    // Mensaje de bienvenida con efecto de tipeo
     safeTimeout(() => {
-        executeCommand('about');
-        document.querySelector('[data-command="about"]').classList.add('active');
-    }, 1000);
+        addOutputLine("Bienvenido a hismar.dev Terminal 1.0", 'info');
+        addOutputLine("Sistema inicializado correctamente", 'normal');
+        addOutputLine("Escribe 'help' para ver comandos disponibles", 'hint');
+        addOutputLine("", 'normal'); // Línea vacía
+        
+        // Ejecutar comando about por defecto después del mensaje
+        safeTimeout(() => {
+            executeCommand('about');
+            document.querySelector('[data-command="about"]').classList.add('active');
+        }, 1500);
+    }, 800);
 });
 
 // Inicializar botones del menú
@@ -395,10 +403,12 @@ function executeSpecificCommand(command) {
 // Comando ABOUT - Información personal con cara pixel art
 function executeAboutCommand() {
     addOutputLine("Inicializando perfil personal...", 'info');
+    addOutputLine("Cargando información biográfica... ✓", 'info');
+    addOutputLine("Activando seguimiento ocular... ✓", 'info');
     
     safeTimeout(() => {
         createAboutSection();
-    }, 800);
+    }, 1000);
 }
 
 function createAboutSection() {
@@ -541,10 +551,12 @@ function initializeEyeTracking() {
 
 function executeSkillsCommand() {
     addOutputLine("Inicializando matriz de habilidades...", 'info');
+    addOutputLine("Activando cerebro pixel art... ✓", 'info');
+    addOutputLine("Cargando tecnologías disponibles... ✓", 'info');
     
     safeTimeout(() => {
         createSkillsSection();
-    }, 800);
+    }, 1000);
 }
 
 function createSkillsSection() {
@@ -728,10 +740,12 @@ function initializeBrainEyeTracking() {
 
 function executeProjectsCommand() {
     addOutputLine("Compilando proyectos y trabajos...", 'info');
+    addOutputLine("Iniciando simulación Tetris... ✓", 'info');
+    addOutputLine("Generando portfolio interactivo... ✓", 'info');
     
     safeTimeout(() => {
         createProjectsSection();
-    }, 800);
+    }, 1000);
 }
 
 function createProjectsSection() {
@@ -939,10 +953,12 @@ function initializeCharacterEyeTracking() {
 
 function executeEducationCommand() {
     addOutputLine("Construyendo historial académico...", 'info');
+    addOutputLine("Activando grúa de construcción... ✓", 'info');
+    addOutputLine("Apilando logros formativos... ✓", 'info');
     
     safeTimeout(() => {
         createEducationSection();
-    }, 800);
+    }, 1000);
 }
 
 function createEducationSection() {
@@ -1123,10 +1139,11 @@ function initializeCraneEyeTracking() {
 
 function executeHelpCommand() {
     addOutputLine("Cargando sistema de ayuda...", 'info');
+    addOutputLine("Indexando comandos disponibles... ✓", 'info');
     
     safeTimeout(() => {
         createHelpSection();
-    }, 600);
+    }, 800);
 }
 
 function createHelpSection() {
