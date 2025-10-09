@@ -567,17 +567,398 @@ function initializeBrainEyeTracking() {
 }
 
 function executeProjectsCommand() {
-    addOutputLine("Cargando proyectos...", 'info');
+    addOutputLine("Compilando proyectos y trabajos...", 'info');
+    
+    safeTimeout(() => {
+        createProjectsSection();
+    }, 800);
+}
+
+function createProjectsSection() {
+    const consoleOutput = document.getElementById('console-output');
+    
+    const projectsContainer = document.createElement('div');
+    projectsContainer.className = 'projects-container';
+    
+    // Sección de animación Tetris
+    const tetrisSection = document.createElement('div');
+    tetrisSection.className = 'projects-tetris-section';
+    tetrisSection.innerHTML = createTetrisAnimation();
+    
+    // Sección de proyectos
+    const projectsListSection = document.createElement('div');
+    projectsListSection.className = 'projects-list-section';
+    
+    const projectsData = [
+        {
+            name: 'TetrisCV',
+            description: 'Plantilla printable de estructura y estilo de un CV retro y con temática de tetris fácil de imprimir en DIN A4',
+            tech: 'HTML, CSS',
+            color: '#ff6b6b'
+        },
+        {
+            name: 'hismar.dev',
+            description: 'Web personal que simula consola de linux con comandos y estilo retro y pixelart',
+            tech: 'HTML, CSS, JavaScript',
+            color: '#4ecdc4'
+        },
+        {
+            name: 'TimeTutor',
+            description: 'Aplicación android para gestión de clases de profesores particulares con horarios y pagos',
+            tech: 'Kotlin, Firebase',
+            color: '#45b7d1'
+        },
+        {
+            name: 'PyControl',
+            description: 'Sistema completo de fichaje de jornadas laborales cumpliendo la legislación española en hardware y OS de Raspberry Pi',
+            tech: 'Python, SQLite, Linux, Raspberry Pi',
+            color: '#96ceb4'
+        }
+    ];
+    
+    let projectsHTML = '<div class="projects-list">';
+    projectsData.forEach((project, index) => {
+        projectsHTML += `
+            <div class="project-item" style="border-color: ${project.color}">
+                <h3 class="project-name" style="color: ${project.color}">${project.name}</h3>
+                <p class="project-description">${project.description}</p>
+                <div class="project-tech">
+                    <span class="tech-label">Tecnologías:</span>
+                    <span class="tech-list" style="color: ${project.color}">${project.tech}</span>
+                </div>
+            </div>
+        `;
+    });
+    projectsHTML += '</div>';
+    
+    projectsListSection.innerHTML = projectsHTML;
+    
+    projectsContainer.appendChild(tetrisSection);
+    projectsContainer.appendChild(projectsListSection);
+    consoleOutput.appendChild(projectsContainer);
+    
+    // Inicializar animación Tetris
+    initializeTetrisAnimation();
+    
+    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    
     safeTimeout(() => {
         isAnimating = false;
+    }, 500);
+}
+
+function createTetrisAnimation() {
+    return `
+        <div class="tetris-container">
+            <div class="tetris-title">🎮 Encajando proyectos...</div>
+            <div class="tetris-screen">
+                <div class="tetris-grid" id="tetris-grid">
+                    <!-- Grid se generará dinámicamente -->
+                </div>
+                <div class="tetris-character" id="tetris-character">
+                    <div class="char-row">
+                        <div class="char-pixel bg"></div><div class="char-pixel head"></div><div class="char-pixel head"></div><div class="char-pixel bg"></div>
+                    </div>
+                    <div class="char-row">
+                        <div class="char-pixel head"></div><div class="char-pixel eye"></div><div class="char-pixel eye char-eye" id="char-eye"></div><div class="char-pixel head"></div>
+                    </div>
+                    <div class="char-row">
+                        <div class="char-pixel head"></div><div class="char-pixel mouth"></div><div class="char-pixel mouth"></div><div class="char-pixel head"></div>
+                    </div>
+                    <div class="char-row">
+                        <div class="char-pixel body"></div><div class="char-pixel body"></div><div class="char-pixel body"></div><div class="char-pixel body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function initializeTetrisAnimation() {
+    const tetrisGrid = document.getElementById('tetris-grid');
+    const character = document.getElementById('tetris-character');
+    const charEye = document.getElementById('char-eye');
+    
+    if (!tetrisGrid || !character) return;
+    
+    // Crear grid base
+    for (let i = 0; i < 80; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'tetris-cell';
+        tetrisGrid.appendChild(cell);
+    }
+    
+    const cells = tetrisGrid.querySelectorAll('.tetris-cell');
+    
+    // Animación de piezas cayendo
+    const pieces = [
+        [0, 1, 8, 9], // Cuadrado
+        [0, 1, 2, 3], // Línea horizontal
+        [0, 8, 16, 24], // Línea vertical
+        [0, 1, 9, 17], // L
+        [1, 9, 16, 17], // T
+    ];
+    
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'];
+    
+    safeTimeout(() => {
+        let pieceIndex = 0;
+        
+        function dropPiece() {
+            if (pieceIndex >= pieces.length) {
+                // Animación completa, activar seguimiento de ojos
+                safeTimeout(() => {
+                    charEye.classList.add('char-active');
+                    initializeCharacterEyeTracking();
+                }, 500);
+                return;
+            }
+            
+            const piece = pieces[pieceIndex];
+            const color = colors[pieceIndex];
+            const startRow = 0;
+            
+            // Animar caída de la pieza
+            let currentRow = startRow;
+            const dropInterval = safeInterval(() => {
+                // Limpiar posición anterior
+                piece.forEach(offset => {
+                    const prevIndex = (currentRow - 1) * 8 + (offset % 8);
+                    if (prevIndex >= 0 && cells[prevIndex]) {
+                        cells[prevIndex].style.backgroundColor = '';
+                    }
+                });
+                
+                // Dibujar en nueva posición
+                piece.forEach(offset => {
+                    const cellIndex = currentRow * 8 + (offset % 8);
+                    if (cellIndex < 80 && cells[cellIndex]) {
+                        cells[cellIndex].style.backgroundColor = color;
+                    }
+                });
+                
+                currentRow++;
+                
+                // Si llegó al final, detener y pasar a la siguiente pieza
+                if (currentRow > 8) {
+                    clearSafeInterval(dropInterval);
+                    pieceIndex++;
+                    safeTimeout(dropPiece, 300);
+                }
+            }, 200);
+        }
+        
+        dropPiece();
     }, 1000);
 }
 
+function initializeCharacterEyeTracking() {
+    const charEye = document.getElementById('char-eye');
+    
+    if (!charEye) return;
+    
+    function updateCharacterEyePosition(e) {
+        const eyeRect = charEye.getBoundingClientRect();
+        const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+        const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+        
+        const deltaX = e.clientX - eyeCenterX;
+        const deltaY = e.clientY - eyeCenterY;
+        const angle = Math.atan2(deltaY, deltaX);
+        const distance = Math.min(2, Math.sqrt(deltaX * deltaX + deltaY * deltaY) / 30);
+        
+        const pupilX = Math.cos(angle) * distance;
+        const pupilY = Math.sin(angle) * distance;
+        
+        charEye.style.setProperty('--char-pupil-x', pupilX + 'px');
+        charEye.style.setProperty('--char-pupil-y', pupilY + 'px');
+    }
+    
+    document.addEventListener('mousemove', updateCharacterEyePosition);
+}
+
 function executeEducationCommand() {
-    addOutputLine("Mostrando formación académica...", 'info');
+    addOutputLine("Construyendo historial académico...", 'info');
+    
+    safeTimeout(() => {
+        createEducationSection();
+    }, 800);
+}
+
+function createEducationSection() {
+    const consoleOutput = document.getElementById('console-output');
+    
+    const educationContainer = document.createElement('div');
+    educationContainer.className = 'education-container';
+    
+    // Sección de animación grúa
+    const craneSection = document.createElement('div');
+    craneSection.className = 'education-crane-section';
+    craneSection.innerHTML = createCraneAnimation();
+    
+    // Sección de formación
+    const educationListSection = document.createElement('div');
+    educationListSection.className = 'education-list-section';
+    
+    const educationData = [
+        {
+            title: 'Grado en Informática',
+            institution: 'UNED',
+            period: '2025/presente',
+            color: '#ff6b6b'
+        },
+        {
+            title: 'Desarrollo de aplicaciones multiplataforma',
+            institution: 'ILERNA',
+            period: '2023/2025',
+            color: '#4ecdc4'
+        },
+        {
+            title: 'Bachillerato',
+            institution: 'IES Ricardo Ortega',
+            period: '2004/2006',
+            color: '#45b7d1'
+        }
+    ];
+    
+    let educationHTML = '<div class="education-list">';
+    educationData.forEach((edu, index) => {
+        educationHTML += `
+            <div class="education-item brick-${index}" style="border-color: ${edu.color}">
+                <h3 class="education-title" style="color: ${edu.color}">${edu.title}</h3>
+                <p class="education-institution">${edu.institution}</p>
+                <span class="education-period" style="color: ${edu.color}">${edu.period}</span>
+            </div>
+        `;
+    });
+    educationHTML += '</div>';
+    
+    educationListSection.innerHTML = educationHTML;
+    
+    educationContainer.appendChild(craneSection);
+    educationContainer.appendChild(educationListSection);
+    consoleOutput.appendChild(educationContainer);
+    
+    // Inicializar animación de grúa
+    initializeCraneAnimation();
+    
+    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    
     safeTimeout(() => {
         isAnimating = false;
+    }, 500);
+}
+
+function createCraneAnimation() {
+    return `
+        <div class="crane-container">
+            <div class="crane-title">🏗️ Apilando formación académica...</div>
+            <div class="crane-scene">
+                <div class="crane" id="crane">
+                    <div class="crane-arm" id="crane-arm">
+                        <div class="crane-hook" id="crane-hook">🎓</div>
+                    </div>
+                    <div class="crane-operator" id="crane-operator">
+                        <div class="op-head">
+                            <div class="op-eye" id="crane-eye"></div>
+                        </div>
+                        <div class="op-body"></div>
+                    </div>
+                </div>
+                <div class="brick-stack" id="brick-stack"></div>
+            </div>
+        </div>
+    `;
+}
+
+function initializeCraneAnimation() {
+    const craneArm = document.getElementById('crane-arm');
+    const craneHook = document.getElementById('crane-hook');
+    const brickStack = document.getElementById('brick-stack');
+    const craneEye = document.getElementById('crane-eye');
+    
+    if (!craneArm || !craneHook || !brickStack) return;
+    
+    const bricks = ['📚', '🎯', '🏆'];
+    const brickColors = ['#ff6b6b', '#4ecdc4', '#45b7d1'];
+    
+    safeTimeout(() => {
+        let brickIndex = 0;
+        
+        function stackBrick() {
+            if (brickIndex >= bricks.length) {
+                // Animación completa, activar seguimiento de ojos
+                safeTimeout(() => {
+                    craneEye.classList.add('crane-active');
+                    initializeCraneEyeTracking();
+                }, 500);
+                return;
+            }
+            
+            const brick = bricks[brickIndex];
+            const color = brickColors[brickIndex];
+            
+            // Crear ladrillo
+            const brickElement = document.createElement('div');
+            brickElement.className = 'crane-brick';
+            brickElement.textContent = brick;
+            brickElement.style.backgroundColor = color;
+            
+            // Posicionar en el hook
+            craneHook.appendChild(brickElement);
+            
+            // Animar brazo hacia el stack
+            safeTimeout(() => {
+                craneArm.style.transform = `rotate(45deg) translateY(${brickIndex * 20}px)`;
+                
+                safeTimeout(() => {
+                    // Soltar ladrillo en el stack
+                    brickStack.appendChild(brickElement);
+                    brickElement.style.position = 'relative';
+                    brickElement.style.bottom = `${brickIndex * 30}px`;
+                    
+                    // Volver brazo a posición original
+                    craneArm.style.transform = 'rotate(0deg)';
+                    
+                    brickIndex++;
+                    safeTimeout(stackBrick, 500);
+                }, 800);
+            }, 300);
+        }
+        
+        stackBrick();
     }, 1000);
+}
+
+function initializeCraneEyeTracking() {
+    const craneEye = document.getElementById('crane-eye');
+    const craneArm = document.getElementById('crane-arm');
+    
+    if (!craneEye || !craneArm) return;
+    
+    function updateCranePosition(e) {
+        const eyeRect = craneEye.getBoundingClientRect();
+        const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+        const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+        
+        const deltaX = e.clientX - eyeCenterX;
+        const deltaY = e.clientY - eyeCenterY;
+        const angle = Math.atan2(deltaY, deltaX);
+        
+        // Rotar brazo de la grúa siguiendo el mouse
+        const armAngle = (angle * 180 / Math.PI) + 90;
+        craneArm.style.transform = `rotate(${Math.max(-45, Math.min(45, armAngle))}deg)`;
+        
+        // Mover ojo
+        const distance = Math.min(2, Math.sqrt(deltaX * deltaX + deltaY * deltaY) / 30);
+        const pupilX = Math.cos(angle) * distance;
+        const pupilY = Math.sin(angle) * distance;
+        
+        craneEye.style.setProperty('--crane-pupil-x', pupilX + 'px');
+        craneEye.style.setProperty('--crane-pupil-y', pupilY + 'px');
+    }
+    
+    document.addEventListener('mousemove', updateCranePosition);
 }
 
 function executeHelpCommand() {
