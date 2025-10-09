@@ -425,7 +425,10 @@ function createAboutSection() {
     // Cara pixel art (lado derecho)
     const faceSection = document.createElement('div');
     faceSection.className = 'about-face';
-    faceSection.innerHTML = createPixelFace();
+    faceSection.innerHTML = `
+        <div class="face-title">👤 Perfil Interactivo</div>
+        ${createPixelFace()}
+    `;
     
     // Añadir al contenedor
     aboutContainer.appendChild(infoSection);

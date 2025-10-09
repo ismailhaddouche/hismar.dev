@@ -879,11 +879,16 @@ body {
 }
 
 .about-info {
-    flex: 1;
+    flex: 2;
+    order: 2;
 }
 
 .about-face {
-    flex-shrink: 0;
+    flex: 1;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .info-header .name {
@@ -925,14 +930,15 @@ body {
 
 /* Pixel Face */
 .pixel-face {
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(7, 1fr);
     gap: 1px;
     border: 2px solid #333;
     background: #000;
+    margin: 20px auto;
 }
 
 .pixel-face .pixel {
@@ -965,31 +971,41 @@ body {
 }
 
 .skills-brain-section {
-    flex-shrink: 0;
+    flex: 1;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .skills-tech-section {
-    flex: 1;
+    flex: 2;
+    order: 2;
 }
 
 .pixel-brain-container {
     text-align: center;
 }
 
-.brain-title {
+.face-title,
+.brain-title,
+.tetris-title,
+.crane-title {
     color: #4ecdc4;
     margin-bottom: 16px;
     font-size: 16px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .pixel-brain {
-    width: 120px;
-    height: 100px;
+    width: 140px;
+    height: 120px;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(5, 1fr);
     gap: 1px;
-    margin: 0 auto 20px;
+    margin: 20px auto;
     border: 2px solid #333;
     background: #000;
 }
@@ -1088,32 +1104,33 @@ body {
 }
 
 .projects-tetris-section {
-    flex-shrink: 0;
+    flex: 1;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .projects-list-section {
-    flex: 1;
+    flex: 2;
+    order: 2;
 }
 
 .tetris-container {
     text-align: center;
 }
 
-.tetris-title {
-    color: #4ecdc4;
-    margin-bottom: 16px;
-    font-size: 16px;
-}
+/* Título ya definido arriba con brain-title y crane-title */
 
 .tetris-screen {
     width: 160px;
-    height: 200px;
+    height: 180px;
     background: linear-gradient(180deg, #001, #003);
     border: 3px solid #333;
     border-radius: 8px;
     position: relative;
     overflow: hidden;
-    margin: 0 auto 20px;
+    margin: 20px auto;
 }
 
 .tetris-grid {
@@ -1213,22 +1230,23 @@ body {
 }
 
 .education-crane-section {
-    flex-shrink: 0;
+    flex: 1;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .education-list-section {
-    flex: 1;
+    flex: 2;
+    order: 2;
 }
 
 .crane-container {
     text-align: center;
 }
 
-.crane-title {
-    color: #4ecdc4;
-    margin-bottom: 16px;
-    font-size: 16px;
-}
+/* Título ya definido arriba con brain-title y tetris-title */
 
 .crane-scene {
     width: 160px;
@@ -1237,7 +1255,7 @@ body {
     border: 3px solid #333;
     border-radius: 8px;
     position: relative;
-    margin: 0 auto 20px;
+    margin: 20px auto;
 }
 
 .crane {
@@ -1434,11 +1452,28 @@ body {
         gap: 16px;
     }
     
+    /* En móviles, animación arriba y contenido abajo */
+    .about-info,
+    .skills-tech-section,
+    .projects-list-section,
+    .education-list-section {
+        order: 2;
+    }
+    
+    .about-face,
+    .skills-brain-section,
+    .projects-tetris-section,
+    .education-crane-section {
+        order: 1;
+    }
+    
     .pixel-face,
     .pixel-brain,
     .tetris-screen,
     .crane-scene {
-        margin: 0 auto;
+        margin: 10px auto;
+        width: 140px;
+        height: auto;
     }
     
     /* Scrollbar más visible en móvil */
