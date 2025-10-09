@@ -16,6 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeMenuButtons();
     initializeControlButtons();
     initializeCommandInput();
+    
+    // Ejecutar comando about por defecto (página de inicio)
+    safeTimeout(() => {
+        executeCommand('about');
+        document.querySelector('[data-command="about"]').classList.add('active');
+    }, 1000);
 });
 
 // Inicializar botones del menú
@@ -237,19 +243,327 @@ function executeSpecificCommand(command) {
     }
 }
 
-// Placeholders para comandos específicos (se implementarán en el siguiente paso)
+// Comando ABOUT - Información personal con cara pixel art
 function executeAboutCommand() {
-    addOutputLine("Cargando información personal...", 'info');
+    addOutputLine("Inicializando perfil personal...", 'info');
+    
+    safeTimeout(() => {
+        createAboutSection();
+    }, 800);
+}
+
+function createAboutSection() {
+    const consoleOutput = document.getElementById('console-output');
+    
+    // Container principal
+    const aboutContainer = document.createElement('div');
+    aboutContainer.className = 'about-container';
+    
+    // Información personal (lado izquierdo)
+    const infoSection = document.createElement('div');
+    infoSection.className = 'about-info';
+    
+    // Cara pixel art (lado derecho)
+    const faceSection = document.createElement('div');
+    faceSection.className = 'about-face';
+    faceSection.innerHTML = createPixelFace();
+    
+    // Contenido de información
+    const currentDate = new Date();
+    const birthDate = new Date('1988-05-14');
+    const age = Math.floor((currentDate - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+    
+    infoSection.innerHTML = `
+        <div class="info-header">
+            <h2 class="name">Ismail Haddouche Rhali</h2>
+        </div>
+        <div class="info-details">
+            <div class="info-item">
+                <span class="label">Edad:</span>
+                <span class="value">${age} años</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Profesión:</span>
+                <span class="value">Developer/DevOp</span>
+            </div>
+            <div class="info-item">
+                <span class="label">GitHub:</span>
+                <a href="https://github.com/ismailhaddouche" target="_blank" class="link">github.com/ismailhaddouche</a>
+            </div>
+            <div class="info-item">
+                <span class="label">LinkedIn:</span>
+                <a href="https://linkedin.com/in/ismailhaddouche" target="_blank" class="link">linkedin.com/in/ismailhaddouche</a>
+            </div>
+        </div>
+        <div class="info-description">
+            <p>Desarrollador apasionado de la tecnología y la informática. Friki de los videojuegos de mesa, el anime y la lectura de fantasía. Fan de Zerocalcare. Y más friki aún del cloud computing, estructura de sistemas y la ciberseguridad.</p>
+        </div>
+    `;
+    
+    aboutContainer.appendChild(infoSection);
+    aboutContainer.appendChild(faceSection);
+    consoleOutput.appendChild(aboutContainer);
+    
+    // Inicializar seguimiento del mouse para los ojos
+    initializeEyeTracking();
+    
+    // Scroll y finalizar animación
+    consoleOutput.scrollTop = consoleOutput.scrollHeight;
     safeTimeout(() => {
         isAnimating = false;
-    }, 1000);
+    }, 500);
+}
+
+function createPixelFace() {
+    return `
+        <div class="pixel-face">
+            <div class="face-row">
+                <div class="pixel bg"></div><div class="pixel bg"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel bg"></div><div class="pixel bg"></div>
+            </div>
+            <div class="face-row">
+                <div class="pixel bg"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel bg"></div>
+            </div>
+            <div class="face-row">
+                <div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div>
+            </div>
+            <div class="face-row">
+                <div class="pixel head"></div><div class="pixel eye-left eye"><div class="pupil"></div></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel eye-right eye"><div class="pupil"></div></div><div class="pixel head"></div>
+            </div>
+            <div class="face-row">
+                <div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel nose"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div>
+            </div>
+            <div class="face-row">
+                <div class="pixel head"></div><div class="pixel head"></div><div class="pixel mouth"></div><div class="pixel mouth"></div><div class="pixel mouth"></div><div class="pixel head"></div><div class="pixel head"></div>
+            </div>
+            <div class="face-row">
+                <div class="pixel bg"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel head"></div><div class="pixel bg"></div>
+            </div>
+        </div>
+    `;
+}
+
+function initializeEyeTracking() {
+    const eyeLeft = document.querySelector('.eye-left .pupil');
+    const eyeRight = document.querySelector('.eye-right .pupil');
+    
+    if (!eyeLeft || !eyeRight) return;
+    
+    function updateEyePosition(e) {
+        const eyes = [eyeLeft, eyeRight];
+        
+        eyes.forEach(pupil => {
+            const eye = pupil.parentElement;
+            const eyeRect = eye.getBoundingClientRect();
+            const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+            const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+            
+            const deltaX = e.clientX - eyeCenterX;
+            const deltaY = e.clientY - eyeCenterY;
+            const angle = Math.atan2(deltaY, deltaX);
+            const distance = Math.min(8, Math.sqrt(deltaX * deltaX + deltaY * deltaY) / 10);
+            
+            const pupilX = Math.cos(angle) * distance;
+            const pupilY = Math.sin(angle) * distance;
+            
+            pupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+        });
+    }
+    
+    document.addEventListener('mousemove', updateEyePosition);
+    
+    // Limpiar event listener cuando se limpie la consola
+    const originalClearConsole = clearConsole;
+    clearConsole = function() {
+        document.removeEventListener('mousemove', updateEyePosition);
+        originalClearConsole();
+    };
 }
 
 function executeSkillsCommand() {
-    addOutputLine("Mostrando habilidades técnicas...", 'info');
+    addOutputLine("Inicializando matriz de habilidades...", 'info');
+    
+    safeTimeout(() => {
+        createSkillsSection();
+    }, 800);
+}
+
+function createSkillsSection() {
+    const consoleOutput = document.getElementById('console-output');
+    
+    const skillsContainer = document.createElement('div');
+    skillsContainer.className = 'skills-container';
+    
+    // Crear sección del cerebro pixel art
+    const brainSection = document.createElement('div');
+    brainSection.className = 'skills-brain-section';
+    brainSection.innerHTML = createPixelBrain();
+    
+    // Crear sección de tecnologías
+    const techSection = document.createElement('div');
+    techSection.className = 'skills-tech-section';
+    
+    const skillsData = [
+        {
+            category: 'Lenguajes',
+            color: '#ff6b6b',
+            skills: ['Kotlin', 'Python', 'Java', 'C#', 'SQL']
+        },
+        {
+            category: 'Bases de datos',
+            color: '#4ecdc4',
+            skills: ['SQLite', 'MySQL', 'PostgreSQL', 'MongoDB', 'Firebase']
+        },
+        {
+            category: 'Cloud',
+            color: '#45b7d1',
+            skills: ['AWS', 'Terraform', 'CI/CD']
+        },
+        {
+            category: 'Control de versiones',
+            color: '#96ceb4',
+            skills: ['Git', 'GitHub']
+        }
+    ];
+    
+    let techHTML = '<div class="skills-categories">';
+    skillsData.forEach(category => {
+        techHTML += `
+            <div class="skill-category">
+                <h3 class="category-title" style="color: ${category.color}">${category.category}</h3>
+                <div class="skill-badges">
+                    ${category.skills.map(skill => `<span class="skill-badge" style="border-color: ${category.color}">${skill}</span>`).join('')}
+                </div>
+            </div>
+        `;
+    });
+    techHTML += '</div>';
+    
+    techSection.innerHTML = techHTML;
+    
+    skillsContainer.appendChild(brainSection);
+    skillsContainer.appendChild(techSection);
+    consoleOutput.appendChild(skillsContainer);
+    
+    // Inicializar animación del cerebro
+    initializeBrainAnimation();
+    
+    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    
     safeTimeout(() => {
         isAnimating = false;
+    }, 500);
+}
+
+function createPixelBrain() {
+    return `
+        <div class="pixel-brain-container">
+            <div class="brain-title">🧠 Absorbiendo conocimientos...</div>
+            <div class="pixel-brain" id="brain">
+                <div class="brain-row">
+                    <div class="brain-pixel bg"></div><div class="brain-pixel bg"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel bg"></div>
+                </div>
+                <div class="brain-row">
+                    <div class="brain-pixel bg"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div>
+                </div>
+                <div class="brain-row">
+                    <div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel eye brain-eye" id="brain-eye-left"></div><div class="brain-pixel brain"></div><div class="brain-pixel eye brain-eye" id="brain-eye-right"></div><div class="brain-pixel brain"></div>
+                </div>
+                <div class="brain-row">
+                    <div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div>
+                </div>
+                <div class="brain-row">
+                    <div class="brain-pixel bg"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel brain"></div><div class="brain-pixel bg"></div>
+                </div>
+            </div>
+            <div class="tech-particles" id="tech-particles"></div>
+        </div>
+    `;
+}
+
+function initializeBrainAnimation() {
+    const brainEyeLeft = document.getElementById('brain-eye-left');
+    const brainEyeRight = document.getElementById('brain-eye-right');
+    const particlesContainer = document.getElementById('tech-particles');
+    
+    if (!brainEyeLeft || !brainEyeRight || !particlesContainer) return;
+    
+    // Crear partículas de tecnologías
+    const technologies = ['⚛️', '🐍', '☕', '⚙️', '🗄️', '☁️', '🔧', '📊'];
+    
+    // Animación de absorción de tecnologías
+    safeTimeout(() => {
+        technologies.forEach((tech, index) => {
+            safeTimeout(() => {
+                createTechParticle(tech, particlesContainer);
+            }, index * 400);
+        });
+        
+        // Abrir ojos del cerebro después de absorber todo
+        safeTimeout(() => {
+            brainEyeLeft.classList.add('brain-active');
+            brainEyeRight.classList.add('brain-active');
+            
+            // Inicializar seguimiento del mouse para el cerebro
+            initializeBrainEyeTracking();
+        }, technologies.length * 400 + 1000);
     }, 1000);
+}
+
+function createTechParticle(tech, container) {
+    const particle = document.createElement('div');
+    particle.className = 'tech-particle';
+    particle.textContent = tech;
+    
+    // Posición inicial aleatoria
+    const startX = Math.random() * 300;
+    const startY = Math.random() * 200 + 100;
+    
+    particle.style.left = startX + 'px';
+    particle.style.top = startY + 'px';
+    
+    container.appendChild(particle);
+    
+    // Animar hacia el cerebro
+    safeTimeout(() => {
+        particle.style.transform = 'translate(-50px, -100px) scale(0.1)';
+        particle.style.opacity = '0';
+        
+        safeTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, 800);
+    }, 100);
+}
+
+function initializeBrainEyeTracking() {
+    const brainEyeLeft = document.getElementById('brain-eye-left');
+    const brainEyeRight = document.getElementById('brain-eye-right');
+    
+    if (!brainEyeLeft || !brainEyeRight) return;
+    
+    function updateBrainEyePosition(e) {
+        const eyes = [brainEyeLeft, brainEyeRight];
+        
+        eyes.forEach(eye => {
+            const eyeRect = eye.getBoundingClientRect();
+            const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+            const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+            
+            const deltaX = e.clientX - eyeCenterX;
+            const deltaY = e.clientY - eyeCenterY;
+            const angle = Math.atan2(deltaY, deltaX);
+            const distance = Math.min(3, Math.sqrt(deltaX * deltaX + deltaY * deltaY) / 20);
+            
+            const pupilX = Math.cos(angle) * distance;
+            const pupilY = Math.sin(angle) * distance;
+            
+            eye.style.setProperty('--pupil-x', pupilX + 'px');
+            eye.style.setProperty('--pupil-y', pupilY + 'px');
+        });
+    }
+    
+    document.addEventListener('mousemove', updateBrainEyePosition);
 }
 
 function executeProjectsCommand() {
@@ -267,10 +581,67 @@ function executeEducationCommand() {
 }
 
 function executeHelpCommand() {
-    addOutputLine("Mostrando ayuda...", 'info');
+    addOutputLine("Cargando sistema de ayuda...", 'info');
+    
+    safeTimeout(() => {
+        createHelpSection();
+    }, 600);
+}
+
+function createHelpSection() {
+    const consoleOutput = document.getElementById('console-output');
+    
+    const helpContainer = document.createElement('div');
+    helpContainer.className = 'help-container';
+    
+    helpContainer.innerHTML = `
+        <div class="help-header">
+            <h2>📚 Comandos Disponibles</h2>
+        </div>
+        <div class="help-commands">
+            <div class="help-command">
+                <span class="cmd-name">about</span>
+                <span class="cmd-description">Información personal y contacto</span>
+            </div>
+            <div class="help-command">
+                <span class="cmd-name">skills</span>
+                <span class="cmd-description">Habilidades técnicas y tecnologías</span>
+            </div>
+            <div class="help-command">
+                <span class="cmd-name">projects</span>
+                <span class="cmd-description">Proyectos y trabajos realizados</span>
+            </div>
+            <div class="help-command">
+                <span class="cmd-name">education</span>
+                <span class="cmd-description">Formación académica y certificaciones</span>
+            </div>
+            <div class="help-command">
+                <span class="cmd-name">help</span>
+                <span class="cmd-description">Muestra esta ayuda</span>
+            </div>
+            <div class="help-command">
+                <span class="cmd-name">clear</span>
+                <span class="cmd-description">Limpia la pantalla de la terminal</span>
+            </div>
+        </div>
+        <div class="help-tips">
+            <h3>💡 Tips:</h3>
+            <ul>
+                <li>Usa las <span class="key">↑</span> <span class="key">↓</span> para navegar por el historial</li>
+                <li>Presiona <span class="key">Tab</span> para autocompletar comandos</li>
+                <li>Usa los botones del menú superior para navegación rápida</li>
+                <li>Botón <span class="key">⏭️</span> para saltar animaciones</li>
+                <li>Botón <span class="key">🗑️</span> para limpiar la terminal</li>
+            </ul>
+        </div>
+    `;
+    
+    consoleOutput.appendChild(helpContainer);
+    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    
     safeTimeout(() => {
         isAnimating = false;
-    }, 1000);
+    }, 300);
 }
 
 function executeUnknownCommand(command) {

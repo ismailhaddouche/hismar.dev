@@ -205,6 +205,233 @@ body {
     color: #44ff44;
 }
 
+/* About Command Styles */
+.about-container {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.about-info {
+    flex: 1;
+}
+
+.about-face {
+    flex-shrink: 0;
+}
+
+.name {
+    color: #00ff00;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.info-details {
+    margin-bottom: 20px;
+}
+
+.info-item {
+    margin-bottom: 8px;
+    display: flex;
+    gap: 10px;
+}
+
+.label {
+    color: #ffaa00;
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.value {
+    color: #ccc;
+}
+
+.link {
+    color: #00aaff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link:hover {
+    color: #00ff00;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.info-description p {
+    color: #ccc;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Pixel Face Styles */
+.pixel-face {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.face-row {
+    display: flex;
+    gap: 2px;
+}
+
+.pixel {
+    width: 12px;
+    height: 12px;
+    border-radius: 1px;
+}
+
+.pixel.bg {
+    background-color: transparent;
+}
+
+.pixel.head {
+    background-color: #ffdbac;
+    border: 1px solid #deb887;
+}
+
+.pixel.eye {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    position: relative;
+    overflow: hidden;
+}
+
+.pupil {
+    width: 6px;
+    height: 6px;
+    background-color: #000;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+}
+
+.pixel.nose {
+    background-color: #d2b48c;
+    border: 1px solid #cd853f;
+}
+
+.pixel.mouth {
+    background-color: #8b4513;
+    border: 1px solid #654321;
+}
+
+/* Help Command Styles */
+.help-container {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.help-header h2 {
+    color: #00ff00;
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.help-commands {
+    margin-bottom: 20px;
+}
+
+.help-command {
+    display: flex;
+    margin-bottom: 8px;
+    padding: 5px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.help-command:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.cmd-name {
+    color: #ffaa00;
+    font-weight: bold;
+    min-width: 100px;
+    margin-right: 20px;
+}
+
+.cmd-description {
+    color: #ccc;
+}
+
+.help-tips h3 {
+    color: #00aaff;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.help-tips ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.help-tips li {
+    color: #ccc;
+    margin-bottom: 5px;
+    padding-left: 15px;
+}
+
+.help-tips li::before {
+    content: "▶ ";
+    color: #00ff00;
+    margin-right: 5px;
+}
+
+.key {
+    background-color: #333;
+    color: #00ff00;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    border: 1px solid #555;
+}
+
+/* Responsive adjustments for about section */
+@media (max-width: 768px) {
+    .about-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+    }
+    
+    .name {
+        font-size: 20px;
+    }
+    
+    .pixel {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .pupil {
+        width: 5px;
+        height: 5px;
+    }
+    
+    .help-command {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .cmd-name {
+        min-width: auto;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .terminal-header {
