@@ -43,6 +43,29 @@ body {
     gap: 15px;
 }
 
+.menu-btn {
+    background: none;
+    border: 1px solid #333;
+    color: #00ff00;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+.menu-btn:hover {
+    background-color: #333;
+    border-color: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.menu-btn:active, .menu-btn.active {
+    background-color: #00ff00;
+    color: #000;
+}
+
 /* Console Styles */
 .terminal-console {
     flex: 1;
