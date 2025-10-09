@@ -432,6 +432,146 @@ body {
     }
 }
 
+/* Skills Command Styles */
+.skills-container {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.skills-brain-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brain-title {
+    color: #00ff00;
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.pixel-brain-container {
+    position: relative;
+    display: inline-block;
+}
+
+.pixel-brain {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0 auto;
+}
+
+.brain-row {
+    display: flex;
+    gap: 2px;
+}
+
+.brain-pixel {
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+}
+
+.brain-pixel.bg {
+    background-color: transparent;
+}
+
+.brain-pixel.brain {
+    background-color: #ff69b4;
+    border: 1px solid #ff1493;
+    animation: brainPulse 2s ease-in-out infinite;
+}
+
+.brain-pixel.brain-eye {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.brain-pixel.brain-eye.brain-active::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #000;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(calc(-50% + var(--pupil-x, 0px)), calc(-50% + var(--pupil-y, 0px)));
+    transition: transform 0.1s ease;
+}
+
+@keyframes brainPulse {
+    0%, 100% { box-shadow: 0 0 5px rgba(255, 105, 180, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.8); }
+}
+
+.tech-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.tech-particle {
+    position: absolute;
+    font-size: 20px;
+    transition: all 0.8s ease-in-out;
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.skills-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.skill-category {
+    padding: 15px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.category-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px currentColor;
+}
+
+.skill-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-badge {
+    padding: 5px 12px;
+    border: 1px solid;
+    border-radius: 15px;
+    font-size: 14px;
+    color: #ccc;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.skill-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px currentColor;
+    color: #fff;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .terminal-header {
@@ -445,6 +585,187 @@ body {
         font-size: 12px;
     }
     
+
+/* Controles de la consola (skip & clear) */
+.control-btn {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #222;
+    color: #00ff00;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+}
+
+.control-btn:hover {
+    background: #222;
+    box-shadow: 0 0 8px rgba(0,255,0,0.12);
+}
+
+/* Prompt / input */
+.prompt {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.prompt .prompt-label {
+    color: #00ff00;
+    font-weight: bold;
+}
+.prompt input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #c8ffc8;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+/* Paneles de comando: about, skills, projects, education */
+.panel {
+    padding: 12px;
+    border: 1px solid rgba(0,255,0,0.06);
+    background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+    color: #bfffbf;
+    margin-bottom: 12px;
+    border-radius: 6px;
+}
+
+/* ABOUT - pixel face y detalles */
+.about-wrapper {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+.pixel-face {
+    width: 120px;
+    height: 120px;
+    background: #031;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 2px;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,255,0,0.08);
+}
+.pixel-face .cell {
+    background: transparent;
+}
+.pixel-face .eye {
+    background: #9ff;
+}
+.pixel-face .pupil {
+    background: #002;
+}
+
+/* SKILLS - cerebro y badges */
+.skills-stage {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+.brain {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(90deg,#222,#111);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(0,255,0,0.06);
+}
+.badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 8px;
+    width: 100%;
+}
+.badge {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(0,255,0,0.03);
+}
+.badge img {
+    width: 28px;
+    height: 28px;
+}
+.badge .name {
+    color: #c8ffc8;
+    font-size: 13px;
+}
+
+/* PROJECTS - tetris tube and stage */
+.projects-stage {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+.tetris-tube {
+    width: 160px;
+    height: 160px;
+    background: linear-gradient(180deg,#001,#003);
+    border: 3px solid #071;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+.tetris-piece {
+    width: 20px;
+    height: 20px;
+    background: #0f6;
+    position: absolute;
+    transition: transform 0.3s linear;
+}
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.project-item {
+    padding: 8px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(0,255,0,0.03);
+}
+
+/* EDUCATION - crane and bricks */
+.education-stage {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+.crane {
+    width: 160px;
+    height: 120px;
+    background: linear-gradient(180deg,#060,#020);
+    border-radius: 6px;
+    position: relative;
+    border: 2px solid rgba(0,255,0,0.06);
+}
+.brick {
+    width: 36px;
+    height: 20px;
+    background: #b35;
+    border-radius: 3px;
+    margin: 4px;
+    display: inline-block;
+}
+
+/* Small helper utils */
+.muted { color: rgba(180,255,180,0.6); }
+.accent { color: #80ff80; }
+
+/* Scrollbar styling for console */
+.console-output::-webkit-scrollbar { width: 10px; }
+.console-output::-webkit-scrollbar-track { background: #070707; }
+.console-output::-webkit-scrollbar-thumb { background: rgba(0,255,0,0.08); border-radius: 8px; }
+
     .prompt-line, .command-input {
         font-size: 12px;
     }
