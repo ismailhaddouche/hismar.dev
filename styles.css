@@ -441,109 +441,11 @@ body {
     }
 }
 
-/* Skills Command Styles */
-.skills-container {
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid #333;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
-.skills-brain-section {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.brain-title {
-    color: #00ff00;
-    font-size: 18px;
-    margin-bottom: 15px;
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-}
-
-.pixel-brain-container {
-    position: relative;
-    display: inline-block;
-}
-
-.pixel-brain {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin: 0 auto;
-}
-
-.brain-row {
-    display: flex;
-    gap: 2px;
-}
-
-.brain-pixel {
-    width: 15px;
-    height: 15px;
-    border-radius: 2px;
-}
-
-.brain-pixel.bg {
-    background-color: transparent;
-}
-
-.brain-pixel.brain {
-    background-color: #ff69b4;
-    border: 1px solid #ff1493;
-    animation: brainPulse 2s ease-in-out infinite;
-}
-
-.brain-pixel.brain-eye {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    position: relative;
-}
-
-.brain-pixel.brain-eye.brain-active::after {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background-color: #000;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(calc(-50% + var(--pupil-x, 0px)), calc(-50% + var(--pupil-y, 0px)));
-    transition: transform 0.1s ease;
-}
-
-@keyframes brainPulse {
-    0%, 100% { box-shadow: 0 0 5px rgba(255, 105, 180, 0.3); }
-    50% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.8); }
-}
-
-.tech-particles {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.tech-particle {
-    position: absolute;
-    font-size: 20px;
-    transition: all 0.8s ease-in-out;
-    animation: float 2s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
+/* Skills Command Styles - Layout handled by unified panel+sidebar styles below */
 
 .skills-categories {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    gap: 16px;
 }
 
 .skill-category {
@@ -593,7 +495,7 @@ body {
         padding: 15px;
         font-size: 12px;
     }
-    
+}
 
 /* Controles de la consola (skip & clear) */
 .control-btn {
@@ -1069,37 +971,6 @@ body {
 @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
-}
-
-.skills-categories {
-    display: grid;
-    gap: 16px;
-}
-
-.skill-category {
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 12px;
-    border-radius: 6px;
-    background: rgba(0,0,0,0.3);
-}
-
-.category-title {
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.skill-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.skill-badge {
-    padding: 4px 8px;
-    border: 1px solid;
-    border-radius: 4px;
-    font-size: 12px;
-    background: rgba(255,255,255,0.05);
 }
 
 /* PROJECTS Section Styles */
