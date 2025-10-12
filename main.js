@@ -20,6 +20,20 @@ class TerminalApp {
         this.setupEventListeners();
         this.displayWelcome();
         this.registerCommands();
+        this.handleResize();
+    }
+
+    /**
+     * Ajusta la altura del terminal para solucionar el problema de 100vh en móviles
+     */
+    handleResize() {
+        const terminal = document.querySelector('.terminal');
+        const setTerminalHeight = () => {
+            terminal.style.height = `${window.innerHeight}px`;
+        };
+
+        window.addEventListener('resize', setTerminalHeight);
+        setTerminalHeight(); // Set initial height
     }
 
     /**
@@ -69,6 +83,8 @@ class TerminalApp {
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const terminalMenu = document.getElementById('terminal-menu');
         const menuOverlay = document.getElementById('menu-overlay');
+        const closeBtn = document.querySelector('.control-btn.close');
+        const maximizeBtn = document.querySelector('.control-btn.maximize');
 
         const toggleMenu = () => {
             terminalMenu.classList.toggle('active');
@@ -100,6 +116,9 @@ class TerminalApp {
 
         hamburgerBtn.addEventListener('click', toggleMenu);
         menuOverlay.addEventListener('click', toggleMenu);
+
+        closeBtn.addEventListener('click', () => this.executeCommand('exit'));
+        maximizeBtn.addEventListener('click', () => this.executeCommand('clear'));
 
         // Auto-focus en el input
         input.focus();

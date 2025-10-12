@@ -32,8 +32,6 @@ body {
     font-family: 'Courier New', monospace;
     background: var(--terminal-bg);
     color: var(--text-color);
-    height: 100vh;
-    overflow: hidden;
 }
 
 /* ===================================
@@ -42,7 +40,6 @@ body {
 
 .terminal {
     width: 100%;
-    height: 100vh;
     background: var(--terminal-bg);
     border: 2px solid var(--terminal-border);
     display: flex;
@@ -71,6 +68,17 @@ body {
     font-weight: bold;
     font-size: 14px;
     text-align: center;
+}
+
+.terminal-title-mobile {
+    display: none; /* Hidden by default */
+    color: var(--terminal-light-green);
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--terminal-border);
+    margin-bottom: 15px;
 }
 
 .terminal-controls {
@@ -217,6 +225,7 @@ body {
     display: flex;
     align-items: center;
     background: rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
 }
 
 .prompt {
@@ -231,7 +240,7 @@ body {
     border: none;
     color: var(--text-color);
     font-family: inherit;
-    font-size: 14px;
+    font-size: clamp(12px, 2.5vw, 14px);
     outline: none;
     caret-color: var(--cursor-color);
 }
@@ -268,7 +277,9 @@ body {
     }
 
     .terminal-header {
-        grid-template-columns: auto 1fr auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     
     .command-container {
@@ -301,7 +312,7 @@ body {
         width: 250px;
         background: #1a1a1a;
         flex-direction: column;
-        padding-top: 60px;
+        padding-top: 20px;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
         z-index: 1000;
@@ -351,8 +362,11 @@ body {
     }
     
     .terminal-title {
-        font-size: 12px;
-        justify-self: center;
+        display: none;
+    }
+
+    .terminal-title-mobile {
+        display: block;
     }
 }
 
@@ -369,6 +383,18 @@ body {
     .control-btn {
         width: 10px;
         height: 10px;
+    }
+}
+
+@media (max-width: 320px) {
+    .terminal-header {
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 10px;
+    }
+
+    .terminal-title {
+        padding: 5px 0;
     }
 }
 
