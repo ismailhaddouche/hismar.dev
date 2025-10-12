@@ -1,0 +1,68 @@
+/* ESTILOS ESPECÍFICOS DEL COMANDO EDUCATION */
+
+.education-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.education-item {
+    padding: 20px 15px 20px 50px;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    margin-bottom: 15px;
+    background: rgba(0, 255, 65, 0.05);
+    border-radius: 8px;
+}
+
+.education-item:hover {
+    border-left-color: var(--terminal-green);
+    background: rgba(0, 255, 65, 0.1);
+    transform: translateX(5px);
+}
+
+.education-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    fill: var(--terminal-green);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.education-item:hover .education-icon {
+    opacity: 1;
+}
+
+.education-title {
+    font-size: clamp(14px, 2.5vw, 16px);
+    font-weight: bold;
+    color: var(--terminal-light-green);
+    margin-bottom: 5px;
+}
+
+.education-institution {
+    font-size: clamp(12px, 2vw, 14px);
+    color: #c7c7c7;
+    margin-bottom: 8px;
+}
+
+.education-dates {
+    font-size: clamp(10px, 1.8vw, 12px);
+    color: var(--terminal-green);
+    font-weight: bold;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

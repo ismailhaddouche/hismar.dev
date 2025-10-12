@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hismar.dev - Terminal Portfolio v2.0</title>
+    <meta name="description" content="Portfolio interactivo de Hismar - Desarrollador Full Stack">
+    <meta name="keywords" content="portfolio, developer, full stack, javascript, react, node">
+    <meta name="author" content="Hismar - Full Stack Developer">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- CSS Modular -->
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css">
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="header-left">
+                <button class="hamburger-btn" id="hamburger-btn">&#9776;</button>
+                <nav class="terminal-menu" id="terminal-menu">
+                    <a href="#about" class="menu-item">About</a>
+                    <a href="#skills" class="menu-item">Skills</a>
+                    <a href="#projects" class="menu-item">Projects</a>
+                    <a href="#education" class="menu-item">Education</a>
+                    <a href="#help" class="menu-item">Help</a>
+                    <div class="social-links">
+                        <a href="https://github.com/hismar" target="_blank" class="social-link">GitHub</a>
+                        <a href="https://linkedin.com/in/hismar" target="_blank" class="social-link">LinkedIn</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="terminal-title">hismar@portfolio:~$ v2.0</div>
+            <div class="terminal-controls">
+                <button class="control-btn close" title="Cerrar"></button>
+                <button class="control-btn minimize" title="Minimizar"></button>
+                <button class="control-btn maximize" title="Maximizar"></button>
+            </div>
+        </div>
+        
+        <div class="terminal-body">
+            <div class="console-output" id="console-output"></div>
+            
+            <div class="input-line">
+                <span class="prompt">hismar@dev:~$</span>
+                <input type="text" id="command-input" autocomplete="off" spellcheck="false" 
+                       placeholder="Escribe 'help' para comenzar...">
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+
+    <!-- Script Principal Modular -->
+    <script src="main.js"></script>
+</body>
+</html>
