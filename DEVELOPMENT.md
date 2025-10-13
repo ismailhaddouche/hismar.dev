@@ -44,16 +44,21 @@ Raíz del repositorio — archivos clave:
 Ejemplo (simplificado):
 hismar.dev/
 ├── index.html
+
 ├── main.js
+
 ├── styles/
 │   ├── layout.css
 │   └── ...
+
 ├── commands/
 │   ├── about/
 │   │   ├── about.js
 │   │   └── about.css
 │   └── skills/
+
 ├── animations/
+
 ├── validate-v2.sh
 ├── README.md
 └── DEVELOPMENT.md
@@ -102,7 +107,6 @@ Nota: main.js y la estructura modular ya cargan los módulos de `commands/` auto
     - terminal.writeLine(htmlOrText)
     - terminal.clear()
     - terminal.registerAnimation(handle) (opcional, para permitir cancelación)
-  - Todos los timeouts/intervals/animationFrames deben almacenarse y limpiarse cuando el comando termina o cuando se pulsa "skip" o se lanza otro comando.
 
 Buenas prácticas sandbox:
 - No tocar elementos globales fuera del container proporcionado.
