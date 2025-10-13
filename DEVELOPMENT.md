@@ -1,76 +1,193 @@
-# 🚀 hismar.dev - Desarrollo Completado
+# hismar.dev — Guía de desarrollo
 
-## ✅ Implementación Finalizada
+Este documento recoge las decisiones, el flujo de trabajo y las instrucciones para desarrollar, extender y desplegar el proyecto hismar.dev (portfolio terminal). Está pensado para mantener coherencia en la estructura modular, la lógica sandbox y las animaciones pixel-art.
 
-La aplicación **hismar.dev Portfolio Terminal** ha sido completamente implementada siguiendo el orden especificado en el README original.
+---
 
-### 📋 Pasos Completados:
+## Índice
+- Resumen
+- Estructura del proyecto
+- Requisitos
+- Ejecutar en desarrollo
+- Validación y tests locales
+- Arquitectura de comandos y sandbox
+- Añadir un nuevo comando
+- Estilos y animaciones
+- Accesibilidad y responsive
+- Despliegue (producción)
+- Buenas prácticas y contribución
 
-- ✅ **Paso 0**: Creación de estructura de archivos
-- ✅ **Paso 1**: Estructura header + consola  
-- ✅ **Paso 2**: Menú en el header con los comandos
-- ✅ **Paso 3**: Consola con sus dos botones de skip y clear
-- ✅ **Paso 4**: Prompt de consola para introducir comandos
-- ✅ **Paso 5**: Lógica del script sandbox para evitar interferencias
-- ✅ **Paso 6**: Construcción de comandos con contenido y animaciones
-- ✅ **Paso 7**: Formateo y revisión del contenido y animaciones
-- ✅ **Paso 8**: Debug final y validación
+---
 
-### 🎮 Comandos Implementados:
+## Resumen
+hismar.dev es un portfolio personal que simula una terminal interactiva. Está implementado con HTML, CSS y JavaScript (sin frameworks). Ofrece:
+- Interfaz tipo consola con prompt.
+- Menú clicable.
+- Comandos modulares (about, skills, projects, education, help, ...).
+- Animaciones pixel-art y seguimiento del puntero del ratón.
+- Sistema sandbox para aislar la ejecución de animaciones y evitar interferencias.
 
-- **`about`** - Información personal con cara pixel art que sigue el mouse
-- **`skills`** - Cerebro pixel art que absorbe tecnologías con ojos que siguen el mouse
-- **`projects`** - Animación de Tetris con personaje que sigue el mouse
-- **`education`** - Grúa apilando ladrillos con operador que sigue el mouse
-- **`help`** - Sistema de ayuda completo con tips de uso
+---
 
-### 🎨 Características Implementadas:
+## Estructura del proyecto (resumen)
+Raíz del repositorio — archivos clave:
+- index.html — entrada principal del sitio.
+- main.js — script principal que inicializa la consola, el menú y carga módulos.
+- styles/ — CSS modular (layout.css, components, comandos específicos).
+- commands/ — carpetas por comando (ej. commands/about/about.js, about.css).
+- animations/ — animaciones modulares reutilizables.
+- validate-v2.sh / validate.sh — scripts de validación y checks.
+- README.md — documentación pública.
+- DEVELOPMENT.md — este documento.
+- LICENSE — MIT.
 
-- ✅ Simulación auténtica de terminal Linux
-- ✅ Interfaz de línea de comandos funcional
-- ✅ Menú de navegación clicable
-- ✅ Historial de comandos (↑/↓)
-- ✅ Autocompletado con Tab
-- ✅ Botones de control (skip/clear)
-- ✅ Animaciones pixel art interactivas
-- ✅ Seguimiento de mouse en ojos de personajes
-- ✅ Sistema sandbox para evitar interferencias de animación
-- ✅ Diseño completamente responsive
-- ✅ Efectos visuales y transiciones suaves
-- ✅ Accesibilidad mejorada
-
-### 🌐 Uso:
-
-```bash
-# Servidor local
-python3 -m http.server 8080
-
-# Navegador
-http://localhost:8080
-```
-
-### 📁 Estructura Final:
-
-```
+Ejemplo (simplificado):
 hismar.dev/
-├── index.html          # Estructura principal HTML
-├── styles.css          # Estilos completos con animaciones
-├── script.js           # Lógica JavaScript con sistema sandbox
-├── validate.sh         # Script de validación
-├── README.md          # Documentación original
-└── DEVELOPMENT.md     # Este archivo
+├── index.html
+├── main.js
+├── styles/
+│   ├── layout.css
+│   └── ...
+├── commands/
+│   ├── about/
+│   │   ├── about.js
+│   │   └── about.css
+│   └── skills/
+├── animations/
+├── validate-v2.sh
+├── README.md
+└── DEVELOPMENT.md
+
+---
+
+## Requisitos
+- Navegador moderno (Chrome, Firefox, Edge, Safari recientes).
+- Node no es necesario para ejecutar (sitio estático), pero puedes usarlo para herramientas auxiliares.
+- Python (opcional) para servir localmente: python3 -m http.server
+- Bash para ejecutar validate-v2.sh en entornos UNIX-like.
+
+---
+
+## Ejecutar en desarrollo (rápido)
+1. Clona el repositorio:
+   git clone https://github.com/ismailhaddouche/hismar.dev
+2. Abre la carpeta:
+   cd hismar.dev
+3. Servidor estático (opción sencilla):
+   python3 -m http.server 8080
+4. Navega a:
+   http://localhost:8080
+5. Usa el prompt: escribe `help` para ver comandos disponibles.
+
+Nota: main.js y la estructura modular ya cargan los módulos de `commands/` automáticamente; no hay build step.
+
+---
+
+## Validación y tests locales
+- Ejecuta el script de validación para comprobar estructura mínima:
+  ./validate-v2.sh
+- El script revisa la presencia de archivos y directorios críticos (commands/*, animations/*) y lanza un servidor de desarrollo para pruebas.
+- Añade validaciones extras al script según crezcan los módulos (linting, checks de accesibilidad).
+
+---
+
+## Arquitectura de comandos y sandbox
+- Cada comando vive en su propio directorio dentro de `commands/`.
+  - files típicos: commands/<cmd>/<cmd>.js, commands/<cmd>/<cmd>.css
+- main.js importa o carga dinámicamente los módulos de comando y registra una interfaz unificada.
+- Sandbox:
+  - Se ejecutan las animaciones y lógica de cada comando en un ámbito controlado (objetos/container DOM creados por la consola).
+  - La API mínima que un comando debe usar:
+    - terminal.createCommandContainer(name) -> { container, content, sidebar }
+    - terminal.writeLine(htmlOrText)
+    - terminal.clear()
+    - terminal.registerAnimation(handle) (opcional, para permitir cancelación)
+  - Todos los timeouts/intervals/animationFrames deben almacenarse y limpiarse cuando el comando termina o cuando se pulsa "skip" o se lanza otro comando.
+
+Buenas prácticas sandbox:
+- No tocar elementos globales fuera del container proporcionado.
+- Exponer solo methods públicos de la API `terminal`.
+- Devolver una promesa en execute() si la ejecución es asíncrona, y limpiar en finally.
+
+---
+
+## Añadir un nuevo comando (pasos)
+1. Crear carpeta: commands/<nombre>/
+2. Archivo JS: commands/<nombre>/<nombre>.js con estructura:
+   - export default {
+       name: '<nombre>',
+       description: 'Descripción corta',
+       async execute(terminal, animation) { ... }
+     }
+3. Archivo CSS (opcional): commands/<nombre>/<nombre>.css
+4. Registrar: Si el loader es dinámico, colocar la carpeta y el sistema la detectará; si es estático, agregar import en el loader (main.js).
+5. Tests manuales: ejecutar el comando desde el prompt y probar skip/clear y el comportamiento si se lanza repetidamente.
+
+Template mínimo (pseudocódigo):
+```js
+export default {
+  name: 'mi-comando',
+  description: 'Haz X',
+  async execute(terminal, animation) {
+    const { container, content } = terminal.createCommandContainer('mi-comando');
+    // lógica, animaciones, await promesas
+    return; // opcional
+  }
+}
 ```
+---
 
-### 🎯 Todos los Requisitos Cumplidos:
+## Estilos y animaciones
+- CSS modular: preferir archivos por componente/command.
+- Variables CSS globales para tema (colores de texto, color de acento, fondo).
+- Animaciones: colocar en `animations/` funciones JS reutilizables que reciben el container y manejan su propio ciclo de vida (iniciar/parar).
+- Evitar animaciones pesadas que bloqueen el hilo principal; usar CSS transitions y transform donde sea posible.
+- Optimizar assets (SVG inline para logos y badges).
 
-- ✅ Estructura modular limpia y sencilla
-- ✅ Solo JavaScript, CSS y HTML (sin frameworks)
-- ✅ Lógica sandbox para animaciones sin interferencias
-- ✅ Consola retro Linux con tema oscuro
-- ✅ Prompt en parte inferior
-- ✅ Menú en header y botones de control
-- ✅ Todas las animaciones pixel art implementadas
-- ✅ Seguimiento de mouse en todos los personajes
-- ✅ Información personal completa y actualizada
+---
 
-🎉 **Proyecto completamente funcional y listo para producción!**
+## Accesibilidad y responsive
+- Input del prompt debe soportar:
+  - Navegación por historial (flechas ↑/↓).
+  - Autocompletado con Tab.
+  - Labels y atributos ARIA cuando aplique.
+- Contraste: mantener contraste suficiente en el tema oscuro.
+- Mobile: layout responsivo; el menú colapsa a un "hamburger" como ya implementado.
+
+---
+
+## Despliegue (producción)
+- Sitio estático: puede desplegarse en GitHub Pages, Netlify, Vercel u otros hostings estáticos.
+- Para GitHub Pages: push a branch `gh-pages` o usar `main` con Pages desde la carpeta root.
+- Asegúrate de que `index.html` y rutas relativas a CSS/JS funcionen correctamente en el entorno de publicación.
+- Consideraciones:
+  - Habilitar minificación de CSS/JS si se desea (herramientas externas).
+  - Comprobar performance y mobile.
+
+---
+
+## Buenas prácticas y contribución
+- Mantener modularidad: un comando = una carpeta.
+- Documentar cada comando con descripción y parámetros (README local en la carpeta del comando si es necesario).
+- Nombrado consistente: kebab-case para carpetas y archivos de comandos.
+- Tests manuales del flujo: ejecutar `help`, `about`, `skills`, `projects`, `education`.
+- Pull Requests: incluir pasos para reproducir y capturas/GIFs si la PR añade animación.
+
+---
+
+## Checklist antes de merge / publicación
+- [ ] validate-v2.sh pasa sin errores.
+- [ ] No leaks de timeouts/intervals al cambiar comando.
+- [ ] Accesibilidad básica validada.
+- [ ] Assets optimizados (SVGs, icons).
+- [ ] README actualizado con las instrucciones de ejecución y comandos (archivo README.md principal).
+
+---
+
+## Notas finales
+Este fichero debe actualizarse siempre que se:
+- Cambie la API de `terminal`.
+- Se añadan nuevos comandos o animaciones reutilizables.
+- Se modifique el flujo de deployment.
+
+Gracias por mantener la coherencia del proyecto. ¡A seguir construyendo!
