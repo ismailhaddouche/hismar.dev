@@ -21,7 +21,7 @@ hismar.dev — Portfolio personal que simula una terminal de Linux. Interactivo,
   - help — Ayuda y tips de uso.
 - Historial de comandos (flechas ↑/↓).
 - Autocompletado (Tab).
-- Botones de control: skip (hacer instantáneo el tipeo/animación) y clear (limpiar consola).
+- Botones de control: exit (cierre instantáneo de consola/ventana de navegador) y clear (limpiar consola).
 - Lógica sandbox para aislar animaciones y evitar interferencias.
 - Estilo retro / pixel-art, totalmente responsive.
 - Licencia: MIT.
