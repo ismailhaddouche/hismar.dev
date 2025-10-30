@@ -25,18 +25,23 @@ window.animations_education_animation_js = {
         const capColor = '#000000';
         const tasselColor = '#ffd700';
 
-        let pupilX = 1;
-        let pupilY = 1;
+    let pupilX = 1;
+    let pupilY = 1;
+    // objetivos de la pupila para suavizar movimiento (floats)
+    let pupilTargetX = 1;
+    let pupilTargetY = 1;
         let isBlinking = false;
         let idleTimer;
         let isIdle = false;
         let timeToNextBlink = Math.random() * 200 + 100;
         let blinkDuration = 10;
 
-        let eyeTarget = 'mouse'; // 'mouse' o 'cap'
+    let eyeTarget = 'mouse'; // 'mouse' o 'cap' (seguiremos usando 'mouse' por defecto)
 
-        let cap = { x: 18, y: 1, rotation: 0, state: 'onHead', verticalSpeed: 0 };
-        let capAnimationTimer = 200; // Time to next animation
+    // cap.rotation controla la inclinación horizontal del gorro (-2..2)
+    // Para esta versión dejamos el gorro estático y ligeramente inclinado
+    // subimos la coordenada y del gorro para que la parte superior quede visible
+    let cap = { x: 18, y: 2, rotation: -0.6 };
 
         const drawPixel = (x, y, color) => {
             ctx.fillStyle = color;
@@ -65,31 +70,78 @@ window.animations_education_animation_js = {
             if (!isBlinking) {
                 // Ojo izquierdo
                 for (let y = 0; y < 3; y++) for (let x = 0; x < 3; x++) drawPixel(14 + x, 15 + y, eyeBackgroundColor);
-                drawPixel(14 + pupilX, 15 + pupilY, pupilColor);
+                drawPixel(14 + Math.round(pupilX), 15 + Math.round(pupilY), pupilColor);
 
                 // Ojo derecho
                 for (let y = 0; y < 3; y++) for (let x = 0; x < 3; x++) drawPixel(24 + x, 15 + y, eyeBackgroundColor);
-                drawPixel(24 + pupilX, 15 + pupilY, pupilColor);
+                drawPixel(24 + Math.round(pupilX), 15 + Math.round(pupilY), pupilColor);
             }
         };
 
-        const drawCap = (x, y) => {
-            // Gorro más grande
-            for (let i = -6; i < 7; i++) {
-                for (let j = -1; j < 1; j++) {
-                    drawPixel(x + i, y + j, capColor);
+    const drawCap = (x, y, rotation = 0) => {
+            // Dibujamos el gorro aplicando un pequeño sesgado horizontal por fila
+            // rotation: entero -2..2 (negativo = inclina a la izquierda)
+            // Para poder dibujar un contorno blanco, primero recopilamos las
+            // coordenadas de los píxeles del gorro en un Set, dibujamos el
+            // contorno y después rellenamos.
+            const pixels = new Set();
+
+            // Parte superior (plana)
+            for (let j = -1; j < 1; j++) {
+                for (let i = -6; i < 7; i++) {
+                    const rowOffset = Math.round((j + 1) * rotation * 0.6);
+                    const px = x + i + rowOffset;
+                    const py = y + j;
+                    pixels.add(px + ',' + py);
                 }
             }
-            for (let i = -3; i < 4; i++) {
-                for (let j = 1; j < 4; j++) {
-                    drawPixel(x + i, y + j, capColor);
+            // Cuerpo del gorro (más bajo, aplicamos más sesgo)
+            for (let j = 1; j < 4; j++) {
+                for (let i = -3; i < 4; i++) {
+                    const rowOffset = Math.round(j * rotation * 0.9);
+                    const px = x + i + rowOffset;
+                    const py = y + j;
+                    pixels.add(px + ',' + py);
                 }
             }
 
-            // Borla
-            drawPixel(x + 6, y + 1, tasselColor);
-            drawPixel(x + 7, y + 2, tasselColor);
-            drawPixel(x + 7, y + 3, tasselColor);
+            // Borla (añadimos a pixels para que el contorno la incluya)
+            const tassel1 = [x + 6 + Math.round(rotation * 0.6), y + 1];
+            const tassel2 = [x + 7 + Math.round(rotation * 0.8), y + 2];
+            const tassel3 = [x + 7 + Math.round(rotation * 0.8), y + 3];
+            pixels.add(tassel1[0] + ',' + tassel1[1]);
+            pixels.add(tassel2[0] + ',' + tassel2[1]);
+            pixels.add(tassel3[0] + ',' + tassel3[1]);
+
+            // Dibujar contorno blanco donde haya píxel de gorro y vecino vacío
+            // (pase único para contorno más fino)
+            for (const key of pixels) {
+                const [px, py] = key.split(',').map(Number);
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        const nx = px + dx;
+                        const ny = py + dy;
+                        const nkey = nx + ',' + ny;
+                        if (!pixels.has(nkey)) {
+                            // no es parte del gorro: dibujamos contorno blanco
+                            drawPixel(nx, ny, '#ffffff');
+                        }
+                    }
+                }
+            }
+
+            // Rellenar gorro en color principal (sobre el contorno)
+            for (const key of pixels) {
+                const [px, py] = key.split(',').map(Number);
+                // si coincide con la borla, la dibujaremos después en color tassel
+                if ((px === tassel1[0] && py === tassel1[1]) || (px === tassel2[0] && py === tassel2[1]) || (px === tassel3[0] && py === tassel3[1])) continue;
+                drawPixel(px, py, capColor);
+            }
+
+            // Dibujar borla encima
+            drawPixel(tassel1[0], tassel1[1], tasselColor);
+            drawPixel(tassel2[0], tassel2[1], tasselColor);
+            drawPixel(tassel3[0], tassel3[1], tasselColor);
         }
 
         const handleMouseMove = (e) => {
@@ -106,8 +158,9 @@ window.animations_education_animation_js = {
             const eyeCenterY = 16.5 * pixelSize;
 
             const angle = Math.atan2(mouseY - eyeCenterY, mouseX - eyeCenterX);
-            pupilX = Math.round(Math.cos(angle) + 1);
-            pupilY = Math.round(Math.sin(angle) + 1);
+            // Calculamos objetivos de pupila en float para interpolar después
+            pupilTargetX = (Math.cos(angle) + 1);
+            pupilTargetY = (Math.sin(angle) + 1);
         };
 
         const handleKeyPress = () => {
@@ -118,8 +171,8 @@ window.animations_education_animation_js = {
 
         const animate = () => {
             if (isIdle) {
-                pupilX = 1;
-                pupilY = 1;
+                pupilTargetX = 1;
+                pupilTargetY = 1;
 
                 if (isBlinking) {
                     blinkDuration--;
@@ -138,44 +191,15 @@ window.animations_education_animation_js = {
                 isBlinking = false;
             }
 
-            // Cap animation logic
-            capAnimationTimer--;
-            if (capAnimationTimer <= 0 && cap.state === 'onHead') {
-                cap.state = 'lifting';
-                cap.verticalSpeed = -0.01;
-                eyeTarget = 'cap';
-            }
+            // Suavizar movimiento de pupilas interpolando hacia el target
+            pupilX += (pupilTargetX - pupilX) * 0.22;
+            pupilY += (pupilTargetY - pupilY) * 0.22;
 
-            if (cap.state === 'lifting') {
-                cap.y += cap.verticalSpeed;
-                if (cap.y < -0.5) { // Peak height
-                    cap.state = 'landing';
-                    cap.verticalSpeed = 0.01;
-                }
-            } else if (cap.state === 'landing') {
-                cap.y += cap.verticalSpeed;
-                if (cap.y >= 1) {
-                    cap.y = 1;
-                    cap.state = 'onHead';
-                    capAnimationTimer = Math.random() * 300 + 200;
-                    eyeTarget = 'mouse';
-                }
-            }
 
-            // Eye tracking logic
-            if (eyeTarget === 'cap') {
-                const capCenterX = (cap.x + 0.5) * pixelSize;
-                const capCenterY = (cap.y + 0.5) * pixelSize;
-                const eyeCenterX = 15.5 * pixelSize;
-                const eyeCenterY = 16.5 * pixelSize;
-                const angle = Math.atan2(capCenterY - eyeCenterY, capCenterX - eyeCenterX);
-                pupilX = Math.round(Math.cos(angle) + 1);
-                pupilY = Math.round(Math.sin(angle) + 1);
-            }
-
+            // Gorra estática: no animamos la inclinación. Mantener rotación fija.
 
             drawFace();
-            drawCap(cap.x, cap.y);
+            drawCap(cap.x, cap.y, cap.rotation);
             requestAnimationFrame(animate);
         };
 
