@@ -3,70 +3,75 @@
  */
 window.commands_help_help_js = {
     async execute(terminal) {
-        // Crear container del comando
         const { container, content } = terminal.createCommandContainer('help');
-        
 
-        // Crear sección de ayuda
         const helpSection = document.createElement('div');
         helpSection.innerHTML = `
             <h2 class="section-title">Guía de Comandos</h2>
             <div class="help-content">
                 <div class="command-group">
-                    <h3 class="group-title">📋 Comandos de Información</h3>
+                    <h3 class="group-title">📋 Información</h3>
                     <div class="commands-grid">
-                        <div class="command-item">
+                        <div class="command-item" data-cmd="about">
                             <span class="command-name">about</span>
-                            <span class="command-desc">Información personal y contacto</span>
+                            <span class="command-desc">Quién soy, mi historia y contacto</span>
                         </div>
-                        <div class="command-item">
+                        <div class="command-item" data-cmd="skills">
                             <span class="command-name">skills</span>
-                            <span class="command-desc">Habilidades técnicas y stack</span>
+                            <span class="command-desc">Stack tecnológico completo</span>
                         </div>
-                        <div class="command-item">
+                        <div class="command-item" data-cmd="projects">
                             <span class="command-name">projects</span>
-                            <span class="command-desc">Portfolio de proyectos</span>
+                            <span class="command-desc">Proyectos reales (producción + open source)</span>
                         </div>
-                        <div class="command-item">
+                        <div class="command-item" data-cmd="education">
                             <span class="command-name">education</span>
-                            <span class="command-desc">Formación académica</span>
+                            <span class="command-desc">Formación académica (DAM + UNED)</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="command-group">
-                    <h3 class="group-title">⚙️ Comandos del Sistema</h3>
+                    <h3 class="group-title">⚙️ Sistema</h3>
                     <div class="commands-grid">
-                        <div class="command-item">
+                        <div class="command-item" data-cmd="help">
                             <span class="command-name">help</span>
-                            <span class="command-desc">Mostrar esta ayuda</span>
+                            <span class="command-desc">Mostrar esta guía</span>
                         </div>
-                        <div class="command-item">
+                        <div class="command-item" data-cmd="clear">
                             <span class="command-name">clear</span>
                             <span class="command-desc">Limpiar la consola</span>
                         </div>
-                        <div class="command-item">
-                            <span class="command-name">exit</span>
-                            <span class="command-desc">Cerrar el terminal</span>
-                        </div>
                     </div>
                 </div>
-                
+
                 <div class="help-tips">
-                    <h3 class="group-title">💡 Consejos de Uso</h3>
+                    <h3 class="group-title">💡 Tips</h3>
                     <ul class="tips-list">
-                        <li>Presiona <kbd>Enter</kbd> para ejecutar comandos</li>
-                        <li>Presiona <kbd>Escape</kbd> para saltar animaciones de texto</li>
-                        <li>Haz click en las animaciones para interactuar</li>
-                        <li>Usa el mouse para efectos especiales en algunas animaciones</li>
-                        <li>El terminal es completamente responsivo</li>
+                        <li>Haz clic en cualquier comando de arriba para ejecutarlo directamente</li>
+                        <li>Usa <kbd>Tab</kbd> para autocompletar comandos mientras escribes</li>
+                        <li>Navega el historial de comandos con <kbd>↑</kbd> / <kbd>↓</kbd></li>
+                        <li>Presiona <kbd>Esc</kbd> para saltar las animaciones de escritura</li>
+                        <li>Pasa el ratón sobre las animaciones de la derecha — son interactivas</li>
                     </ul>
                 </div>
-                
+
+                <div class="help-footer">
+                    <p>// Hecho con 🧠 y demasiado café en Murcia, España</p>
+                    <p>// Si llegas hasta aquí, ya sabes cómo funciona un terminal. Eso nos hace compañeros.</p>
+                </div>
             </div>
         `;
-        
+
         content.appendChild(helpSection);
+
+        const commandItems = helpSection.querySelectorAll('.command-item[data-cmd]');
+        commandItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const cmd = item.getAttribute('data-cmd');
+                terminal.executeCommand(cmd);
+            });
+        });
 
         terminal.autoScrollConsole(container);
     }

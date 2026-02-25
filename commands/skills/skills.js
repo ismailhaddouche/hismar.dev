@@ -6,28 +6,54 @@ window.commands_skills_skills_js = {
         const { container, content, sidebar } = terminal.createCommandContainer('skills');
 
         const skills = {
-            'Lenguajes': ['Kotlin', 'Python', 'Java', 'C#', 'SQL'],
-            'Bases de datos': ['Sqlite', 'Mysql', 'Postgresql', 'MongoDB', 'Firebase'],
-            'Cloud': ['AWS', 'Terraform', 'CI/CD'],
-            'Control de versiones': ['Git', 'Github']
+            'Lenguajes': ['Kotlin', 'TypeScript', 'JavaScript', 'Java', 'Python', 'C#', 'SQL'],
+            'Mobile': ['Jetpack Compose', 'MVVM', 'Clean Architecture', 'Hilt', 'Retrofit', 'Room'],
+            'Frontend': ['Angular', 'React', 'Next.js', 'HTML5', 'CSS3'],
+            'Backend & APIs': ['Node.js', 'Express', 'REST APIs', 'Socket.io'],
+            'Bases de datos': ['Firebase', 'Firestore', 'MongoDB', 'PostgreSQL', 'MySQL', 'SQLite'],
+            'Cloud & DevOps': ['AWS', 'Google Cloud', 'Docker', 'GitHub Actions', 'Terraform', 'CI/CD'],
+            'Herramientas': ['Git', 'GitHub', 'Android Studio', 'Linux']
         };
 
         const skillIcons = {
             kotlin: 'devicon-kotlin-plain',
-            python: 'devicon-python-plain',
+            typescript: 'devicon-typescript-plain',
+            javascript: 'devicon-javascript-plain',
             java: 'devicon-java-plain',
+            python: 'devicon-python-plain',
             'c#': 'devicon-csharp-plain',
             sql: 'devicon-azuresql-plain',
-            sqlite: 'devicon-sqlite-plain',
-            mysql: 'devicon-mysql-plain',
-            postgresql: 'devicon-postgresql-plain',
-            mongodb: 'devicon-mongodb-plain',
+            'jetpack compose': 'devicon-android-plain',
+            mvvm: '',
+            'clean architecture': '',
+            hilt: '',
+            retrofit: '',
+            room: '',
+            angular: 'devicon-angularjs-plain',
+            react: 'devicon-react-original',
+            'next.js': 'devicon-nextjs-plain',
+            html5: 'devicon-html5-plain',
+            css3: 'devicon-css3-plain',
+            'node.js': 'devicon-nodejs-plain',
+            express: 'devicon-express-original',
+            'rest apis': 'devicon-fastapi-plain',
+            'socket.io': 'devicon-socketio-original',
             firebase: 'devicon-firebase-plain',
+            firestore: 'devicon-firebase-plain',
+            mongodb: 'devicon-mongodb-plain',
+            postgresql: 'devicon-postgresql-plain',
+            mysql: 'devicon-mysql-plain',
+            sqlite: 'devicon-sqlite-plain',
             aws: 'devicon-amazonwebservices-original',
+            'google cloud': 'devicon-googlecloud-plain',
+            docker: 'devicon-docker-plain',
+            'github actions': 'devicon-githubactions-plain',
             terraform: 'devicon-terraform-plain',
             'ci/cd': 'devicon-githubactions-plain',
             git: 'devicon-git-plain',
-            github: 'devicon-github-original'
+            github: 'devicon-github-original',
+            'android studio': 'devicon-androidstudio-plain',
+            linux: 'devicon-linux-plain'
         };
 
         let html = '<h2 class="section-title">Stack Tecnológico</h2>';

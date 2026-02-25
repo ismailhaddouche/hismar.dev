@@ -1,55 +1,69 @@
 /**
- * COMANDO EDUCATION
+ * COMANDO EDUCATION - Formación académica
  */
 window.commands_education_education_js = {
     async execute(terminal, animation) {
         const { container, content, sidebar } = terminal.createCommandContainer('education');
-        
-        
-        
+
         const educationData = [
+            {
+                title: 'Grado en Ingeniería Informática',
+                institution: 'UNED — Universidad Nacional de Educación a Distancia',
+                dates: '2026 — presente',
+                status: 'in-progress',
+                statusLabel: 'EN CURSO',
+                details: 'Formación universitaria en ingeniería del software, algoritmos, arquitectura de computadores y sistemas distribuidos.'
+            },
+            {
+                title: 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)',
+                institution: 'ILERNA Online',
+                dates: '2023 — 2026',
+                status: 'completed',
+                statusLabel: 'COMPLETADO',
+                details: 'Desarrollo móvil (Kotlin/Android), bases de datos, programación orientada a objetos, sistemas informáticos y entornos de desarrollo.'
+            },
             {
                 title: 'Bachillerato',
                 institution: 'IES Ricardo Ortega',
-                dates: '2004/2006'
-            },
-            {
-                title: 'Desarrollo de aplicaciones multiplataforma',
-                institution: 'ILERNA',
-                dates: '2023/2025'
-            },
-            {
-                title: 'Grado en Informática',
-                institution: 'UNED',
-                dates: '2025/presente'
+                dates: '2004 — 2006',
+                status: 'completed',
+                statusLabel: 'COMPLETADO',
+                details: ''
             }
         ];
 
-        const educationList = document.createElement('ul');
+        // Title
+        const title = document.createElement('h2');
+        title.className = 'section-title';
+        title.textContent = 'Formación Académica';
+        content.appendChild(title);
+
+        const educationList = document.createElement('div');
         educationList.className = 'education-list';
 
-        const diplomaIcon = `
-            <svg class="education-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-        `;
+        educationData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = `education-card ${item.status}`;
+            card.style.animationDelay = `${index * 0.15}s`;
 
-        educationData.forEach(item => {
-            const listItem = document.createElement('li');
-            listItem.className = 'education-item';
-            listItem.innerHTML = `
-                ${diplomaIcon}
-                <div class="education-title">${item.title}</div>
+            card.innerHTML = `
+                <div class="education-header">
+                    <span class="education-status ${item.status}">${item.statusLabel}</span>
+                    <span class="education-dates">${item.dates}</span>
+                </div>
+                <h3 class="education-title">${item.title}</h3>
                 <div class="education-institution">${item.institution}</div>
-                <div class="education-dates">${item.dates}</div>
+                ${item.details ? `<p class="education-details">${item.details}</p>` : ''}
             `;
-            educationList.appendChild(listItem);
+            educationList.appendChild(card);
         });
 
         content.appendChild(educationList);
-        
+
         if (animation && animation.init) {
             animation.init(sidebar);
         }
-        
+
         terminal.autoScrollConsole(container);
     }
 };

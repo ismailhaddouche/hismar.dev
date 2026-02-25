@@ -36,6 +36,8 @@
     border-radius: 6px;
     transition: all 0.3s ease;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .command-item:hover {

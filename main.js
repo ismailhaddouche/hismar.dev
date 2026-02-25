@@ -9,7 +9,10 @@ class TerminalApp {
         this.loadedStyles = new Set();
         this.currentCommand = null;
         this.isTyping = false;
-        
+        this.commandHistory = [];
+        this.historyIndex = -1;
+        this.activeAnimationCleanups = [];
+
         this.init();
     }
 
@@ -33,7 +36,7 @@ class TerminalApp {
         };
 
         window.addEventListener('resize', setTerminalHeight);
-        setTerminalHeight(); // Set initial height
+        setTerminalHeight();
     }
 
     /**
@@ -87,20 +90,64 @@ class TerminalApp {
         const maximizeBtn = document.querySelector('.control-btn.maximize');
 
         const toggleMenu = () => {
-            terminalMenu.classList.toggle('active');
+            const isOpen = terminalMenu.classList.toggle('active');
             menuOverlay.classList.toggle('active');
+            hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
         };
 
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !this.isTyping) {
-                this.executeCommand(input.value.trim().toLowerCase());
+                const cmd = input.value.trim().toLowerCase();
+                if (cmd) {
+                    if (this.commandHistory[0] !== cmd) {
+                        this.commandHistory.unshift(cmd);
+                        if (this.commandHistory.length > 50) this.commandHistory.pop();
+                    }
+                    this.historyIndex = -1;
+                }
+                this.executeCommand(cmd);
                 input.value = '';
+                return;
             }
 
-            // Skip typing con Escape
-            if (e.key === 'Escape' && this.isTyping) {
-                this.skipTyping = true;
+            // Navegación del historial con flechas
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (this.historyIndex < this.commandHistory.length - 1) {
+                    this.historyIndex++;
+                    input.value = this.commandHistory[this.historyIndex];
+                    // Mover cursor al final
+                    setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
+                }
+                return;
             }
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    input.value = this.commandHistory[this.historyIndex];
+                } else {
+                    this.historyIndex = -1;
+                    input.value = '';
+                }
+                return;
+            }
+
+            // Autocompletion con Tab
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const partial = input.value.trim().toLowerCase();
+                if (!partial) return;
+                const matches = [...this.commands.keys()].filter(k => k.startsWith(partial));
+                if (matches.length === 1) {
+                    input.value = matches[0];
+                } else if (matches.length > 1) {
+                    this.appendToConsole(`\nComandos: ${matches.join('  ')}`);
+                }
+                return;
+            }
+
         });
 
         menuItems.forEach(item => {
@@ -117,7 +164,7 @@ class TerminalApp {
         hamburgerBtn.addEventListener('click', toggleMenu);
         menuOverlay.addEventListener('click', toggleMenu);
 
-        closeBtn.addEventListener('click', () => this.executeCommand('exit'));
+        closeBtn.addEventListener('click', () => window.location.reload());
         maximizeBtn.addEventListener('click', () => this.executeCommand('clear'));
 
         // Auto-focus en el input
@@ -135,13 +182,41 @@ class TerminalApp {
     displayWelcome() {
         const badge = document.createElement('div');
         badge.className = 'retro-badge';
-        badge.innerHTML = '<span>HismaR Dev</span>';
-        
+        badge.innerHTML = `
+            <span>HismaR Dev</span>
+            <div class="welcome-subtitle">Ismail Haddouche Rhali</div>
+            <div class="welcome-role">Full Stack · Mobile · Cloud · Murcia, España</div>
+        `;
+
         const consoleOutput = document.getElementById('console-output');
         consoleOutput.appendChild(badge);
 
-        const helpText = `Escribe 'help' para ver los comandos disponibles\n\n`;
-        this.appendToConsole(helpText);
+        const welcomeLines = [
+            { text: `// Bienvenido a mi terminal interactivo.`, type: 'comment' },
+            { text: `// Explora quién soy, qué construyo y cómo pienso.`, type: 'comment' },
+            { text: ``, type: 'blank' },
+            { text: `  help       → ver todos los comandos disponibles`, type: 'cmd', cmd: 'help' },
+            { text: `  about      → mi historia y contacto`, type: 'cmd', cmd: 'about' },
+            { text: `  projects   → proyectos reales en producción y open source`, type: 'cmd', cmd: 'projects' },
+            { text: `  skills     → stack tecnológico completo`, type: 'cmd', cmd: 'skills' },
+            { text: `  education  → formación académica`, type: 'cmd', cmd: 'education' },
+            { text: ``, type: 'blank' },
+            { text: `// Tab: autocompletar  ·  ↑↓: historial de comandos`, type: 'comment' },
+            { text: ``, type: 'blank' }
+        ];
+
+        const welcomeOutput = document.getElementById('console-output');
+        welcomeLines.forEach(line => {
+            const pre = document.createElement('pre');
+            pre.textContent = line.text;
+            if (line.type === 'comment') {
+                pre.className = 'welcome-comment';
+            } else if (line.type === 'cmd') {
+                pre.className = 'welcome-cmd';
+                pre.addEventListener('click', () => this.executeCommand(line.cmd));
+            }
+            welcomeOutput.appendChild(pre);
+        });
     }
 
     /**
@@ -152,19 +227,16 @@ class TerminalApp {
 
         this.appendToConsole(`\n$ ${command}`);
 
-        // Comandos built-in
         if (this.handleBuiltInCommands(command)) {
             return;
         }
 
-        // Comandos modulares
         if (this.commands.has(command)) {
             await this.loadAndExecuteCommand(command);
         } else {
-            this.appendToConsole(`Comando no reconocido: ${command}`);
-            this.appendToConsole(`Escribe 'help' para ver comandos disponibles.`);
+            this.appendToConsole(`Comando no reconocido: '${command}'`);
+            this.appendToConsole(`Escribe 'help' para ver los comandos disponibles.`);
         }
-
     }
 
     /**
@@ -173,17 +245,38 @@ class TerminalApp {
     handleBuiltInCommands(command) {
         switch (command) {
             case 'clear':
+                this.cleanupAnimations();
                 document.getElementById('console-output').innerHTML = '';
+                this.currentCommand = null;
                 this.displayWelcome();
                 return true;
-                
+
             case 'exit':
-                this.appendToConsole('Cerrando terminal...');
-                setTimeout(() => window.close(), 1000);
+                this.appendToConsole('Reiniciando terminal...');
+                setTimeout(() => window.location.reload(), 800);
                 return true;
-                
+
             default:
                 return false;
+        }
+    }
+
+    /**
+     * Detiene y limpia todas las animaciones activas
+     */
+    cleanupAnimations() {
+        this.activeAnimationCleanups.forEach(fn => {
+            try { fn(); } catch (e) { /* ignora errores de cleanup */ }
+        });
+        this.activeAnimationCleanups = [];
+    }
+
+    /**
+     * Registra una función de cleanup de animación
+     */
+    registerAnimationCleanup(fn) {
+        if (typeof fn === 'function') {
+            this.activeAnimationCleanups.push(fn);
         }
     }
 
@@ -193,73 +286,77 @@ class TerminalApp {
     async loadAndExecuteCommand(commandName) {
         try {
             const config = this.commands.get(commandName);
-            
-            // Cargar CSS específico
+
             if (config.styles) {
                 await this.loadCSS(config.styles);
             }
 
-            // Cargar script del comando
             const commandModule = await this.loadScript(config.script);
-            
-            // Cargar animación si existe
+
             let animationModule = null;
             if (config.animation) {
                 animationModule = await this.loadScript(config.animation);
             }
 
-            // Ejecutar comando
             if (commandModule && commandModule.execute) {
                 await commandModule.execute(this, animationModule);
                 this.currentCommand = commandName;
+
+                // Registrar cleanup de animaciones que hayan definido _cleanup en el sidebar
+                const sidebar = document.getElementById(`${commandName}-sidebar`);
+                if (sidebar && typeof sidebar._cleanup === 'function') {
+                    this.registerAnimationCleanup(sidebar._cleanup);
+                }
             }
 
         } catch (error) {
             console.error(`Error loading command ${commandName}:`, error);
-            this.appendToConsole(`Error: No se pudo cargar el comando ${commandName}`);
+            this.appendToConsole(`Error: No se pudo cargar el módulo '${commandName}'`);
         }
     }
 
     /**
-     * Carga dinámica de CSS
+     * Carga dinámica de CSS (sin caché busting innecesario)
      */
     loadCSS(path) {
         return new Promise((resolve, reject) => {
-            const cacheBustingPath = `${path}?v=${new Date().getTime()}`;
-
-            const existingLink = document.querySelector(`link[href^="${path}"]`);
-            if (existingLink) {
-                existingLink.remove();
+            // Reusar hoja ya cargada
+            if (this.loadedStyles.has(path)) {
+                resolve();
+                return;
             }
 
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = cacheBustingPath;
-            link.onload = resolve;
-            link.onerror = reject;
+            link.href = path + '?v=1.0.4'; // cache busting
+            link.onload = () => {
+                this.loadedStyles.add(path);
+                resolve();
+            };
+            link.onerror = () => reject(new Error(`Failed to load CSS: ${path}`));
             document.head.appendChild(link);
         });
     }
 
     /**
-     * Carga dinámica de JavaScript
+     * Carga dinámica de JavaScript (reutiliza módulos ya cargados)
      */
     loadScript(path) {
         return new Promise((resolve, reject) => {
-            const cacheBustingPath = `${path}?v=${new Date().getTime()}`;
+            const moduleName = path.replace(/[^a-zA-Z0-9]/g, '_');
 
-            const existingScript = document.querySelector(`script[src^="${path}"]`);
-            if (existingScript) {
-                existingScript.remove();
+            // Si el módulo ya está en memoria, reutilizarlo
+            if (window[moduleName]) {
+                resolve(window[moduleName]);
+                return;
             }
 
             const script = document.createElement('script');
-            script.src = cacheBustingPath;
+            script.src = path + '?v=1.0.4'; // cache busting
             script.onload = () => {
-                const moduleName = path.replace(/[^a-zA-Z0-9]/g, '_');
                 resolve(window[moduleName] || {});
             };
-            script.onerror = reject;
+            script.onerror = () => reject(new Error(`Failed to load script: ${path}`));
             document.head.appendChild(script);
         });
     }
@@ -270,7 +367,7 @@ class TerminalApp {
     async typeText(text, speed = 30) {
         this.isTyping = true;
         this.skipTyping = false;
-        
+
         const consoleOutput = document.getElementById('console-output');
         const textContainer = document.createElement('span');
         consoleOutput.appendChild(textContainer);
@@ -282,11 +379,11 @@ class TerminalApp {
             }
 
             textContainer.textContent = text.slice(0, i + 1);
-            
+            this.autoScrollConsole();
+
             if (text[i] !== ' ') {
                 await this.sleep(speed);
             }
-            
         }
 
         this.isTyping = false;
@@ -308,11 +405,11 @@ class TerminalApp {
      * Auto-scroll del console
      */
     autoScrollConsole(element = null) {
+        const output = document.getElementById('console-output');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-            const console = document.getElementById('console-output');
-            console.scrollTop = console.scrollHeight;
+            output.scrollTop = output.scrollHeight;
         }
     }
 
@@ -330,20 +427,20 @@ class TerminalApp {
         const container = document.createElement('div');
         container.className = 'command-container fade-in';
         container.id = `${commandName}-container`;
-        
+
         const content = document.createElement('div');
         content.className = `command-content ${commandName}-content`;
         content.id = `${commandName}-content`;
-        
+
         const sidebar = document.createElement('div');
         sidebar.className = 'command-sidebar';
         sidebar.id = `${commandName}-sidebar`;
-        
+
         container.appendChild(content);
         container.appendChild(sidebar);
-        
+
         document.getElementById('console-output').appendChild(container);
-        
+
         return { container, content, sidebar };
     }
 }
@@ -351,14 +448,14 @@ class TerminalApp {
 // Utilidades globales para los módulos
 window.TerminalUtils = {
     sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
-    
+
     createElement: (tag, className, content) => {
         const element = document.createElement(tag);
         if (className) element.className = className;
         if (content) element.textContent = content;
         return element;
     },
-    
+
     createList: (items, className = 'content-list') => {
         const ul = document.createElement('ul');
         ul.className = className;

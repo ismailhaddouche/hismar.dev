@@ -1,197 +1,282 @@
 /**
- * ANIMACIÓN DE CARA PIXELADA CON PALABRAS CAYENDO
+ * ANIMACIÓN SKILLS - Mismo personaje del About
+ * + Keywords de skills flotando hacia arriba por detrás
+ * + Pulso neon sutil que responde al ratón
  */
 window.animations_skills_animation_js = {
-    init(container) {
-        this.createPixelatedFace(container);
-    },
-
-    createPixelatedFace(container) {
+    init(container, skills) {
         const canvas = document.createElement('canvas');
-        const size = 200;
-        const pixelSize = 5;
-        canvas.width = size;
-        canvas.height = size;
-        container.innerHTML = ''; // Limpiar contenedor
+        const W = 200, H = 200;
+        canvas.width = W;
+        canvas.height = H;
+        container.innerHTML = '';
         container.appendChild(canvas);
-
         const ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = false;
 
-        const faceColor = '#f0d2a4';
-        const hairColor = '#4a2a0a';
-        const eyeBackgroundColor = '#ffffff';
-        const pupilColor = '#000000';
-        const bumpColor = '#ff0000';
-
-        let pupilX = 1;
-        let pupilY = 1;
-        let isBlinking = false;
-        let idleTimer;
-        let isIdle = false;
-        let timeToNextBlink = Math.random() * 200 + 100;
-        let blinkDuration = 10;
-
-        const words = ["push", "var", "print", "<div>", "align", "merge", "null", "CORS", "regex", "z-index", "TypeError"];
-        let fallingWords = [];
-
-        let bump = { x: -1, y: -1, timer: 0 };
-        let isHit = false;
-        let hitTimer = 0;
-
-        const drawPixel = (x, y, color) => {
-            ctx.fillStyle = color;
-            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        const C = {
+            bg: '#151a22',
+            skin: '#c8906a', skinSh: '#a0683e', skinHi: '#daa07a',
+            hair: '#111', hairDk: '#060606',
+            beard: '#0a0a0a',
+            eyeW: '#f0ede5', iris: '#1a0e05', pupil: '#050303',
+            neon: '#39ff14', neonDk: '#1b8c0b',
+            shirt: '#2c3e50', shirtDk: '#1a252f',
+            mouth: '#5a2e10'
         };
 
-        const drawFace = () => {
-            ctx.clearRect(0, 0, size, size);
+        // Matrix setup
+        const fontSize = 12;
+        const columns = Math.ceil(W / fontSize);
+        const drops = Array.from({ length: columns }, () => Math.random() * -100);
 
-            // Pelo y barba
-            for (let y = 2; y < 8; y++) for (let x = 8; x < 32; x++) drawPixel(x, y, hairColor);
-            for (let y = 25; y < 32; y++) for (let x = 10; x < 30; x++) drawPixel(x, y, hairColor);
-            for (let y = 20; y < 25; y++) {
-                for (let x = 8; x < 12; x++) drawPixel(x, y, hairColor);
-                for (let x = 28; x < 32; x++) drawPixel(x, y, hairColor);
-            }
-            for (let y = 8; y < 25; y++) for (let x = 10; x < 30; x++) drawPixel(x, y, faceColor);
+        let mx = W / 2, my = H / 2, smx = mx, smy = my;
+        let frame = 0, animId = null;
+        let tiltX = 0, tiltY = 0, tVx = 0, tVy = 0;
+        let blink = false, blinkT = 90 + Math.random() * 80, blinkF = 0;
+        let smile = false, smileT = 0;
+        let bursts = [];
 
-            // Chichón
-            if (bump.timer > 0) {
-                drawPixel(bump.x, bump.y, bumpColor);
-                drawPixel(bump.x + 1, bump.y, bumpColor);
-                drawPixel(bump.x, bump.y + 1, bumpColor);
-            }
-
-            if (isHit) {
-                // Ojos cerrados
-                for (let x = 0; x < 3; x++) drawPixel(14 + x, 16, pupilColor);
-                for (let x = 0; x < 3; x++) drawPixel(24 + x, 16, pupilColor);
-
-                // Frente arrugada
-                for (let x = 0; x < 4; x++) drawPixel(16 + x, 10, pupilColor);
-                for (let x = 0; x < 3; x++) drawPixel(22 + x, 11, pupilColor);
-            } else if (!isBlinking) {
-                // Ojos normales
-                for (let y = 0; y < 3; y++) for (let x = 0; x < 3; x++) drawPixel(14 + x, 15 + y, eyeBackgroundColor);
-                drawPixel(14 + pupilX, 15 + pupilY, pupilColor);
-                for (let y = 0; y < 3; y++) for (let x = 0; x < 3; x++) drawPixel(24 + x, 15 + y, eyeBackgroundColor);
-                drawPixel(24 + pupilX, 15 + pupilY, pupilColor);
+        const onMove = (e) => {
+            const r = canvas.getBoundingClientRect();
+            mx = e.clientX - r.left;
+            my = e.clientY - r.top;
+        };
+        const onClick = () => {
+            smile = true; smileT = 100;
+            // Burst matrix digits outward
+            for (let i = 0; i < 20; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const sp = 1 + Math.random() * 3;
+                bursts.push({
+                    x: W / 2, y: 78, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+                    life: 1, dec: 0.01 + Math.random() * 0.015,
+                    char: Math.random() > 0.5 ? '0' : '1'
+                });
             }
         };
 
-        const createWord = () => {
-            const word = {
-                text: words[Math.floor(Math.random() * words.length)],
-                x: Math.random() * (size - 50) + 25,
-                y: -20,
-                speed: Math.random() * 0.5 + 0.2
-            };
-            fallingWords.push(word);
+        // ── DRAW CHARACTER (identical to About) ──
+        const drawCharacter = () => {
+            const cx = W / 2, cy = 80;
+            const ox = tiltX * 0.5, oy = tiltY * 0.3;
+
+            // Glow aura
+            const gl = ctx.createRadialGradient(cx, cy - 5, 10, cx, cy - 5, 90);
+            gl.addColorStop(0, 'rgba(57,255,20,0.07)');
+            gl.addColorStop(1, 'transparent');
+            ctx.fillStyle = gl;
+            ctx.fillRect(0, 0, W, H);
+
+            // Neck
+            ctx.fillStyle = C.skinSh;
+            ctx.fillRect(cx + ox - 9, cy + oy + 32, 18, 16);
+            // Shoulders
+            ctx.beginPath();
+            ctx.moveTo(cx + ox - 52, H + 5);
+            ctx.quadraticCurveTo(cx + ox - 28, cy + 43, cx + ox - 8, cy + 43);
+            ctx.lineTo(cx + ox + 8, cy + 43);
+            ctx.quadraticCurveTo(cx + ox + 28, cy + 43, cx + ox + 52, H + 5);
+            ctx.fillStyle = C.shirt; ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(cx + ox - 10, cy + oy + 40);
+            ctx.lineTo(cx + ox, cy + oy + 48);
+            ctx.lineTo(cx + ox + 10, cy + oy + 40);
+            ctx.fillStyle = C.shirtDk; ctx.fill();
+
+            // Head shadow
+            ctx.beginPath();
+            ctx.ellipse(cx + ox + 2, cy + oy + 3, 34, 40, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fill();
+            // Head
+            ctx.beginPath();
+            ctx.ellipse(cx + ox, cy + oy, 33, 39, 0, 0, Math.PI * 2);
+            ctx.fillStyle = C.skin; ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(cx + ox, cy + oy, 33, 39, 0, 0, Math.PI * 2);
+            const sg = ctx.createLinearGradient(cx + ox - 33, 0, cx + ox + 33, 0);
+            sg.addColorStop(0, 'rgba(160,104,62,0.35)');
+            sg.addColorStop(0.3, 'transparent');
+            sg.addColorStop(0.7, 'transparent');
+            sg.addColorStop(1, 'rgba(160,104,62,0.35)');
+            ctx.fillStyle = sg; ctx.fill();
+
+            // Ears
+            ctx.beginPath(); ctx.ellipse(cx + ox - 33, cy + oy - 2, 5, 8, 0, 0, Math.PI * 2);
+            ctx.fillStyle = C.skinSh; ctx.fill();
+            ctx.beginPath(); ctx.ellipse(cx + ox + 33, cy + oy - 2, 5, 8, 0, 0, Math.PI * 2);
+            ctx.fillStyle = C.skinSh; ctx.fill();
+
+            // Beard
+            ctx.beginPath();
+            ctx.moveTo(cx + ox - 27, cy + oy + 10);
+            ctx.quadraticCurveTo(cx + ox - 30, cy + oy + 27, cx + ox - 12, cy + oy + 36);
+            ctx.quadraticCurveTo(cx + ox, cy + oy + 40, cx + ox + 12, cy + oy + 36);
+            ctx.quadraticCurveTo(cx + ox + 30, cy + oy + 27, cx + ox + 27, cy + oy + 10);
+            ctx.fillStyle = C.beard; ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(cx + ox - 7, cy + oy + 13, 9, 3.5, 0.12, 0, Math.PI);
+            ctx.fillStyle = C.hairDk; ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(cx + ox + 7, cy + oy + 13, 9, 3.5, -0.12, 0, Math.PI);
+            ctx.fillStyle = C.hairDk; ctx.fill();
+
+            // Hair sides
+            ctx.beginPath(); ctx.ellipse(cx + ox - 32, cy + oy - 10, 7, 18, 0.15, 0, Math.PI * 2);
+            ctx.fillStyle = C.hairDk; ctx.fill();
+            ctx.beginPath(); ctx.ellipse(cx + ox + 32, cy + oy - 10, 7, 18, -0.15, 0, Math.PI * 2);
+            ctx.fillStyle = C.hairDk; ctx.fill();
+            // Main hair + curls
+            ctx.beginPath();
+            ctx.ellipse(cx + ox, cy + oy - 27, 36, 20, 0, Math.PI, 0);
+            ctx.fillStyle = C.hair; ctx.fill();
+            [[-19, -43, 10], [-6, -47, 12], [8, -45, 10], [19, -41, 9]].forEach(([dx, dy, r]) => {
+                ctx.beginPath(); ctx.arc(cx + ox + dx, cy + oy + dy, r, 0, Math.PI * 2);
+                ctx.fillStyle = C.hair; ctx.fill();
+            });
+            ctx.beginPath(); ctx.arc(cx + ox - 8, cy + oy - 44, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#1a1a1a'; ctx.fill();
+
+            // Eyes
+            const lex = cx + ox - 12, rex = cx + ox + 12, ey = cy + oy - 5;
+            const dx = smx - cx, dy = smy - cy;
+            const d = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+            const px = (dx / d) * 4, py = (dy / d) * 3;
+
+            if (!blink) {
+                ctx.beginPath(); ctx.ellipse(lex, ey, 7.5, 5.5, 0, 0, Math.PI * 2);
+                ctx.fillStyle = C.eyeW; ctx.fill();
+                ctx.beginPath(); ctx.ellipse(rex, ey, 7.5, 5.5, 0, 0, Math.PI * 2);
+                ctx.fillStyle = C.eyeW; ctx.fill();
+                ctx.beginPath(); ctx.arc(lex + px, ey + py * 0.5, 3.8, 0, Math.PI * 2);
+                ctx.fillStyle = C.iris; ctx.fill();
+                ctx.beginPath(); ctx.arc(rex + px, ey + py * 0.5, 3.8, 0, Math.PI * 2);
+                ctx.fillStyle = C.iris; ctx.fill();
+                ctx.beginPath(); ctx.arc(lex + px, ey + py * 0.5, 2, 0, Math.PI * 2);
+                ctx.fillStyle = C.pupil; ctx.fill();
+                ctx.beginPath(); ctx.arc(rex + px, ey + py * 0.5, 2, 0, Math.PI * 2);
+                ctx.fillStyle = C.pupil; ctx.fill();
+                ctx.beginPath(); ctx.arc(lex + px + 2, ey + py * 0.5 - 1.5, 1.3, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff'; ctx.fill();
+                ctx.beginPath(); ctx.arc(rex + px + 2, ey + py * 0.5 - 1.5, 1.3, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff'; ctx.fill();
+            } else {
+                ctx.strokeStyle = C.hairDk; ctx.lineWidth = 2; ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(lex - 6, ey); ctx.lineTo(lex + 6, ey); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(rex - 6, ey); ctx.lineTo(rex + 6, ey); ctx.stroke();
+            }
+            ctx.strokeStyle = C.hairDk; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(lex - 8, ey - 10); ctx.quadraticCurveTo(lex, ey - 14, lex + 8, ey - 10); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(rex - 8, ey - 10); ctx.quadraticCurveTo(rex, ey - 14, rex + 8, ey - 10); ctx.stroke();
+
+            // Nose
+            ctx.beginPath();
+            ctx.moveTo(cx + ox, cy + oy + 1);
+            ctx.lineTo(cx + ox - 3.5, cy + oy + 9);
+            ctx.quadraticCurveTo(cx + ox, cy + oy + 11, cx + ox + 3.5, cy + oy + 9);
+            ctx.fillStyle = C.skinSh; ctx.fill();
+
+            // Mouth
+            if (smile) {
+                ctx.beginPath();
+                ctx.moveTo(cx + ox - 9, cy + oy + 18);
+                ctx.quadraticCurveTo(cx + ox, cy + oy + 27, cx + ox + 9, cy + oy + 18);
+                ctx.quadraticCurveTo(cx + ox, cy + oy + 21, cx + ox - 9, cy + oy + 18);
+                ctx.fillStyle = C.mouth; ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(cx + ox - 6, cy + oy + 19);
+                ctx.quadraticCurveTo(cx + ox, cy + oy + 23, cx + ox + 6, cy + oy + 19);
+                ctx.lineTo(cx + ox + 6, cy + oy + 20);
+                ctx.quadraticCurveTo(cx + ox, cy + oy + 21, cx + ox - 6, cy + oy + 20);
+                ctx.fillStyle = '#fff'; ctx.fill();
+            } else {
+                ctx.beginPath();
+                ctx.moveTo(cx + ox - 7, cy + oy + 19);
+                ctx.quadraticCurveTo(cx + ox, cy + oy + 23, cx + ox + 7, cy + oy + 19);
+                ctx.strokeStyle = C.mouth; ctx.lineWidth = 1.5; ctx.stroke();
+            }
         };
 
-        const drawWords = () => {
-            ctx.font = "12px 'Press Start 2P', monospace";
-            fallingWords.forEach(word => {
-                ctx.fillStyle = '#888888'; // rockColor
-                ctx.fillText(word.text, word.x, word.y);
+        // ── THEMED EFFECTS: MATRIX RAIN ──
+        const drawMatrix = () => {
+            ctx.font = fontSize + "px 'Courier New', monospace";
+            ctx.textAlign = "center";
+            for (let i = 0; i < drops.length; i++) {
+                const dropY = drops[i];
+                for (let j = 0; j < 8; j++) {
+                    const y = (dropY - j) * fontSize;
+                    if (y < -fontSize || y > H + fontSize) continue;
+                    
+                    // Mezclar 0s, 1s y caracteres especiales aleatoriamente para un efecto más Matrix
+                    let charCode;
+                    const r = Math.random();
+                    if (r < 0.3) charCode = 48; // '0'
+                    else if (r < 0.6) charCode = 49; // '1'
+                    else charCode = 0x30A0 + Math.floor(Math.random() * 96); // Katakana
+
+                    const char = String.fromCharCode(charCode);
+
+                    if (j === 0) {
+                        ctx.fillStyle = '#fff';
+                    } else {
+                        ctx.fillStyle = `rgba(57, 255, 20, ${1 - (j / 8)})`;
+                    }
+                    ctx.fillText(char, i * fontSize + fontSize / 2, y);
+                }
+
+                if (dropY * fontSize > H && Math.random() > 0.95) {
+                    drops[i] = 0;
+                }
+                drops[i] += 0.4;
+            }
+        };
+
+        const drawBursts = () => {
+            bursts = bursts.filter(b => b.life > 0);
+            bursts.forEach(b => {
+                b.x += b.vx; b.y += b.vy;
+                b.vy += 0.04; b.vx *= 0.98;
+                b.life -= b.dec;
+                ctx.save();
+                ctx.globalAlpha = b.life;
+                ctx.fillStyle = Math.random() > 0.5 ? '#fff' : C.neon;
+                ctx.font = "12px 'Courier New', monospace";
+                ctx.textAlign = "center";
+                ctx.fillText(b.char, b.x, b.y);
+                ctx.restore();
             });
         };
 
-        const handleMouseMove = (e) => {
-            isIdle = false;
-            clearTimeout(idleTimer);
-            idleTimer = setTimeout(() => { isIdle = true; }, 3000);
-
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
-            const eyeCenterX = 15.5 * pixelSize;
-            const eyeCenterY = 16.5 * pixelSize;
-
-            const angle = Math.atan2(mouseY - eyeCenterY, mouseX - eyeCenterX);
-            pupilX = Math.round(Math.cos(angle) + 1);
-            pupilY = Math.round(Math.sin(angle) + 1);
-        };
-
-        const handleKeyPress = () => {
-            isIdle = false;
-            clearTimeout(idleTimer);
-            idleTimer = setTimeout(() => { isIdle = true; }, 3000);
-        };
-
+        // ── ANIMATION LOOP ──
         const animate = () => {
-            if (isIdle) {
-                pupilX = 1;
-                pupilY = 1;
-                if (isBlinking) {
-                    blinkDuration--;
-                    if (blinkDuration <= 0) {
-                        isBlinking = false;
-                        timeToNextBlink = Math.random() * 300 + 200;
-                    }
-                } else {
-                    timeToNextBlink--;
-                    if (timeToNextBlink <= 0) {
-                        isBlinking = true;
-                        blinkDuration = 5;
-                    }
-                }
-            } else {
-                isBlinking = false;
-            }
+            frame++;
+            ctx.fillStyle = C.bg;
+            ctx.fillRect(0, 0, W, H);
 
-            // Animación de las palabras
-            if (Math.random() < 0.02 && fallingWords.length < 5) {
-                createWord();
-            }
+            smx += (mx - smx) * 0.07;
+            smy += (my - smy) * 0.07;
+            tVx = (tVx + ((smx - W / 2) * 0.04 - tiltX) * 0.06) * 0.87;
+            tVy = (tVy + ((smy - H / 2) * 0.03 - tiltY) * 0.06) * 0.87;
+            tiltX += tVx; tiltY += tVy;
 
-            fallingWords.forEach((word, index) => {
-                word.y += word.speed;
+            blinkT--;
+            if (blinkT <= 0) { blink = true; blinkF++; if (blinkF > 5) { blink = false; blinkF = 0; blinkT = 70 + Math.random() * 110; if (Math.random() > 0.7) blinkT = 12; } }
+            if (smile) { smileT--; if (smileT <= 0) smile = false; }
 
-                // Collision detection with face
-                if (word.y > 20 && word.y < 40 && word.x > 40 && word.x < 160) {
-                    isHit = true;
-                    hitTimer = 50; // Duración del estado "golpeado"
-                    bump.x = (word.x / pixelSize) - 2;
-                    bump.y = 1;
-                    bump.timer = 100; // Duración del chichón
-                    fallingWords.splice(index, 1);
-                }
+            drawMatrix();    // Matrix background
+            drawCharacter();
+            drawBursts();    // In front
 
-
-                if (word.y > size) {
-                    fallingWords.splice(index, 1);
-                }
-            });
-
-
-            if (hitTimer > 0) {
-                hitTimer--;
-            } else {
-                isHit = false;
-            }
-
-            if (bump.timer > 0) {
-                bump.timer--;
-            }
-
-            drawFace();
-            drawWords();
-            requestAnimationFrame(animate);
+            animId = requestAnimationFrame(animate);
         };
 
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('keydown', handleKeyPress);
-        idleTimer = setTimeout(() => { isIdle = true; }, 3000);
-
-        animate();
+        document.addEventListener('mousemove', onMove);
+        canvas.addEventListener('click', onClick);
+        animId = requestAnimationFrame(animate);
 
         container._cleanup = () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('keydown', handleKeyPress);
-            clearTimeout(idleTimer);
+            if (animId) cancelAnimationFrame(animId);
+            document.removeEventListener('mousemove', onMove);
+            canvas.removeEventListener('click', onClick);
         };
     }
 };
