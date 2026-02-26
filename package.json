@@ -1,0 +1,19 @@
+{
+  "name": "hismar-dev",
+  "version": "2.0.0",
+  "description": "Portfolio interactivo de Ismail Haddouche Rhali",
+  "main": "main.js",
+  "scripts": {
+    "dev": "npx -y http-server -p 8000",
+    "build": "echo 'No build step required'",
+    "start": "npx -y http-server -p 8080"
+  },
+  "keywords": [
+    "portfolio",
+    "terminal",
+    "developer",
+    "fullstack"
+  ],
+  "author": "Ismail Haddouche Rhali",
+  "license": "MIT"
+}

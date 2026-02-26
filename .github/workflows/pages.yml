@@ -1,0 +1,28 @@
+name: Simple CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Simple Validation
+        run: |
+          echo "Starting basic validation for static site..."
+          
+          # Check main files exist
+          if [ ! -f "index.html" ]; then echo "Error: index.html not found"; exit 1; fi
+          if [ ! -f "main.js" ]; then echo "Error: main.js not found"; exit 1; fi
+          if [ ! -d "styles" ]; then echo "Error: styles folder not found"; exit 1; fi
+          
+          # Optional: Add any simple bash test you want here!
+          echo "✅ All static files validated correctly"

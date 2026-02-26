@@ -1,0 +1,9 @@
+node_modules/
+.firebase/
+firebase-debug.log*
+.DS_Store
+.vscode/
+*.sh
+LICENSE
+DEVELOPMENT.md
+README.md

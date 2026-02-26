@@ -1,0 +1,171 @@
+/* ESTILOS ESPECÍFICOS DEL COMANDO HELP */
+
+.help-content {
+    animation: fadeInHelp 0.6s ease-out;
+}
+
+.command-group {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 255, 65, 0.03);
+    border-radius: 8px;
+    border-left: 4px solid var(--terminal-green);
+}
+
+.group-title {
+    color: var(--terminal-light-green);
+    font-size: clamp(14px, 2.5vw, 16px);
+    font-weight: bold;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.commands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.command-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0, 255, 65, 0.08);
+    border: 1px solid rgba(0, 255, 65, 0.2);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.command-item:hover {
+    background: rgba(0, 255, 65, 0.15);
+    border-color: var(--terminal-green);
+    transform: translateX(8px);
+    box-shadow: 0 4px 15px rgba(0, 255, 65, 0.2);
+}
+
+.command-name {
+    color: var(--terminal-light-green);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: clamp(12px, 2vw, 14px);
+    min-width: 80px;
+    background: rgba(0, 255, 65, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-right: 16px;
+}
+
+.command-desc {
+    color: var(--text-color);
+    font-size: clamp(11px, 1.8vw, 13px);
+    line-height: 1.4;
+}
+
+.help-tips {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 255, 65, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+}
+
+.tips-list {
+    list-style: none;
+    margin: 16px 0 0 0;
+    padding: 0;
+}
+
+.tips-list li {
+    color: var(--text-color);
+    font-size: clamp(11px, 1.8vw, 13px);
+    line-height: 1.6;
+    margin: 8px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.tips-list li:before {
+    content: "▸";
+    color: var(--terminal-green);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.tips-list kbd {
+    background: rgba(0, 255, 65, 0.2);
+    color: var(--terminal-light-green);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: clamp(9px, 1.5vw, 11px);
+    font-family: 'Courier New', monospace;
+    border: 1px solid rgba(0, 255, 65, 0.4);
+}
+
+.help-footer {
+    margin-top: 30px;
+    padding: 20px;
+    text-align: center;
+    background: rgba(0, 255, 65, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+.help-footer p {
+    margin: 8px 0;
+    font-size: clamp(10px, 1.8vw, 12px);
+    color: var(--terminal-green);
+    font-weight: bold;
+}
+
+/* Efecto de brillo en comando items */
+.command-item:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.command-item:hover:before {
+    left: 100%;
+}
+
+@keyframes fadeInHelp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .commands-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .command-group {
+        padding: 16px;
+    }
+    
+    .command-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+    }
+    
+    .command-name {
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+}

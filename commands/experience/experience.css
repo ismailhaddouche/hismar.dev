@@ -1,0 +1,128 @@
+/**
+ * ESTILOS COMANDO EXPERIENCE
+ * (Reutiliza la base de education visualmente pero adaptada)
+ */
+
+.experience-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 2px dashed rgba(255, 255, 255, 0.1);
+}
+
+.education-card {
+    background: rgba(15, 15, 25, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+    transition: all 0.3s ease;
+}
+
+.education-card::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 1.5rem;
+    width: 1rem;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-1px);
+}
+
+.education-card::after {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 1.25rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #4ade80; /* Por defecto verde activo */
+    box-shadow: 0 0 10px #4ade80;
+    transform: translateX(1px);
+}
+
+.education-card.past::after {
+    background: #94a3b8; /* Gris para pasado */
+    box-shadow: none;
+}
+
+.education-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.education-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.education-status {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.education-status.current {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.education-status.past {
+    background: rgba(148, 163, 184, 0.1);
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.education-dates {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+}
+
+.education-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.education-institution {
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+}
+
+.education-details {
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+    line-height: 1.5;
+    margin: 0;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
