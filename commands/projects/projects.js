@@ -25,7 +25,7 @@ window.commands_projects_projects_js = {
             {
                 name: 'TimeTutor',
                 description: 'Aplicación Android nativa para gestión integral de clases particulares. Calendario interactivo, seguimiento de asistencia, generación automática de facturas, notificaciones push y sincronización offline. Roles diferenciados para profesores y alumnos.',
-                tech: ['Kotlin', 'Jetpack Compose', 'Clean Architecture', 'MVVM', 'Firebase', 'Cloud Functions'],
+                tech: ['Kotlin', 'Jetpack Compose', 'Clean Architecture', 'MVVM', 'Firebase', 'Firebase Functions'],
                 link: 'https://github.com/ismailhaddouche/timetutor',
                 linkLabel: 'GitHub',
                 badge: 'ANDROID'
@@ -57,7 +57,7 @@ window.commands_projects_projects_js = {
             'jetpack compose': 'devicon-android-plain',
             'clean architecture': '',
             'mvvm': '',
-            'cloud functions': 'devicon-firebase-plain',
+            'firebase functions': 'devicon-firebase-plain',
             'retrofit': '',
             'room': '',
             'hilt': '',

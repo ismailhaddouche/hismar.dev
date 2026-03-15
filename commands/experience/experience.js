@@ -12,7 +12,7 @@ window.commands_experience_experience_js = {
                 dates: 'Oct 2025 — Actualidad',
                 status: 'current',
                 statusLabel: 'ACTUAL',
-                details: 'Liderazgo de la transformación digital: implantación de ERP Odoo, desarrollo de portal web corporativo (Next.js, Firebase) e integración de sistemas. Administración de servidores Linux y Windows Server. Infraestructura cloud con GCP, Docker, pipelines CI/CD y configuración de redes y seguridad.'
+                details: 'Liderazgo de la transformación digital: implantación de ERP Odoo, desarrollo de portal web corporativo (Next.js, Firebase) e integración de sistemas. Administración de servidores Linux y Windows Server. Infraestructura en GCP, Docker, pipelines CI/CD y configuración de redes y seguridad orientadas a fullstack y mobile.'
             },
             {
                 role: 'CEO & Fundador',
@@ -28,7 +28,7 @@ window.commands_experience_experience_js = {
                 dates: 'Oct 2012 — Ago 2015',
                 status: 'past',
                 statusLabel: 'COMPLETADO',
-                details: 'Gestión de operaciones logísticas internacionales, coordinación con proveedores y optimización de rutas mediante análisis de datos.'
+                details: 'Gestión de operaciones logísticas internacionales, coordinación con proveedores y optimización de rutas.'
             }
         ];
 

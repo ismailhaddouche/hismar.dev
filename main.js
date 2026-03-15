@@ -190,7 +190,7 @@ class TerminalApp {
         badge.innerHTML = `
             <span>HismaR Dev</span>
             <div class="welcome-subtitle">Ismail Haddouche Rhali</div>
-            <div class="welcome-role">Full Stack · Mobile · Cloud · Murcia, España</div>
+            <div class="welcome-role">Fullstack · Mobile · Murcia, España</div>
         `;
 
         const consoleOutput = document.getElementById('console-output');

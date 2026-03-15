@@ -39,11 +39,6 @@ window.commands_about_about_js = {
                         <span class="detail-label">Rol</span>
                         <span class="detail-value">Full Stack · Mobile Dev</span>
                     </div>
-                    <div class="about-detail-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-                        <span class="detail-label">Formación</span>
-                        <span class="detail-value">T.S. DAM + Ing. Informática UNED</span>
-                    </div>
                 </div>
 
                 <h3 class="about-subtitle">Mi historia</h3>
@@ -51,25 +46,33 @@ window.commands_about_about_js = {
                     No empecé por aquí. Tomé un camino largo antes de encontrar lo que de verdad me apasionaba. Tras años trabajando en otros sectores, decidí apostarlo todo por la programación: DAM en ILERNA mientras construía proyectos reales en paralelo. Hoy tengo una tienda online en producción, una plataforma de hostelería open-source y dos apps Android publicadas en GitHub. Ahora cursando Ingeniería Informática en la UNED para seguir profundizando.
                 </p>
                 <p class="about-text">
-                    Me muevo cómodo entre el backend, el mobile y el cloud. Me gusta que las cosas funcionen en producción, no solo en localhost.
+                    Me muevo cómodo entre el fullstack y el mobile. Me gusta que las cosas funcionen en producción, no solo en localhost.
                 </p>
 
                 <h3 class="about-subtitle">Lo que me diferencia</h3>
                 <ul class="about-traits">
                     <li>
-                        <span class="trait-icon">⚡</span>
+                        <span class="trait-icon" aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"></path></svg>
+                        </span>
                         <span><strong>Proyecto real en producción</strong> — elparedes.es con pasarela de pago Redsys, integración con ERP y tráfico real.</span>
                     </li>
                     <li>
-                        <span class="trait-icon">📐</span>
+                        <span class="trait-icon" aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 18 18"></path><path d="M9 9h6v6H9z"></path><path d="M3 3h6v6H3z"></path><path d="M15 15h6v6h-6z"></path></svg>
+                        </span>
                         <span><strong>Arquitectura limpia</strong> — Clean Architecture, MVVM y patrones sólidos en todos mis proyectos Android.</span>
                     </li>
                     <li>
-                        <span class="trait-icon">🛠️</span>
+                        <span class="trait-icon" aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3 3"></path><path d="M12 8l-6.5 6.5A2.121 2.121 0 0 0 5 16.914V19h2.086a2.121 2.121 0 0 0 2.414-.5L16 12"></path><path d="m16 12 2.5-2.5a3.536 3.536 0 0 0-5-5L11 4l3 3"></path></svg>
+                        </span>
                         <span><strong>Full-cycle developer</strong> — diseño, desarrollo, despliegue y mantenimiento. Sin depender de nadie para hacer llegar código a producción.</span>
                     </li>
                     <li>
-                        <span class="trait-icon">🎯</span>
+                        <span class="trait-icon" aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle><path d="M22 2 12 12"></path><path d="m16 6 6 0 0 6"></path></svg>
+                        </span>
                         <span><strong>Foco en el producto</strong> — el código es el medio, no el fin. Construyo cosas que la gente usa.</span>
                     </li>
                 </ul>
