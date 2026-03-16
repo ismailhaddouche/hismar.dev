@@ -57,11 +57,8 @@ window.commands_skills_skills_js = {
         };
 
         const buildIconMarkup = (iconDef) => {
-            if (!iconDef) {
-                iconDef = 'lucide-circle';
-            }
-
-            return `<i class="${iconDef} skill-icon" aria-hidden="true"></i>`;
+            const iconName = iconDef || 'lucide-circle';
+            return `<i class="lucide ${iconName} skill-icon" aria-hidden="true"></i>`;
         };
 
         let html = '<h2 class="section-title">Stack Tecnológico</h2>';
