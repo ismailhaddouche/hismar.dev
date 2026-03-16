@@ -99,6 +99,16 @@
             </div>
         </div>
 
+        <div class="terminal-nav" id="terminal-nav">
+            <div class="mode-toggle" role="group" aria-label="Interaction mode">
+                <button class="toggle-btn active" data-mode="gui" aria-pressed="true">GUI Mode</button>
+                <button class="toggle-btn" data-mode="cli" aria-pressed="false">CLI Mode</button>
+            </div>
+            <div class="command-tabs" id="command-tabs" role="tablist" aria-label="Quick commands">
+                <!-- Tabs rendered via main.js -->
+            </div>
+        </div>
+
         <div class="terminal-body">
             <div class="console-output" id="console-output"></div>
 

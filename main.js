@@ -3,6 +3,72 @@
  * Handles dynamic command loading and dependencies
  */
 
+const COMMAND_DEFINITIONS = [
+    {
+        name: 'about',
+        label: 'About',
+        description: 'Biography & contact',
+        script: 'commands/about/about.js',
+        styles: 'commands/about/about.css',
+        animation: 'animations/face-animation.js',
+        showInNav: true
+    },
+    {
+        name: 'experience',
+        label: 'Experience',
+        description: 'Professional journey',
+        script: 'commands/experience/experience.js',
+        styles: 'commands/experience/experience.css',
+        animation: 'animations/experience-animation.js',
+        showInNav: true
+    },
+    {
+        name: 'skills',
+        label: 'Skills',
+        description: 'Tech stack overview',
+        script: 'commands/skills/skills.js',
+        styles: 'commands/skills/skills.css',
+        animation: 'animations/skills-animation.js',
+        showInNav: true
+    },
+    {
+        name: 'projects',
+        label: 'Projects',
+        description: 'Production & OSS',
+        script: 'commands/projects/projects.js',
+        styles: 'commands/projects/projects.css',
+        animation: 'animations/projects-animation.js',
+        showInNav: true
+    },
+    {
+        name: 'education',
+        label: 'Education',
+        description: 'Academic path',
+        script: 'commands/education/education.js',
+        styles: 'commands/education/education.css',
+        animation: 'animations/education-animation.js',
+        showInNav: true
+    },
+    {
+        name: 'cv',
+        label: 'CV',
+        description: 'Download résumé',
+        script: 'commands/cv/cv.js',
+        styles: 'commands/cv/cv.css',
+        showInNav: true
+    },
+    {
+        name: 'help',
+        label: 'Help',
+        description: 'All commands',
+        script: 'commands/help/help.js',
+        styles: 'commands/help/help.css',
+        showInNav: true
+    },
+    { name: 'clear', builtIn: true, showInNav: false },
+    { name: 'exit', builtIn: true, showInNav: false }
+];
+
 class TerminalApp {
     constructor() {
         this.commands = new Map();
@@ -12,7 +78,10 @@ class TerminalApp {
         this.commandHistory = [];
         this.historyIndex = -1;
         this.activeAnimationCleanups = [];
+        this.mode = 'gui';
+        this.navTabs = [];
         this.dom = this.cacheDomElements();
+        document.body.classList.add('mode-gui');
 
         this.init();
     }
@@ -24,6 +93,8 @@ class TerminalApp {
         this.setupEventListeners();
         this.displayWelcome();
         this.registerCommands();
+        this.renderCommandTabs();
+        this.setupModeToggle();
         this.handleResize();
     }
 
@@ -37,7 +108,9 @@ class TerminalApp {
             terminalMenu: document.getElementById('terminal-menu'),
             menuOverlay: document.getElementById('menu-overlay'),
             closeBtn: document.querySelector('.control-btn.close'),
-            maximizeBtn: document.querySelector('.control-btn.maximize')
+            maximizeBtn: document.querySelector('.control-btn.maximize'),
+            modeToggleButtons: document.querySelectorAll('.mode-toggle .toggle-btn'),
+            commandTabsContainer: document.getElementById('command-tabs')
         };
     }
 
@@ -59,46 +132,13 @@ class TerminalApp {
      * Register available commands
      */
     registerCommands() {
-        const availableCommands = {
-            'about': {
-                script: 'commands/about/about.js',
-                styles: 'commands/about/about.css',
-                animation: 'animations/face-animation.js'
-            },
-            'skills': {
-                script: 'commands/skills/skills.js',
-                styles: 'commands/skills/skills.css',
-                animation: 'animations/skills-animation.js'
-            },
-            'projects': {
-                script: 'commands/projects/projects.js',
-                styles: 'commands/projects/projects.css',
-                animation: 'animations/projects-animation.js'
-            },
-            'education': {
-                script: 'commands/education/education.js',
-                styles: 'commands/education/education.css',
-                animation: 'animations/education-animation.js'
-            },
-            'experience': {
-                script: 'commands/experience/experience.js',
-                styles: 'commands/experience/experience.css',
-                animation: 'animations/experience-animation.js'
-            },
-            'cv': {
-                script: 'commands/cv/cv.js',
-                styles: 'commands/cv/cv.css'
-            },
-            'help': {
-                script: 'commands/help/help.js',
-                styles: 'commands/help/help.css'
-            },
-            'clear': { built_in: true },
-            'exit': { built_in: true }
-        };
-
-        Object.entries(availableCommands).forEach(([name, config]) => {
-            this.commands.set(name, config);
+        COMMAND_DEFINITIONS.forEach(def => {
+            this.commands.set(def.name, {
+                script: def.script,
+                styles: def.styles,
+                animation: def.animation,
+                built_in: def.builtIn
+            });
         });
     }
 
@@ -283,8 +323,10 @@ class TerminalApp {
         }
 
         if (this.commands.has(command)) {
+            this.setActiveTab(command);
             await this.loadAndExecuteCommand(command);
         } else {
+            this.setActiveTab(null);
             this.appendToConsole(`Unrecognized command: '${command}'`);
             this.appendToConsole(`Type 'help' to list the available commands.`);
         }
@@ -414,6 +456,90 @@ class TerminalApp {
             script.onerror = () => reject(new Error(`Failed to load script: ${path}`));
             document.head.appendChild(script);
         });
+    }
+
+    renderCommandTabs() {
+        const { commandTabsContainer } = this.dom;
+        if (!commandTabsContainer) return;
+
+        commandTabsContainer.innerHTML = '';
+        this.navTabs = [];
+
+        const navDefinitions = COMMAND_DEFINITIONS.filter(def => !def.builtIn && def.showInNav !== false);
+        navDefinitions.forEach(def => {
+            const tab = document.createElement('button');
+            tab.className = 'command-tab';
+            tab.dataset.command = def.name;
+            tab.setAttribute('role', 'tab');
+            tab.setAttribute('aria-selected', 'false');
+            tab.innerHTML = `
+                <span class="command-tab-title">/${def.name}</span>
+                <span class="command-tab-desc">${def.description || ''}</span>
+            `;
+            tab.addEventListener('click', () => {
+                if (this.mode === 'cli') {
+                    this.setMode('gui');
+                }
+                this.executeCommand(def.name);
+            });
+            commandTabsContainer.appendChild(tab);
+            this.navTabs.push(tab);
+        });
+    }
+
+    setActiveTab(commandName) {
+        if (!this.navTabs.length) return;
+        this.navTabs.forEach(tab => {
+            const isActive = !!commandName && tab.dataset.command === commandName;
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-selected', String(isActive));
+        });
+    }
+
+    setupModeToggle() {
+        const { modeToggleButtons, input } = this.dom;
+        if (!modeToggleButtons || !modeToggleButtons.length) return;
+
+        modeToggleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.mode;
+                this.setMode(mode);
+            });
+        });
+
+        // Initialize states
+        this.applyModeState();
+        if (input) input.placeholder = "Click a card or type 'help' to begin...";
+    }
+
+    setMode(mode) {
+        if (mode !== 'cli' && mode !== 'gui') return;
+        if (this.mode === mode) return;
+        this.mode = mode;
+        this.applyModeState();
+    }
+
+    applyModeState() {
+        const { modeToggleButtons, input } = this.dom;
+        document.body.classList.toggle('mode-cli', this.mode === 'cli');
+        document.body.classList.toggle('mode-gui', this.mode === 'gui');
+
+        if (modeToggleButtons && modeToggleButtons.length) {
+            modeToggleButtons.forEach(btn => {
+                const isActive = btn.dataset.mode === this.mode;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', String(isActive));
+            });
+        }
+
+        if (input) {
+            if (this.mode === 'cli') {
+                input.placeholder = "Type a command (e.g. 'help')";
+                input.focus();
+            } else {
+                input.placeholder = "Click a card or type 'help' to begin...";
+            }
+        }
     }
 
     /**
