@@ -78,10 +78,7 @@ class TerminalApp {
         this.commandHistory = [];
         this.historyIndex = -1;
         this.activeAnimationCleanups = [];
-        this.mode = 'gui';
-        this.navTabs = [];
         this.dom = this.cacheDomElements();
-        document.body.classList.add('mode-gui');
 
         this.init();
     }
@@ -93,8 +90,6 @@ class TerminalApp {
         this.setupEventListeners();
         this.displayWelcome();
         this.registerCommands();
-        this.renderCommandTabs();
-        this.setupModeToggle();
         this.handleResize();
     }
 
@@ -104,13 +99,8 @@ class TerminalApp {
             consoleOutput: document.getElementById('console-output'),
             input: document.getElementById('command-input'),
             menuItems: document.querySelectorAll('.menu-item'),
-            hamburgerBtn: document.getElementById('hamburger-btn'),
-            terminalMenu: document.getElementById('terminal-menu'),
-            menuOverlay: document.getElementById('menu-overlay'),
             closeBtn: document.querySelector('.control-btn.close'),
-            maximizeBtn: document.querySelector('.control-btn.maximize'),
-            modeToggleButtons: document.querySelectorAll('.mode-toggle .toggle-btn'),
-            commandTabsContainer: document.getElementById('command-tabs')
+            maximizeBtn: document.querySelector('.control-btn.maximize')
         };
     }
 
@@ -149,21 +139,11 @@ class TerminalApp {
         const {
             input,
             menuItems,
-            hamburgerBtn,
-            terminalMenu,
-            menuOverlay,
             closeBtn,
             maximizeBtn
         } = this.dom;
 
         if (!input) return;
-
-        const toggleMenu = () => {
-            if (!terminalMenu || !menuOverlay || !hamburgerBtn) return;
-            const isOpen = terminalMenu.classList.toggle('active');
-            menuOverlay.classList.toggle('active');
-            hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
-        };
 
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !this.isTyping) {
@@ -223,20 +203,10 @@ class TerminalApp {
         menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                const command = item.getAttribute('href').substring(1);
+                const command = item.dataset.command || item.getAttribute('href').substring(1);
                 this.executeCommand(command);
-                if (terminalMenu && terminalMenu.classList.contains('active')) {
-                    toggleMenu();
-                }
             });
         });
-
-        if (hamburgerBtn) {
-            hamburgerBtn.addEventListener('click', toggleMenu);
-        }
-        if (menuOverlay) {
-            menuOverlay.addEventListener('click', toggleMenu);
-        }
 
         if (closeBtn) {
             closeBtn.addEventListener('click', () => window.location.reload());
@@ -250,9 +220,6 @@ class TerminalApp {
             if (e.key === 'Escape') {
                 if (this.isTyping) {
                     this.skipTyping = true;
-                }
-                if (terminalMenu && terminalMenu.classList.contains('active')) {
-                    toggleMenu();
                 }
             }
         });
@@ -323,10 +290,10 @@ class TerminalApp {
         }
 
         if (this.commands.has(command)) {
-            this.setActiveTab(command);
+            this.setActiveMenuItem(command);
             await this.loadAndExecuteCommand(command);
         } else {
-            this.setActiveTab(null);
+            this.setActiveMenuItem(null);
             this.appendToConsole(`Unrecognized command: '${command}'`);
             this.appendToConsole(`Type 'help' to list the available commands.`);
         }
@@ -458,88 +425,14 @@ class TerminalApp {
         });
     }
 
-    renderCommandTabs() {
-        const { commandTabsContainer } = this.dom;
-        if (!commandTabsContainer) return;
-
-        commandTabsContainer.innerHTML = '';
-        this.navTabs = [];
-
-        const navDefinitions = COMMAND_DEFINITIONS.filter(def => !def.builtIn && def.showInNav !== false);
-        navDefinitions.forEach(def => {
-            const tab = document.createElement('button');
-            tab.className = 'command-tab';
-            tab.dataset.command = def.name;
-            tab.setAttribute('role', 'tab');
-            tab.setAttribute('aria-selected', 'false');
-            tab.innerHTML = `
-                <span class="command-tab-title">/${def.name}</span>
-                <span class="command-tab-desc">${def.description || ''}</span>
-            `;
-            tab.addEventListener('click', () => {
-                if (this.mode === 'cli') {
-                    this.setMode('gui');
-                }
-                this.executeCommand(def.name);
-            });
-            commandTabsContainer.appendChild(tab);
-            this.navTabs.push(tab);
+    setActiveMenuItem(commandName) {
+        const { menuItems } = this.dom;
+        if (!menuItems || !menuItems.length) return;
+        menuItems.forEach(item => {
+            const cmd = item.dataset.command || item.getAttribute('href').substring(1);
+            const isActive = !!commandName && cmd === commandName;
+            item.classList.toggle('active', isActive);
         });
-    }
-
-    setActiveTab(commandName) {
-        if (!this.navTabs.length) return;
-        this.navTabs.forEach(tab => {
-            const isActive = !!commandName && tab.dataset.command === commandName;
-            tab.classList.toggle('active', isActive);
-            tab.setAttribute('aria-selected', String(isActive));
-        });
-    }
-
-    setupModeToggle() {
-        const { modeToggleButtons, input } = this.dom;
-        if (!modeToggleButtons || !modeToggleButtons.length) return;
-
-        modeToggleButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const mode = btn.dataset.mode;
-                this.setMode(mode);
-            });
-        });
-
-        // Initialize states
-        this.applyModeState();
-        if (input) input.placeholder = "Click a card or type 'help' to begin...";
-    }
-
-    setMode(mode) {
-        if (mode !== 'cli' && mode !== 'gui') return;
-        if (this.mode === mode) return;
-        this.mode = mode;
-        this.applyModeState();
-    }
-
-    applyModeState() {
-        const { modeToggleButtons, input } = this.dom;
-        document.body.classList.toggle('mode-cli', this.mode === 'cli');
-        document.body.classList.toggle('mode-gui', this.mode === 'gui');
-
-        if (modeToggleButtons && modeToggleButtons.length) {
-            modeToggleButtons.forEach(btn => {
-                const isActive = btn.dataset.mode === this.mode;
-                btn.classList.toggle('active', isActive);
-                btn.setAttribute('aria-pressed', String(isActive));
-            });
-        }
-
-        if (input) {
-            if (this.mode === 'cli') {
-                input.placeholder = "Type a command (e.g. 'help')";
-                input.focus();
-            } else {
-                input.placeholder = "Click a card or type 'help' to begin...";
-            }
-        }
     }
 
     /**

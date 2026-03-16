@@ -38,30 +38,18 @@
 <body>
     <div class="terminal">
         <div class="terminal-header">
-            <div class="header-left">
-                <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu" aria-expanded="false"
-                    aria-controls="terminal-menu">&#9776;</button>
-                <nav class="terminal-menu" id="terminal-menu">
-                    <div class="terminal-title-mobile"></div>
-                    <span class="menu-title">Available commands</span>
-                    <ul class="menu-list">
-                        <li><a href="#about" class="menu-item">about — biography</a></li>
-                        <li><a href="#experience" class="menu-item">experience — journey</a></li>
-                        <li><a href="#skills" class="menu-item">skills — stack</a></li>
-                        <li><a href="#projects" class="menu-item">projects — work</a></li>
-                        <li><a href="#education" class="menu-item">education — academics</a></li>
-                        <li><a href="#help" class="menu-item">help — commands</a></li>
-                    </ul>
-                    <div class="social-links">
-                        <a href="https://github.com/ismailhaddouche" target="_blank" rel="noopener noreferrer"
-                            class="social-link">GitHub</a>
-                        <a href="https://www.linkedin.com/in/ismail-haddouche-rhali-194305334" target="_blank"
-                            rel="noopener noreferrer" class="social-link">LinkedIn</a>
-                        <a href="mailto:ismailhaddoucherhali@gmail.com" class="social-link">Email</a>
-                    </div>
-                </nav>
+            <div class="header-brand">
+                <span class="terminal-title">hismar.dev</span>
             </div>
-            <div class="terminal-title"></div>
+            <nav class="header-menu" aria-label="Primary">
+                <a href="#about" class="menu-item" data-command="about">/about</a>
+                <a href="#experience" class="menu-item" data-command="experience">/experience</a>
+                <a href="#skills" class="menu-item" data-command="skills">/skills</a>
+                <a href="#projects" class="menu-item" data-command="projects">/projects</a>
+                <a href="#education" class="menu-item" data-command="education">/education</a>
+                <a href="#cv" class="menu-item" data-command="cv">/cv</a>
+                <a href="#help" class="menu-item" data-command="help">/help</a>
+            </nav>
             <div class="header-right">
                 <div class="desktop-social-links">
                     <a href="https://github.com/ismailhaddouche" target="_blank" rel="noopener noreferrer"
@@ -99,16 +87,6 @@
             </div>
         </div>
 
-        <div class="terminal-nav" id="terminal-nav">
-            <div class="mode-toggle" role="group" aria-label="Interaction mode">
-                <button class="toggle-btn active" data-mode="gui" aria-pressed="true">GUI Mode</button>
-                <button class="toggle-btn" data-mode="cli" aria-pressed="false">CLI Mode</button>
-            </div>
-            <div class="command-tabs" id="command-tabs" role="tablist" aria-label="Quick commands">
-                <!-- Tabs rendered via main.js -->
-            </div>
-        </div>
-
         <div class="terminal-body">
             <div class="console-output" id="console-output"></div>
 
@@ -120,8 +98,6 @@
             </div>
         </div>
     </div>
-
-    <div class="menu-overlay" id="menu-overlay"></div>
 
     <!-- Base compartida de animaciones -->
     <script src="animations/character-base.js?v=1.0.5"></script>
