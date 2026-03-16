@@ -1,4 +1,4 @@
-/* ESTILOS ESPECÍFICOS DEL COMANDO HELP */
+/* HELP COMMAND SPECIFIC STYLES */
 
 .help-content {
     animation: fadeInHelp 0.6s ease-out;
@@ -122,7 +122,8 @@
     font-weight: bold;
 }
 
-/* Efecto de brillo en comando items */
+/* Glow effect on command items */
+
 .command-item:before {
     content: '';
     position: absolute;

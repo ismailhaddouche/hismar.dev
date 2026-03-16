@@ -1,6 +1,6 @@
 /**
- * TERMINAL PRINCIPAL - ORQUESTADOR MODULAR
- * Gestiona la carga dinámica de comandos y sus dependencias
+ * MAIN TERMINAL - MODULAR ORCHESTRATOR
+ * Handles dynamic command loading and dependencies
  */
 
 class TerminalApp {
@@ -18,7 +18,7 @@ class TerminalApp {
     }
 
     /**
-     * Inicialización del terminal
+     * Terminal initialization
      */
     init() {
         this.setupEventListeners();
@@ -42,7 +42,7 @@ class TerminalApp {
     }
 
     /**
-     * Ajusta la altura del terminal para solucionar el problema de 100vh en móviles
+     * Adjust terminal height to work around the 100vh mobile issue
      */
     handleResize() {
         const { terminal } = this.dom;
@@ -56,7 +56,7 @@ class TerminalApp {
     }
 
     /**
-     * Registro de comandos disponibles
+     * Register available commands
      */
     registerCommands() {
         const availableCommands = {
@@ -140,7 +140,7 @@ class TerminalApp {
                 return;
             }
 
-            // Navegación del historial con flechas
+            // History navigation with arrows
             if (e.key === 'ArrowUp') {
                 e.preventDefault();
                 if (this.historyIndex < this.commandHistory.length - 1) {
@@ -164,7 +164,7 @@ class TerminalApp {
                 return;
             }
 
-            // Autocompletion con Tab
+            // Autocomplete with Tab
             if (e.key === 'Tab') {
                 e.preventDefault();
                 const partial = input.value.trim().toLowerCase();
@@ -173,7 +173,7 @@ class TerminalApp {
                 if (matches.length === 1) {
                     input.value = matches[0];
                 } else if (matches.length > 1) {
-                    this.appendToConsole(`\nComandos: ${matches.join('  ')}`);
+                    this.appendToConsole(`\nCommands: ${matches.join('  ')}`);
                 }
                 return;
             }
@@ -205,7 +205,7 @@ class TerminalApp {
             maximizeBtn.addEventListener('click', () => this.executeCommand('clear'));
         }
 
-        // Esc: saltar typing / cerrar menú
+        // Esc: skip typing / close menu
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (this.isTyping) {
@@ -237,23 +237,23 @@ class TerminalApp {
         badge.innerHTML = `
             <span>HismaR Dev</span>
             <div class="welcome-subtitle">Ismail Haddouche Rhali</div>
-            <div class="welcome-role">Fullstack · Mobile · Murcia, España</div>
+            <div class="welcome-role">Full-stack · Mobile · Murcia, Spain</div>
         `;
 
         consoleOutput.appendChild(badge);
 
         const welcomeLines = [
-            { text: `// Bienvenido a mi terminal interactivo.`, type: 'comment' },
-            { text: `// Explora quién soy, qué construyo y cómo pienso.`, type: 'comment' },
+            { text: `// Welcome to my interactive terminal.`, type: 'comment' },
+            { text: `// Explore who I am, what I build, and how I think.`, type: 'comment' },
             { text: ``, type: 'blank' },
-            { text: `  help       → ver todos los comandos disponibles`, type: 'cmd', cmd: 'help' },
-            { text: `  about      → mi historia y contacto`, type: 'cmd', cmd: 'about' },
-            { text: `  experience → trayectoria laboral`, type: 'cmd', cmd: 'experience' },
-            { text: `  projects   → proyectos reales en producción y open source`, type: 'cmd', cmd: 'projects' },
-            { text: `  skills     → stack tecnológico completo`, type: 'cmd', cmd: 'skills' },
-            { text: `  education  → formación académica`, type: 'cmd', cmd: 'education' },
+            { text: `  help       → list every available command`, type: 'cmd', cmd: 'help' },
+            { text: `  about      → personal background and contact`, type: 'cmd', cmd: 'about' },
+            { text: `  experience → professional journey`, type: 'cmd', cmd: 'experience' },
+            { text: `  projects   → production & open-source work`, type: 'cmd', cmd: 'projects' },
+            { text: `  skills     → complete technology stack`, type: 'cmd', cmd: 'skills' },
+            { text: `  education  → academic path`, type: 'cmd', cmd: 'education' },
             { text: ``, type: 'blank' },
-            { text: `// Tab: autocompletar  ·  ↑↓: historial de comandos`, type: 'comment' },
+            { text: `// Tab: autocomplete  ·  ↑↓: command history`, type: 'comment' },
             { text: ``, type: 'blank' }
         ];
 
@@ -271,7 +271,7 @@ class TerminalApp {
     }
 
     /**
-     * Ejecución de comandos
+     * Command execution
      */
     async executeCommand(command) {
         if (!command) return;
@@ -285,13 +285,13 @@ class TerminalApp {
         if (this.commands.has(command)) {
             await this.loadAndExecuteCommand(command);
         } else {
-            this.appendToConsole(`Comando no reconocido: '${command}'`);
-            this.appendToConsole(`Escribe 'help' para ver los comandos disponibles.`);
+            this.appendToConsole(`Unrecognized command: '${command}'`);
+            this.appendToConsole(`Type 'help' to list the available commands.`);
         }
     }
 
     /**
-     * Manejo de comandos integrados
+     * Handle built-in commands
      */
     handleBuiltInCommands(command) {
         switch (command) {
@@ -305,7 +305,7 @@ class TerminalApp {
                 return true;
 
             case 'exit':
-                this.appendToConsole('Reiniciando terminal...');
+                this.appendToConsole('Restarting terminal...');
                 setTimeout(() => window.location.reload(), 800);
                 return true;
 
@@ -325,7 +325,7 @@ class TerminalApp {
     }
 
     /**
-     * Registra una función de cleanup de animación
+     * Register animation cleanup callbacks
      */
     registerAnimationCleanup(fn) {
         if (typeof fn === 'function') {
@@ -334,7 +334,7 @@ class TerminalApp {
     }
 
     /**
-     * Carga y ejecución de comando modular
+     * Load and execute command modules
      */
     async loadAndExecuteCommand(commandName) {
         try {
@@ -366,16 +366,16 @@ class TerminalApp {
 
         } catch (error) {
             console.error(`Error loading command ${commandName}:`, error);
-            this.appendToConsole(`Error: No se pudo cargar el módulo '${commandName}'`);
+            this.appendToConsole(`Error: Could not load module '${commandName}'`);
         }
     }
 
     /**
-     * Carga dinámica de CSS (sin caché busting innecesario)
+     * Dynamically load CSS (without unnecessary cache busting)
      */
     loadCSS(path) {
         return new Promise((resolve, reject) => {
-            // Reusar hoja ya cargada
+            // Reuse already loaded stylesheet
             if (this.loadedStyles.has(path)) {
                 resolve();
                 return;
@@ -394,13 +394,13 @@ class TerminalApp {
     }
 
     /**
-     * Carga dinámica de JavaScript (reutiliza módulos ya cargados)
+     * Dynamically load JavaScript (reuse loaded modules)
      */
     loadScript(path) {
         return new Promise((resolve, reject) => {
             const moduleName = path.replace(/[^a-zA-Z0-9]/g, '_');
 
-            // Si el módulo ya está en memoria, reutilizarlo
+            // If the module is already in memory, reuse it
             if (window[moduleName]) {
                 resolve(window[moduleName]);
                 return;
@@ -417,7 +417,7 @@ class TerminalApp {
     }
 
     /**
-     * Añadir texto al console con efecto typing
+     * Append text to the console with typing effect
      */
     async typeText(text, speed = 30) {
         this.isTyping = true;
@@ -446,7 +446,7 @@ class TerminalApp {
     }
 
     /**
-     * Añadir texto directo al console
+     * Append raw text to the console instantly
      */
     appendToConsole(text) {
         const consoleOutput = document.getElementById('console-output');
@@ -504,7 +504,7 @@ class TerminalApp {
     }
 }
 
-// Utilidades globales para los módulos
+// Global utilities for command modules
 window.TerminalUtils = {
     sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
 
@@ -527,7 +527,7 @@ window.TerminalUtils = {
     }
 };
 
-// Inicializar aplicación cuando se cargue el DOM
+// Initialize the application when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.terminal = new TerminalApp();
 });

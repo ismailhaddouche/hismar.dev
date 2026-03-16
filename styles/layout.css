@@ -1,9 +1,9 @@
 /* ===================================
-   LAYOUT PRINCIPAL - REGIDOR DEL DISEÑO
-   Portfolio Terminal v2.0 - Ismail Haddouche Rhali
+   PRIMARY LAYOUT - DESIGN CONDUCTOR
+   Terminal Portfolio v2.0 - Ismail Haddouche Rhali
    =================================== */
 
-/* Variables globales */
+/* Global variables */
 :root {
     --terminal-bg: #151a22;
     --terminal-green: #00ff41;
@@ -26,7 +26,7 @@
     --sidebar-ratio: 1fr;
 }
 
-/* Reset y base */
+/* Reset & base */
 * {
     margin: 0;
     padding: 0;
@@ -40,14 +40,14 @@ body {
     overflow: hidden;
 }
 
-/* Selección de texto */
+/* Text selection */
 ::selection {
     background: var(--terminal-green);
     color: #000;
 }
 
 /* ===================================
-   ESTRUCTURA PRINCIPAL DEL TERMINAL
+   TERMINAL CORE STRUCTURE
    =================================== */
 
 .terminal {
@@ -61,7 +61,7 @@ body {
     position: relative;
 }
 
-/* CRT Scanline effect sutil */
+/* Subtle CRT scanline effect */
 .terminal::after {
     content: '';
     position: absolute;
@@ -136,7 +136,7 @@ body {
     justify-content: flex-end;
 }
 
-/* Social links visibles en desktop */
+/* Desktop-visible social links */
 .desktop-social-links {
     display: flex;
     gap: 8px;
@@ -185,7 +185,7 @@ body {
 }
 
 /* ===================================
-   NAVEGACIÓN
+   NAVIGATION
    =================================== */
 
 .terminal-menu {
@@ -233,7 +233,7 @@ body {
 }
 
 /* ===================================
-   CONSOLA Y ÁREA DE CONTENIDO
+   CONSOLE & CONTENT AREA
    =================================== */
 
 .terminal-body {
@@ -254,7 +254,7 @@ body {
 }
 
 /* ===================================
-   GRID LAYOUT PARA COMANDOS
+   GRID LAYOUT FOR COMMANDS
    =================================== */
 
 .command-container {
@@ -301,7 +301,7 @@ body {
 }
 
 /* ===================================
-   ELEMENTOS COMUNES DE CONTENIDO
+   SHARED CONTENT ELEMENTS
    =================================== */
 
 .section-title {
@@ -352,7 +352,7 @@ body {
 }
 
 /* ===================================
-   PROMPT DE ENTRADA
+   INPUT PROMPT
    =================================== */
 
 .input-line {
@@ -390,7 +390,7 @@ body {
 }
 
 /* ===================================
-   SCROLLBARS PERSONALIZADOS
+   CUSTOM SCROLLBARS
    =================================== */
 
 .console-output::-webkit-scrollbar {
@@ -411,7 +411,7 @@ body {
 }
 
 /* ===================================
-   BADGE PERSONALIZADO WELCOME
+   CUSTOM WELCOME BADGE
    =================================== */
 
 .retro-badge {
@@ -607,7 +607,7 @@ body {
 }
 
 /* ===================================
-   ANIMACIONES COMUNES
+   COMMON ANIMATIONS
    =================================== */
 
 .fade-in {
@@ -643,13 +643,13 @@ body {
     font-size: 12px;
 }
 
-/* Líneas de comentario del welcome */
+/* Welcome comment lines */
 .console-output pre.welcome-comment {
     color: #4a6a4a;
     font-size: 12px;
 }
 
-/* Líneas de comandos clicables del welcome */
+/* Clickable welcome command lines */
 .console-output pre.welcome-cmd {
     color: var(--text-color);
     cursor: pointer;

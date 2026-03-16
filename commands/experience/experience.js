@@ -7,35 +7,35 @@ window.commands_experience_experience_js = {
 
         const experienceData = [
             {
-                role: 'Responsable de TI',
+                role: 'Head of IT',
                 company: 'El Paredes Chico SL',
-                dates: 'Oct 2025 — Actualidad',
+                dates: 'Oct 2025 — Present',
                 status: 'current',
-                statusLabel: 'ACTUAL',
-                details: 'Liderazgo de la transformación digital: implantación de ERP Odoo, desarrollo de portal web corporativo (Next.js, Firebase) e integración de sistemas. Administración de servidores Linux y Windows Server. Infraestructura en GCP, Docker, pipelines CI/CD y configuración de redes y seguridad orientadas a fullstack y mobile.'
+                statusLabel: 'CURRENT',
+                details: 'Leading the digital transformation: Odoo ERP rollout, corporate web portal (Next.js, Firebase), and system integrations. Linux and Windows Server administration, GCP + Docker infrastructure, CI/CD pipelines, and network/security configuration for full-stack and mobile products.'
             },
             {
-                role: 'CEO & Fundador',
-                company: 'Adoptaunordenador.com · Autónomo',
-                dates: 'Ene 2016 — Dic 2020',
+                role: 'CEO & Founder',
+                company: 'Adoptaunordenador.com · Self-employed',
+                dates: 'Jan 2016 — Dec 2020',
                 status: 'past',
-                statusLabel: 'COMPLETADO',
-                details: 'Fundación y dirección de startup social de reacondicionamiento de hardware. Desarrollo y gestión de e-commerce, logística y soporte técnico a clientes.'
+                statusLabel: 'COMPLETED',
+                details: 'Founded and managed a social startup focused on refurbished hardware. Built and operated the e-commerce business, logistics, and customer technical support.'
             },
             {
-                role: 'Responsable de Logística',
+                role: 'Logistics Manager',
                 company: 'Globalatc SL',
-                dates: 'Oct 2012 — Ago 2015',
+                dates: 'Oct 2012 — Aug 2015',
                 status: 'past',
-                statusLabel: 'COMPLETADO',
-                details: 'Gestión de operaciones logísticas internacionales, coordinación con proveedores y optimización de rutas.'
+                statusLabel: 'COMPLETED',
+                details: 'Managed international logistics operations, coordinated suppliers, and optimized routes.'
             }
         ];
 
         // Title
         const title = document.createElement('h2');
         title.className = 'section-title';
-        title.textContent = 'Experiencia Laboral';
+        title.textContent = 'Professional Experience';
         content.appendChild(title);
 
         const experienceList = document.createElement('div');

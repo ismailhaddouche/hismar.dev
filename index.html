@@ -1,20 +1,17 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ismail Haddouche Rhali | Dev Portfolio</title>
-    <meta name="description"
-        content="Portfolio de Ismail Haddouche Rhali - Desarrollador Fullstack y Mobile, Técnico Superior en DAM, especializado en Kotlin, Firebase y Next.js.">
-    <meta name="keywords"
-        content="desarrollador, portfolio, fullstack, mobile, DAM, kotlin, firebase, nextjs, devops, junior developer">
+    <title>hismar.dev — Interactive terminal portfolio</title>
+    <meta name="description" content="Interactive terminal-style portfolio by Ismail Haddouche Rhali. Full-stack + Mobile Developer.">
+    <meta name="keywords" content="developer, portfolio, fullstack, mobile, DAM, kotlin, firebase, nextjs, devops, junior developer">
     <meta name="author" content="Ismail Haddouche Rhali">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Ismail Haddouche Rhali | Dev Portfolio">
-    <meta property="og:description"
-        content="Portfolio interactivo estilo terminal de un desarrollador Full Stack Junior.">
+    <meta property="og:title" content="hismar.dev — Interactive terminal portfolio">
+    <meta property="og:description" content="Interactive terminal-style portfolio by Ismail Haddouche Rhali. Full-stack + Mobile Developer.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hismar.dev">
     <meta property="og:image" content="https://hismar.dev/assets/og-image.png">
@@ -23,9 +20,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Ismail Haddouche Rhali | Dev Portfolio">
-    <meta name="twitter:description"
-        content="Portfolio interactivo estilo terminal de un desarrollador Full Stack Junior.">
+    <meta name="twitter:title" content="hismar.dev — Interactive terminal portfolio">
+    <meta name="twitter:description" content="Interactive terminal-style portfolio by Ismail Haddouche Rhali. Full-stack + Mobile Developer.">
     <meta name="twitter:image" content="https://hismar.dev/assets/og-image.png">
 
     <link rel="icon"
@@ -43,16 +39,19 @@
     <div class="terminal">
         <div class="terminal-header">
             <div class="header-left">
-                <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false"
+                <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu" aria-expanded="false"
                     aria-controls="terminal-menu">&#9776;</button>
                 <nav class="terminal-menu" id="terminal-menu">
                     <div class="terminal-title-mobile"></div>
-                    <a href="#about" class="menu-item">About</a>
-                    <a href="#experience" class="menu-item">Experience</a>
-                    <a href="#skills" class="menu-item">Skills</a>
-                    <a href="#projects" class="menu-item">Projects</a>
-                    <a href="#education" class="menu-item">Education</a>
-                    <a href="#help" class="menu-item">Help</a>
+                    <span class="menu-title">Available commands</span>
+                    <ul class="menu-list">
+                        <li><a href="#about" class="menu-item">about — biography</a></li>
+                        <li><a href="#experience" class="menu-item">experience — journey</a></li>
+                        <li><a href="#skills" class="menu-item">skills — stack</a></li>
+                        <li><a href="#projects" class="menu-item">projects — work</a></li>
+                        <li><a href="#education" class="menu-item">education — academics</a></li>
+                        <li><a href="#help" class="menu-item">help — commands</a></li>
+                    </ul>
                     <div class="social-links">
                         <a href="https://github.com/ismailhaddouche" target="_blank" rel="noopener noreferrer"
                             class="social-link">GitHub</a>
@@ -90,8 +89,12 @@
                     </a>
                 </div>
                 <div class="terminal-controls">
-                    <button class="control-btn close" title="Recargar página" aria-label="Recargar"></button>
-                    <button class="control-btn maximize" title="Limpiar terminal" aria-label="Limpiar"></button>
+                    <button class="control-btn tooltip tooltip-bottom" data-tooltip="Close" aria-label="Close">
+                        <span></span>
+                    </button>
+                    <button class="control-btn tooltip tooltip-bottom" data-tooltip="Clear" aria-label="Clear">
+                        <span></span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -100,9 +103,10 @@
             <div class="console-output" id="console-output"></div>
 
             <div class="input-line">
-                <span class="prompt">hismar@dev:~$</span>
+                <span class="menu-highlight">HismaR Dev</span>
+                <span>· Interactive Portfolio</span>
                 <input type="text" id="command-input" autocomplete="off" spellcheck="false"
-                    placeholder="Escribe 'help' para comenzar..." aria-label="Entrada de comandos">
+                    placeholder="Type 'help' to begin..." aria-label="Command input">
             </div>
         </div>
     </div>

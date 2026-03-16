@@ -24,13 +24,13 @@ window.commands_skills_skills_js = {
         };
 
         const skills = {
-            'Lenguajes': ['Kotlin', 'TypeScript', 'JavaScript', 'Java', 'C#', 'SQL'],
+            'Languages': ['Kotlin', 'TypeScript', 'JavaScript', 'Java', 'C#', 'SQL'],
             'Mobile': ['Jetpack Compose', 'MVVM', 'Clean Architecture', 'Hilt', 'Retrofit', 'Room', 'Firebase'],
             'Frontend': ['Angular', 'React', 'Next.js', 'HTML5', 'CSS3'],
             'Backend & APIs': ['Node.js', 'REST APIs', 'Socket.io', 'Firebase'],
-            'Bases de datos': ['Firestore', 'MongoDB', 'PostgreSQL', 'MySQL', 'SQLite'],
-            'Fullstack & Mobile Ops': ['GCP', 'Docker', 'GitHub Actions', 'CI/CD'],
-            'Herramientas': ['Git', 'GitHub', 'Android Studio', 'VS Code', 'Claude Code', 'Linux']
+            'Databases': ['Firestore', 'MongoDB', 'PostgreSQL', 'MySQL', 'SQLite'],
+            'Full-stack & Mobile Ops': ['GCP', 'Docker', 'GitHub Actions', 'CI/CD'],
+            'Tooling': ['Git', 'GitHub', 'Android Studio', 'VS Code', 'Claude Code', 'Linux']
         };
 
         const skillIcons = {
@@ -86,7 +86,7 @@ window.commands_skills_skills_js = {
             return `<i class="${iconDef} colored skill-icon" aria-hidden="true"></i>`;
         };
 
-        let html = '<h2 class="section-title">Stack Tecnológico</h2>';
+        let html = '<h2 class="section-title">Technology Stack</h2>';
         html += '<div class="skills-content">';
 
         for (const category in skills) {

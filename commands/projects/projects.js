@@ -8,15 +8,15 @@ window.commands_projects_projects_js = {
         const projectsData = [
             {
                 name: 'El Paredes',
-                description: 'E-commerce en producción real. Tienda online de remolques con pasarela de pago Redsys (tarjeta + Bizum), autenticación Google OAuth, sincronización en tiempo real con ERP Odoo y gestión de inventario automática.',
+                description: 'Production-grade e-commerce for trailer sales with Redsys gateway (card + Bizum), Google OAuth sign-in, real-time Odoo ERP sync, and automated inventory management.',
                 tech: ['Next.js', 'Firebase', 'Firestore', 'Redsys', 'Odoo', 'App Hosting'],
                 link: 'https://elparedes.es/',
                 linkLabel: 'elparedes.es',
-                badge: 'EN PRODUCCIÓN'
+                badge: 'IN PRODUCTION'
             },
             {
                 name: 'Disherio',
-                description: 'Plataforma open-source y self-hosted para gestión de hostelería. Pedidos por QR en mesa (sin app), Kitchen Display System en tiempo real, POS con roles (admin, cocina, caja), gestión de menú con variantes y alérgenos, y despliegue local o en la nube.',
+                description: 'Open-source, self-hosted hospitality suite. QR ordering at the table (no app), real-time kitchen display, role-based POS (admin, kitchen, cashier), menu management with variants/allergens, local or cloud deployment.',
                 tech: ['TypeScript', 'Angular', 'Node.js', 'MongoDB', 'Socket.io', 'Docker'],
                 link: 'https://github.com/ismailhaddouche/disherio',
                 linkLabel: 'GitHub',
@@ -24,7 +24,7 @@ window.commands_projects_projects_js = {
             },
             {
                 name: 'TimeTutor',
-                description: 'Aplicación Android nativa para gestión integral de clases particulares. Calendario interactivo, seguimiento de asistencia, generación automática de facturas, notificaciones push y sincronización offline. Roles diferenciados para profesores y alumnos.',
+                description: 'Native Android app for private tutoring management. Interactive calendar, attendance tracking, automatic invoicing, push notifications, offline sync, and dedicated teacher/student roles.',
                 tech: ['Kotlin', 'Jetpack Compose', 'Clean Architecture', 'MVVM', 'Firebase', 'Firebase Functions'],
                 link: 'https://github.com/ismailhaddouche/timetutor',
                 linkLabel: 'GitHub',
@@ -32,7 +32,7 @@ window.commands_projects_projects_js = {
             },
             {
                 name: 'hismar.dev',
-                description: 'Portfolio interactivo simulado como una terminal retro completamente funcional. Creado sin frameworks (Vanilla JS/CSS/HTML), animaciones físicas complejas en el canvas integradas con arquitectura modular, gestor de estado, comandos dinámicos y diseño pixel-art.',
+                description: 'Interactive portfolio built as a fully functional retro terminal. Vanilla JS/CSS/HTML, physics-based canvas animations, modular architecture, state manager, dynamic commands, and pixel-art design.',
                 tech: ['JavaScript', 'HTML5', 'CSS3', 'Canvas API', 'Vanilla JS'],
                 link: 'https://github.com/ismailhaddouche/hismar.dev',
                 linkLabel: 'GitHub',
@@ -102,7 +102,7 @@ window.commands_projects_projects_js = {
         // Title
         const title = document.createElement('h2');
         title.className = 'section-title';
-        title.textContent = 'Proyectos';
+        title.textContent = 'Projects';
         content.appendChild(title);
 
         const projectsGrid = document.createElement('div');

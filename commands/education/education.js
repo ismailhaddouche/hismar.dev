@@ -7,27 +7,27 @@ window.commands_education_education_js = {
 
         const educationData = [
             {
-                title: 'Grado en Ingeniería Informática',
-                institution: 'UNED — Universidad Nacional de Educación a Distancia',
-                dates: 'Feb 2026 — presente',
+                title: 'BSc in Computer Engineering',
+                institution: 'UNED — National Distance Education University',
+                dates: 'Feb 2026 — Present',
                 status: 'in-progress',
-                statusLabel: 'EN CURSO',
-                details: 'Formación universitaria en ingeniería del software, algoritmos, arquitectura de computadores y sistemas distribuidos.'
+                statusLabel: 'IN PROGRESS',
+                details: 'University-level training in software engineering, algorithms, computer architecture, and distributed systems.'
             },
             {
-                title: 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)',
+                title: 'Higher Technician in Multiplatform Application Development (DAM)',
                 institution: 'ILERNA Online',
                 dates: 'Sept 2023 — Oct 2025',
                 status: 'completed',
-                statusLabel: 'COMPLETADO',
-                details: 'Desarrollo móvil (Kotlin/Android), bases de datos, programación orientada a objetos, sistemas informáticos y entornos de desarrollo.'
+                statusLabel: 'COMPLETED',
+                details: 'Mobile development (Kotlin/Android), databases, object-oriented programming, computer systems, and development environments.'
             },
             {
-                title: 'Bachillerato',
+                title: 'High School Diploma',
                 institution: 'IES Ricardo Ortega',
                 dates: '2004 — 2006',
                 status: 'completed',
-                statusLabel: 'COMPLETADO',
+                statusLabel: 'COMPLETED',
                 details: ''
             }
         ];
@@ -35,7 +35,7 @@ window.commands_education_education_js = {
         // Title
         const title = document.createElement('h2');
         title.className = 'section-title';
-        title.textContent = 'Formación Académica';
+        title.textContent = 'Education';
         content.appendChild(title);
 
         const educationList = document.createElement('div');
