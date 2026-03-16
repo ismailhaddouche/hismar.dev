@@ -70,6 +70,108 @@
     color: var(--terminal-light-green);
 }
 
+/* Language & frontend brand colors */
+.skill-icon--kotlin,
+.skill-icon--jetpack {
+    color: #7f52ff;
+}
+
+.skill-icon--typescript {
+    color: #3178c6;
+}
+
+.skill-icon--javascript {
+    color: #f7df1e;
+}
+
+.skill-icon--java {
+    color: #f89820;
+}
+
+.skill-icon--csharp {
+    color: #68217a;
+}
+
+.skill-icon--angular {
+    color: #c3002f;
+}
+
+.skill-icon--react {
+    color: #61dafb;
+}
+
+.skill-icon--next {
+    color: #fff;
+}
+
+.skill-icon--html5 {
+    color: #e34f26;
+}
+
+.skill-icon--css3 {
+    color: #1572b6;
+}
+
+.skill-icon--node {
+    color: #3c873a;
+}
+
+.skill-icon--vscode {
+    color: #0a7aca;
+}
+
+.skill-icon--android-studio {
+    color: #3ddc84;
+}
+
+/* Backend, infra, and data */
+.skill-icon--sql,
+.skill-icon--room,
+.skill-icon--firestore,
+.skill-icon--postgres,
+.skill-icon--mysql,
+.skill-icon--sqlite {
+    color: var(--terminal-green);
+}
+
+.skill-icon--mongodb {
+    color: #4faa41;
+}
+
+.skill-icon--firebase {
+    color: #ff6b35;
+}
+
+.skill-icon--rest,
+.skill-icon--socket,
+.skill-icon--retrofit,
+.skill-icon--mvvm,
+.skill-icon--clean-architecture,
+.skill-icon--hilt,
+.skill-icon--terraform,
+.skill-icon--cicd,
+.skill-icon--gcp {
+    color: var(--terminal-green);
+}
+
+.skill-icon--docker {
+    color: #0db7ed;
+}
+
+.skill-icon--git,
+.skill-icon--github,
+.skill-icon--gha {
+    color: #f05133;
+}
+
+.skill-icon--claude {
+    color: var(--terminal-light-green);
+}
+
+.skill-icon--linux {
+    color: #fcc624;
+}
+
 .skill-icon.fa-solid.fa-database,
 .skill-icon.fa-solid.fa-cloud,
 .skill-icon.fa-brands.fa-docker,
