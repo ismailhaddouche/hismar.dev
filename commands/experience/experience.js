@@ -43,17 +43,17 @@ window.commands_experience_experience_js = {
 
         experienceData.forEach((item, index) => {
             const card = document.createElement('div');
-            card.className = `education-card ${item.status}`; // Reutilizando clases de education para consistencia visual rápida, o creamos experience-card en CSS
+            card.className = `experience-card ${item.status}`;
             card.style.animationDelay = `${index * 0.15}s`;
 
             card.innerHTML = `
-                <div class="education-header">
-                    <span class="education-status ${item.status}">${item.statusLabel}</span>
-                    <span class="education-dates">${item.dates}</span>
+                <div class="experience-header">
+                    <span class="experience-status ${item.status}">${item.statusLabel}</span>
+                    <span class="experience-dates">${item.dates}</span>
                 </div>
-                <h3 class="education-title">${item.role}</h3>
-                <div class="education-institution">${item.company}</div>
-                ${item.details ? `<p class="education-details">${item.details}</p>` : ''}
+                <h3 class="experience-title">${item.role}</h3>
+                <div class="experience-company">${item.company}</div>
+                ${item.details ? `<p class="experience-details">${item.details}</p>` : ''}
             `;
             experienceList.appendChild(card);
         });

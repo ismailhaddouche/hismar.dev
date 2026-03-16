@@ -32,6 +32,10 @@ window.commands_help_help_js = {
                             <span class="command-name">education</span>
                             <span class="command-desc">Formación académica (DAM + UNED)</span>
                         </div>
+                        <div class="command-item" data-cmd="cv">
+                            <span class="command-name">cv</span>
+                            <span class="command-desc">Descargar CV en PDF</span>
+                        </div>
                     </div>
                 </div>
 

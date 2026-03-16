@@ -12,6 +12,7 @@ class TerminalApp {
         this.commandHistory = [];
         this.historyIndex = -1;
         this.activeAnimationCleanups = [];
+        this.dom = this.cacheDomElements();
 
         this.init();
     }
@@ -26,11 +27,26 @@ class TerminalApp {
         this.handleResize();
     }
 
+    cacheDomElements() {
+        return {
+            terminal: document.querySelector('.terminal'),
+            consoleOutput: document.getElementById('console-output'),
+            input: document.getElementById('command-input'),
+            menuItems: document.querySelectorAll('.menu-item'),
+            hamburgerBtn: document.getElementById('hamburger-btn'),
+            terminalMenu: document.getElementById('terminal-menu'),
+            menuOverlay: document.getElementById('menu-overlay'),
+            closeBtn: document.querySelector('.control-btn.close'),
+            maximizeBtn: document.querySelector('.control-btn.maximize')
+        };
+    }
+
     /**
      * Ajusta la altura del terminal para solucionar el problema de 100vh en móviles
      */
     handleResize() {
-        const terminal = document.querySelector('.terminal');
+        const { terminal } = this.dom;
+        if (!terminal) return;
         const setTerminalHeight = () => {
             terminal.style.height = `${window.innerHeight}px`;
         };
@@ -69,6 +85,10 @@ class TerminalApp {
                 styles: 'commands/experience/experience.css',
                 animation: 'animations/experience-animation.js'
             },
+            'cv': {
+                script: 'commands/cv/cv.js',
+                styles: 'commands/cv/cv.css'
+            },
             'help': {
                 script: 'commands/help/help.js',
                 styles: 'commands/help/help.css'
@@ -86,15 +106,20 @@ class TerminalApp {
      * Setup de event listeners
      */
     setupEventListeners() {
-        const input = document.getElementById('command-input');
-        const menuItems = document.querySelectorAll('.menu-item');
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const terminalMenu = document.getElementById('terminal-menu');
-        const menuOverlay = document.getElementById('menu-overlay');
-        const closeBtn = document.querySelector('.control-btn.close');
-        const maximizeBtn = document.querySelector('.control-btn.maximize');
+        const {
+            input,
+            menuItems,
+            hamburgerBtn,
+            terminalMenu,
+            menuOverlay,
+            closeBtn,
+            maximizeBtn
+        } = this.dom;
+
+        if (!input) return;
 
         const toggleMenu = () => {
+            if (!terminalMenu || !menuOverlay || !hamburgerBtn) return;
             const isOpen = terminalMenu.classList.toggle('active');
             menuOverlay.classList.toggle('active');
             hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
@@ -160,22 +185,42 @@ class TerminalApp {
                 e.preventDefault();
                 const command = item.getAttribute('href').substring(1);
                 this.executeCommand(command);
-                if (terminalMenu.classList.contains('active')) {
+                if (terminalMenu && terminalMenu.classList.contains('active')) {
                     toggleMenu();
                 }
             });
         });
 
-        hamburgerBtn.addEventListener('click', toggleMenu);
-        menuOverlay.addEventListener('click', toggleMenu);
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', toggleMenu);
+        }
+        if (menuOverlay) {
+            menuOverlay.addEventListener('click', toggleMenu);
+        }
 
-        closeBtn.addEventListener('click', () => window.location.reload());
-        maximizeBtn.addEventListener('click', () => this.executeCommand('clear'));
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => window.location.reload());
+        }
+        if (maximizeBtn) {
+            maximizeBtn.addEventListener('click', () => this.executeCommand('clear'));
+        }
+
+        // Esc: saltar typing / cerrar menú
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (this.isTyping) {
+                    this.skipTyping = true;
+                }
+                if (terminalMenu && terminalMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            }
+        });
 
         // Auto-focus en el input
         input.focus();
         document.addEventListener('click', (e) => {
-            if (e.target.tagName.toLowerCase() !== 'a' && e.target.id !== 'hamburger-btn') {
+            if (input && e.target.tagName.toLowerCase() !== 'a' && e.target.id !== 'hamburger-btn') {
                 input.focus();
             }
         });
@@ -185,6 +230,8 @@ class TerminalApp {
      * Mensaje de bienvenida
      */
     displayWelcome() {
+        const consoleOutput = this.dom.consoleOutput;
+        if (!consoleOutput) return;
         const badge = document.createElement('div');
         badge.className = 'retro-badge';
         badge.innerHTML = `
@@ -193,7 +240,6 @@ class TerminalApp {
             <div class="welcome-role">Fullstack · Mobile · Murcia, España</div>
         `;
 
-        const consoleOutput = document.getElementById('console-output');
         consoleOutput.appendChild(badge);
 
         const welcomeLines = [
@@ -211,7 +257,6 @@ class TerminalApp {
             { text: ``, type: 'blank' }
         ];
 
-        const welcomeOutput = document.getElementById('console-output');
         welcomeLines.forEach(line => {
             const pre = document.createElement('pre');
             pre.textContent = line.text;
@@ -221,7 +266,7 @@ class TerminalApp {
                 pre.className = 'welcome-cmd';
                 pre.addEventListener('click', () => this.executeCommand(line.cmd));
             }
-            welcomeOutput.appendChild(pre);
+            consoleOutput.appendChild(pre);
         });
     }
 
@@ -252,7 +297,9 @@ class TerminalApp {
         switch (command) {
             case 'clear':
                 this.cleanupAnimations();
-                document.getElementById('console-output').innerHTML = '';
+                if (this.dom.consoleOutput) {
+                    this.dom.consoleOutput.innerHTML = '';
+                }
                 this.currentCommand = null;
                 this.displayWelcome();
                 return true;
@@ -291,6 +338,8 @@ class TerminalApp {
      */
     async loadAndExecuteCommand(commandName) {
         try {
+            this.cleanupAnimations();
+
             const config = this.commands.get(commandName);
 
             if (config.styles) {
