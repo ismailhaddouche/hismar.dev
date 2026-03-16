@@ -54,33 +54,35 @@ window.commands_projects_projects_js = {
             'real-time': `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5C5 6 8 4 12 4s7 2 10 4.5"></path><path d="M2 15.5C5 18 8 20 12 20s7-2 10-4.5"></path><path d="M2 12c3-2 6-4 10-4s7 2 10 4"></path></svg>`
         };
 
+        const slugifyTech = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
         const techIcons = {
-            'next.js': 'devicon-nextjs-plain',
+            'next-js': 'devicon-nextjs-plain',
             'firebase': 'devicon-firebase-plain',
             'firestore': 'devicon-firebase-plain',
             'redsys': customTechIcons.redsys,
             'odoo': customTechIcons.odoo,
-            'app hosting': customTechIcons['app hosting'],
+            'app-hosting': customTechIcons['app hosting'],
             'typescript': 'devicon-typescript-plain',
             'angular': 'devicon-angularjs-plain',
-            'node.js': 'devicon-nodejs-plain',
+            'node-js': 'devicon-nodejs-plain',
             'mongodb': 'devicon-mongodb-plain',
-            'socket.io': 'devicon-socketio-original',
+            'socket-io': 'devicon-socketio-original',
             'docker': 'devicon-docker-plain',
             'kotlin': 'devicon-kotlin-plain',
-            'jetpack compose': 'devicon-android-plain',
-            'clean architecture': customTechIcons['clean architecture'],
+            'jetpack-compose': 'devicon-android-plain',
+            'clean-architecture': customTechIcons['clean architecture'],
             'mvvm': customTechIcons.mvvm,
-            'firebase functions': 'devicon-firebase-plain',
+            'firebase-functions': 'devicon-firebase-plain',
             'retrofit': customTechIcons.retrofit,
             'room': customTechIcons.room,
             'hilt': customTechIcons.hilt,
-            'github actions': 'devicon-githubactions-plain',
+            'github-actions': 'devicon-githubactions-plain',
             'javascript': 'devicon-javascript-plain',
             'html5': 'devicon-html5-plain',
             'css3': 'devicon-css3-plain',
-            'canvas api': 'devicon-html5-plain',
-            'vanilla js': 'devicon-javascript-plain',
+            'canvas-api': 'devicon-html5-plain',
+            'vanilla-js': 'devicon-javascript-plain',
             'real-time': customTechIcons['real-time']
         };
 
@@ -141,7 +143,9 @@ window.commands_projects_projects_js = {
             project.tech.forEach(t => {
                 const tag = document.createElement('span');
                 tag.className = 'project-tag';
-                const iconMarkup = buildTechIcon(techIcons[t.toLowerCase()]);
+                const techSlug = slugifyTech(t);
+                tag.classList.add(`project-tag--${techSlug}`);
+                const iconMarkup = buildTechIcon(techIcons[techSlug]);
                 tag.innerHTML = `${iconMarkup}<span>${t}</span>`;
                 tagsContainer.appendChild(tag);
             });

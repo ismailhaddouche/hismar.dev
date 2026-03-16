@@ -84,6 +84,24 @@
     height: 12px;
 }
 
+.project-tag--redsys .project-tag-icon {
+    color: #ff5a00;
+}
+
+.project-tag--odoo .project-tag-icon {
+    color: #6d1d75;
+}
+
+.project-tag--app-hosting .project-tag-icon {
+    color: #3fb950;
+}
+
+.project-tag--clean-architecture .project-tag-icon,
+.project-tag--mvvm .project-tag-icon {
+    color: var(--terminal-light-green);
+    opacity: 0.9;
+}
+
 .project-link-row {
     margin-top: auto;
     padding-top: 8px;
