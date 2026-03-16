@@ -70,78 +70,69 @@
     color: var(--terminal-light-green);
 }
 
-.skill-icon.lucide-database {
+.skill-icon.fa-solid.fa-database,
+.skill-icon.fa-solid.fa-cloud,
+.skill-icon.fa-brands.fa-docker,
+.skill-icon.fa-solid.fa-mobile-screen,
+.skill-icon.fa-solid.fa-network-wired,
+.skill-icon.fa-solid.fa-wave-square,
+.skill-icon.fa-solid.fa-shield-halved,
+.skill-icon.fa-solid.fa-layer-group,
+.skill-icon.fa-solid.fa-plug,
+.skill-icon.fa-solid.fa-cubes,
+.skill-icon.fa-solid.fa-arrows-rotate,
+.skill-icon.fa-solid.fa-terminal {
     color: var(--terminal-green);
 }
 
-.skill-icon.lucide-git-branch,
-.skill-icon.lucide-git-merge {
-    color: var(--terminal-light-green);
+.skill-icon.fa-brands.fa-js {
+    color: #f7df1e;
 }
 
-.skill-icon.lucide-github {
+.skill-icon.fa-brands.fa-react {
+    color: #61dafb;
+}
+
+.skill-icon.fa-brands.fa-angular {
+    color: #c3002f;
+}
+
+.skill-icon.fa-brands.fa-node-js {
+    color: #3c873a;
+}
+
+.skill-icon.fa-brands.fa-html5 {
+    color: #e34f26;
+}
+
+.skill-icon.fa-brands.fa-css3-alt {
+    color: #1572b6;
+}
+
+.skill-icon.fa-brands.fa-android,
+.skill-icon.fa-solid.fa-mobile-screen {
+    color: #3ddc84;
+}
+
+.skill-icon.fa-brands.fa-java {
+    color: #f89820;
+}
+
+.skill-icon.fa-brands.fa-github,
+.skill-icon.fa-brands.fa-git-alt {
     color: #fff;
 }
 
-.skill-icon.lucide-cloud {
-    color: var(--terminal-green);
-}
-
-.skill-icon.lucide-box {
-    color: var(--terminal-light-green);
-}
-
-.skill-icon.lucide-server {
-    color: var(--terminal-green);
-}
-
-.skill-icon.lucide-globe {
-    color: var(--terminal-light-green);
-}
-
-.skill-icon.lucide-wifi {
-    color: var(--terminal-green);
-}
-
-.skill-icon.lucide-flame {
+.skill-icon.fa-solid.fa-fire-flame-simple {
     color: #ff6b35;
 }
 
-.skill-icon.lucide-terminal {
-    color: var(--terminal-green);
-}
-
-.skill-icon.lucide-code,
-.skill-icon.lucide-code-2 {
+.skill-icon.fa-solid.fa-wand-magic-sparkles {
     color: var(--terminal-light-green);
 }
 
-.skill-icon.lucide-coffee {
-    color: #6f4e37;
-}
-
-.skill-icon.lucide-smartphone {
-    color: var(--terminal-green);
-}
-
-.skill-icon.lucide-zap {
-    color: var(--terminal-light-green);
-}
-
-.skill-icon.lucide-shield {
-    color: var(--terminal-green);
-}
-
-.skill-icon.lucide-layers {
-    color: var(--terminal-light-green);
-}
-
-.skill-icon.lucide-package {
-    color: var(--terminal-green);
-}
-
-.skill-icon.lucide-sparkles {
-    color: var(--terminal-light-green);
+.skill-icon.fa-brands.fa-linux {
+    color: #fcc624;
 }
 
 .skill-item:before {

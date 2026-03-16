@@ -17,48 +17,48 @@ window.commands_skills_skills_js = {
         };
 
         const skillIcons = {
-            kotlin: 'lucide-code-2',
-            typescript: 'lucide-file-text',
-            javascript: 'lucide-file-text',
-            java: 'lucide-coffee',
-            'c#': 'lucide-file-text',
-            sql: 'lucide-database',
-            'jetpack compose': 'lucide-smartphone',
-            mvvm: 'lucide-layers',
-            'clean architecture': 'lucide-box',
-            hilt: 'lucide-shield',
-            retrofit: 'lucide-zap',
-            room: 'lucide-hard-drive',
-            angular: 'lucide-triangle',
-            react: 'lucide-atom',
-            'next.js': 'lucide-triangle',
-            html5: 'lucide-file-text',
-            css3: 'lucide-palette',
-            'node.js': 'lucide-server',
-            'rest apis': 'lucide-globe',
-            'socket.io': 'lucide-wifi',
-            firebase: 'lucide-flame',
-            firestore: 'lucide-database',
-            mongodb: 'lucide-database',
-            postgresql: 'lucide-database',
-            mysql: 'lucide-database',
-            sqlite: 'lucide-database',
-            gcp: 'lucide-cloud',
-            docker: 'lucide-box',
-            'github actions': 'lucide-git-branch',
-            terraform: 'lucide-package',
-            'ci/cd': 'lucide-git-merge',
-            git: 'lucide-git-branch',
-            github: 'lucide-github',
-            'android studio': 'lucide-smartphone',
-            'vs code': 'lucide-code',
-            'claude code': 'lucide-sparkles',
-            linux: 'lucide-terminal'
+            kotlin: 'fa-brands fa-android',
+            typescript: 'fa-brands fa-codepen',
+            javascript: 'fa-brands fa-js',
+            java: 'fa-brands fa-java',
+            'c#': 'fa-solid fa-hashtag',
+            sql: 'fa-solid fa-database',
+            'jetpack compose': 'fa-solid fa-mobile-screen',
+            mvvm: 'fa-solid fa-diagram-project',
+            'clean architecture': 'fa-solid fa-layer-group',
+            hilt: 'fa-solid fa-shield-halved',
+            retrofit: 'fa-solid fa-plug',
+            room: 'fa-solid fa-database',
+            angular: 'fa-brands fa-angular',
+            react: 'fa-brands fa-react',
+            'next.js': 'fa-solid fa-forward',
+            html5: 'fa-brands fa-html5',
+            css3: 'fa-brands fa-css3-alt',
+            'node.js': 'fa-brands fa-node-js',
+            'rest apis': 'fa-solid fa-network-wired',
+            'socket.io': 'fa-solid fa-wave-square',
+            firebase: 'fa-solid fa-fire-flame-simple',
+            firestore: 'fa-solid fa-database',
+            mongodb: 'fa-solid fa-leaf',
+            postgresql: 'fa-solid fa-database',
+            mysql: 'fa-solid fa-database',
+            sqlite: 'fa-solid fa-database',
+            gcp: 'fa-solid fa-cloud',
+            docker: 'fa-brands fa-docker',
+            'github actions': 'fa-brands fa-github',
+            terraform: 'fa-solid fa-cubes',
+            'ci/cd': 'fa-solid fa-arrows-rotate',
+            git: 'fa-brands fa-git-alt',
+            github: 'fa-brands fa-github',
+            'android studio': 'fa-solid fa-mobile-screen',
+            'vs code': 'fa-solid fa-code',
+            'claude code': 'fa-solid fa-wand-magic-sparkles',
+            linux: 'fa-brands fa-linux'
         };
 
-        const buildIconMarkup = (iconDef) => {
-            const iconName = iconDef || 'lucide-circle';
-            return `<i class="lucide ${iconName} skill-icon" aria-hidden="true"></i>`;
+        const buildIconMarkup = (iconClasses) => {
+            const classes = iconClasses || 'fa-solid fa-circle';
+            return `<i class="skill-icon ${classes}" aria-hidden="true"></i>`;
         };
 
         let html = '<h2 class="section-title">Stack Tecnológico</h2>';
