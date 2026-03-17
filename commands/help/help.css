@@ -30,7 +30,9 @@
 
 .command-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px 16px;
     padding: 12px 16px;
     background: rgba(0, 255, 65, 0.08);
     border: 1px solid rgba(0, 255, 65, 0.2);
@@ -57,7 +59,6 @@
     background: rgba(0, 255, 65, 0.1);
     padding: 4px 8px;
     border-radius: 4px;
-    margin-right: 16px;
 }
 
 .command-desc {
