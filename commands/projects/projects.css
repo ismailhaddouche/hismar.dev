@@ -92,6 +92,112 @@
     filter: saturate(0.95);
 }
 
+.project-gallery-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.project-gallery-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.project-gallery-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0, 255, 65, 0.25), rgba(0, 0, 0, 0.92));
+    backdrop-filter: blur(6px);
+}
+
+.project-gallery-modal__dialog {
+    position: relative;
+    width: min(90vw, 960px);
+    background: rgba(2, 10, 4, 0.95);
+    border: 1px solid rgba(0, 255, 65, 0.35);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.project-gallery-modal__title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--terminal-light-green);
+    letter-spacing: 0.5px;
+}
+
+.project-gallery-modal__frame {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.project-gallery-modal__frame img {
+    width: 100%;
+    max-height: min(70vh, 640px);
+    object-fit: contain;
+    border-radius: 6px;
+    background: #010302;
+    border: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+.project-gallery-modal__frame img[data-orientation="portrait"] {
+    max-height: min(80vh, 720px);
+    width: auto;
+    align-self: center;
+}
+
+.project-gallery-modal__nav {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 255, 65, 0.5);
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--terminal-light-green);
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.project-gallery-modal__nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.project-gallery-modal__nav:not(:disabled):hover {
+    background: rgba(0, 255, 65, 0.1);
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.35);
+}
+
+.project-gallery-modal__close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: var(--terminal-light-green);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.gallery-modal-open {
+    overflow: hidden;
+}
+
 .project-gallery-counter {
     position: absolute;
     bottom: 6px;

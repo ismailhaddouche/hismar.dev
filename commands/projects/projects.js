@@ -208,6 +208,9 @@ window.commands_projects_projects_js = {
 
             const frame = document.createElement('div');
             frame.className = 'project-gallery-frame';
+            frame.tabIndex = 0;
+            frame.setAttribute('role', 'button');
+            frame.setAttribute('aria-label', `Open ${project.name} gallery in fullscreen`);
 
             const img = document.createElement('img');
             img.loading = 'lazy';
@@ -263,12 +266,21 @@ window.commands_projects_projects_js = {
             gallery.appendChild(frame);
             gallery.appendChild(nextBtn);
 
-            frame.addEventListener('click', (event) => {
-                event.preventDefault();
+            const openGalleryModal = (event) => {
+                const isKeyboard = event.type === 'keydown';
+                if (isKeyboard && event.key !== 'Enter' && event.key !== ' ') return;
+                if (isKeyboard) event.preventDefault();
                 event.stopPropagation();
                 if (!images.length) return;
                 galleryModal.open(images, currentIndex, project.name);
+            };
+
+            frame.addEventListener('click', (event) => {
+                event.preventDefault();
+                openGalleryModal(event);
             });
+
+            frame.addEventListener('keydown', openGalleryModal);
 
             availableProjectImages(project).then((remoteImages) => {
                 if (Array.isArray(remoteImages) && remoteImages.length) {
@@ -365,7 +377,8 @@ window.commands_projects_projects_js = {
             const openLink = (event) => {
                 if (event) {
                     const guardTarget = event.target;
-                    if (guardTarget && (guardTarget.closest('.project-gallery-frame') || guardTarget.closest('.gallery-nav'))) {
+                    const isElementTarget = guardTarget instanceof Element;
+                    if (isElementTarget && (guardTarget.closest('.project-gallery-frame') || guardTarget.closest('.gallery-nav'))) {
                         event.preventDefault();
                         return;
                     }
