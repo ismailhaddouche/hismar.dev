@@ -564,12 +564,12 @@ class TerminalApp {
         const content = document.createElement('div');
         content.className = `command-content ${commandName}-content`;
         content.id = `${commandName}-content-${uniqueId}`;
+        content.appendChild(metaBar);
 
         const sidebar = document.createElement('div');
         sidebar.className = 'command-sidebar';
         sidebar.id = `${commandName}-sidebar-${uniqueId}`;
 
-        container.appendChild(metaBar);
         container.appendChild(content);
         container.appendChild(sidebar);
 
