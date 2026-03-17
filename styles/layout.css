@@ -183,7 +183,38 @@ body.no-scroll {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 16px;
+    gap: 18px;
+}
+
+.header-social {
+    display: flex;
+    gap: 10px;
+}
+
+.social-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 65, 0.25);
+    background: rgba(0, 255, 65, 0.08);
+    color: var(--terminal-light-green);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.social-btn:hover,
+.social-btn:focus-visible {
+    background: rgba(0, 255, 65, 0.2);
+    border-color: var(--terminal-light-green);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.social-btn:active {
+    transform: scale(0.95);
 }
 
 .terminal-controls {
@@ -235,11 +266,12 @@ body.no-scroll {
 }
 
 .menu-item {
-    color: var(--text-muted);
+    color: rgba(221, 255, 238, 0.75);
     text-decoration: none;
     padding: 6px 16px 10px;
     border-radius: 999px;
-    border: 1px solid transparent;
+    border: 1px solid rgba(0, 255, 65, 0.08);
+    background: rgba(0, 17, 10, 0.45);
     font-size: 12px;
     letter-spacing: 0.6px;
     transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
@@ -333,15 +365,73 @@ body.no-scroll {
     display: grid;
     grid-template-columns: var(--content-ratio) var(--sidebar-ratio);
     gap: var(--grid-gap);
-    margin: 20px 0;
+    margin: 30px 0 50px;
     min-height: 280px;
+    position: relative;
+}
+
+.command-container::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -25px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 134, 0.35), transparent);
+    opacity: 0.4;
+}
+
+.command-meta {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(0, 255, 65, 0.08), rgba(0, 132, 88, 0.12));
+    border: 1px solid rgba(0, 255, 65, 0.25);
+    box-shadow: 0 10px 35px rgba(0, 255, 65, 0.08);
+    backdrop-filter: blur(4px);
+}
+
+.command-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    color: var(--terminal-light-green);
+    box-shadow: inset 0 0 12px rgba(0, 255, 65, 0.12);
+}
+
+.chip-icon {
+    font-size: 14px;
+    color: var(--accent-gold);
+}
+
+.chip-text {
+    font-weight: bold;
+}
+
+.command-timestamp {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.4px;
 }
 
 .command-content {
     padding: 24px;
-    background: rgba(0, 255, 65, 0.02);
-    border-radius: 4px;
+    background: rgba(0, 24, 16, 0.85);
+    border-radius: 12px;
     position: relative;
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.55), inset 0 0 35px rgba(0, 255, 65, 0.06);
 }
 
 .command-sidebar {

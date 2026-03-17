@@ -545,10 +545,21 @@ class TerminalApp {
      */
     createCommandContainer(commandName) {
         const uniqueId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+        const timestamp = this.formatTimestamp();
 
         const container = document.createElement('div');
         container.className = 'command-container fade-in';
         container.id = `${commandName}-container-${uniqueId}`;
+
+        const metaBar = document.createElement('div');
+        metaBar.className = 'command-meta';
+        metaBar.innerHTML = `
+            <span class="command-chip">
+                <span class="chip-icon" aria-hidden="true">❯</span>
+                <span class="chip-text">/${commandName}</span>
+            </span>
+            <span class="command-timestamp" aria-label="Execution time">${timestamp}</span>
+        `;
 
         const content = document.createElement('div');
         content.className = `command-content ${commandName}-content`;
@@ -558,6 +569,7 @@ class TerminalApp {
         sidebar.className = 'command-sidebar';
         sidebar.id = `${commandName}-sidebar-${uniqueId}`;
 
+        container.appendChild(metaBar);
         container.appendChild(content);
         container.appendChild(sidebar);
 
@@ -566,6 +578,20 @@ class TerminalApp {
         this.lastCreatedSidebar = sidebar;
 
         return { container, content, sidebar };
+    }
+
+    formatTimestamp() {
+        const now = new Date();
+        const time = now.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        const date = now.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'short'
+        }).replace('.', '').toUpperCase();
+        return `${time} · ${date}`;
     }
 }
 
