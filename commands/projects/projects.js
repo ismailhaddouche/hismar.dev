@@ -31,6 +31,14 @@ window.commands_projects_projects_js = {
                 badge: 'ANDROID'
             },
             {
+                name: 'Episodeo',
+                description: 'Personal TV-series tracker for Android with TMDB search, smart lists (watching, pending, finished, abandoned), list sharing via codes, offline-first cache, and theme switching. Built with Clean Architecture + MVVM.',
+                tech: ['Kotlin', 'Jetpack Compose', 'Firebase', 'Room', 'Retrofit', 'TMDB API', 'Clean Architecture', 'MVVM', 'GitHub Actions'],
+                link: 'https://github.com/ismailhaddouche/episodeo',
+                linkLabel: 'GitHub',
+                badge: 'ANDROID'
+            },
+            {
                 name: 'hismar.dev',
                 description: 'Interactive portfolio built as a fully functional retro terminal. Vanilla JS/CSS/HTML, physics-based canvas animations, modular architecture, state manager, dynamic commands, and pixel-art design.',
                 tech: ['JavaScript', 'HTML5', 'CSS3', 'Canvas API', 'Vanilla JS'],
@@ -315,6 +323,7 @@ window.commands_projects_projects_js = {
             'room': customTechIcons.room,
             'hilt': customTechIcons.hilt,
             'github-actions': 'devicon-githubactions-plain',
+            'tmdb-api': `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect><path d="m3 9 18 .5"></path><path d="M8 5v14"></path><path d="M16 5v14"></path></svg>`,
             'javascript': 'devicon-javascript-plain',
             'html5': 'devicon-html5-plain',
             'css3': 'devicon-css3-plain',

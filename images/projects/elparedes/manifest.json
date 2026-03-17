@@ -1,0 +1,27 @@
+[
+    {
+        "src": "dashboard_global.png",
+        "alt": "El Paredes admin dashboard with sales KPIs",
+        "orientation": "landscape"
+    },
+    {
+        "src": "dashboard_sección_productos.png",
+        "alt": "El Paredes product management module",
+        "orientation": "landscape"
+    },
+    {
+        "src": "vista_de_producto.png",
+        "alt": "El Paredes industrial product detail page",
+        "orientation": "portrait"
+    },
+    {
+        "src": "catalogo_de_sección.png",
+        "alt": "El Paredes catalog section with filters",
+        "orientation": "landscape"
+    },
+    {
+        "src": "vista_perfil_cliente.PNG",
+        "alt": "El Paredes customer profile view",
+        "orientation": "landscape"
+    }
+]
