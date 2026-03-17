@@ -151,6 +151,19 @@ class TerminalApp {
 
         if (!input) return;
 
+        const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+        let autoFocusEnabled = !coarsePointerQuery.matches;
+
+        const updateAutoFocusSetting = () => {
+            autoFocusEnabled = !coarsePointerQuery.matches;
+        };
+
+        if (typeof coarsePointerQuery.addEventListener === 'function') {
+            coarsePointerQuery.addEventListener('change', updateAutoFocusSetting);
+        } else if (typeof coarsePointerQuery.addListener === 'function') {
+            coarsePointerQuery.addListener(updateAutoFocusSetting);
+        }
+
         const toggleMobileMenu = (force) => {
             if (!hamburgerBtn || !terminalMenu || !menuOverlay) return;
             const shouldOpen = typeof force === 'boolean'
@@ -256,12 +269,18 @@ class TerminalApp {
             }
         });
 
-        // Auto-focus en el input
-        input.focus();
+        // Auto-focus en el input (solo en dispositivos de puntero fino)
+        if (autoFocusEnabled) {
+            input.focus();
+        }
+
         document.addEventListener('click', (e) => {
-            if (input && e.target.tagName.toLowerCase() !== 'a' && e.target.id !== 'hamburger-btn') {
-                input.focus();
+            if (!autoFocusEnabled || !input) return;
+            const target = e.target;
+            if (!target.closest('.console-output') && !target.closest('.input-line')) {
+                return;
             }
+            input.focus();
         });
     }
 

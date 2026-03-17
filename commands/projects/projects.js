@@ -40,6 +40,243 @@ window.commands_projects_projects_js = {
             }
         ];
 
+        const buildPlaceholderImage = (projectName) => ({
+            src: `https://dummyimage.com/900x520/050b13/39ff14&text=${encodeURIComponent(projectName)}`,
+            alt: `${projectName} preview`,
+            orientation: 'landscape'
+        });
+
+        const createGalleryModalManager = () => {
+            let modal = null;
+            let modalImg;
+            let modalCounter;
+            let modalTitle;
+            let prevBtn;
+            let nextBtn;
+            let closeBtn;
+            let backdrop;
+            let currentImages = [];
+            let currentIndex = 0;
+
+            const ensureModal = () => {
+                if (modal) return;
+                modal = document.createElement('div');
+                modal.className = 'project-gallery-modal';
+                modal.innerHTML = `
+                    <div class="project-gallery-modal__backdrop"></div>
+                    <div class="project-gallery-modal__dialog" role="dialog" aria-modal="true">
+                        <button class="project-gallery-modal__close" aria-label="Close gallery">×</button>
+                        <div class="project-gallery-modal__title-row">
+                            <span class="project-gallery-modal__title"></span>
+                            <span class="project-gallery-modal__counter"></span>
+                        </div>
+                        <div class="project-gallery-modal__frame">
+                            <button class="project-gallery-modal__nav project-gallery-modal__nav--prev" aria-label="Previous image">⟵</button>
+                            <img src="" alt="">
+                            <button class="project-gallery-modal__nav project-gallery-modal__nav--next" aria-label="Next image">⟶</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                modalImg = modal.querySelector('img');
+                modalCounter = modal.querySelector('.project-gallery-modal__counter');
+                modalTitle = modal.querySelector('.project-gallery-modal__title');
+                prevBtn = modal.querySelector('.project-gallery-modal__nav--prev');
+                nextBtn = modal.querySelector('.project-gallery-modal__nav--next');
+                closeBtn = modal.querySelector('.project-gallery-modal__close');
+                backdrop = modal.querySelector('.project-gallery-modal__backdrop');
+
+                const handleKey = (event) => {
+                    if (!modal.classList.contains('active')) return;
+                    if (event.key === 'Escape') {
+                        close();
+                    } else if (event.key === 'ArrowLeft') {
+                        show(-1);
+                    } else if (event.key === 'ArrowRight') {
+                        show(1);
+                    }
+                };
+
+                document.addEventListener('keydown', handleKey);
+
+                prevBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    show(-1);
+                });
+
+                nextBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    show(1);
+                });
+
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    close();
+                });
+
+                backdrop.addEventListener('click', close);
+            };
+
+            const update = () => {
+                if (!currentImages.length) {
+                    close();
+                    return;
+                }
+                const current = currentImages[currentIndex];
+                modalImg.src = current.src;
+                modalImg.alt = current.alt || modalTitle.textContent;
+                modalImg.dataset.orientation = current.orientation || 'landscape';
+                modalCounter.textContent = `${currentIndex + 1}/${currentImages.length}`;
+                prevBtn.disabled = currentImages.length <= 1;
+                nextBtn.disabled = currentImages.length <= 1;
+            };
+
+            const show = (step) => {
+                if (currentImages.length <= 1) return;
+                currentIndex = (currentIndex + step + currentImages.length) % currentImages.length;
+                update();
+            };
+
+            const open = (images, startIndex, title) => {
+                if (!images || !images.length) return;
+                ensureModal();
+                currentImages = images;
+                currentIndex = startIndex || 0;
+                modalTitle.textContent = title;
+                modal.classList.add('active');
+                document.body.classList.add('gallery-modal-open');
+                update();
+            };
+
+            const close = () => {
+                if (!modal) return;
+                modal.classList.remove('active');
+                document.body.classList.remove('gallery-modal-open');
+            };
+
+            return { open, close };
+        };
+
+        const galleryModal = createGalleryModalManager();
+
+        const availableProjectImages = async (project) => {
+            try {
+                const slug = project.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                const manifestPath = `images/projects/${slug}/manifest.json`;
+                const response = await fetch(manifestPath);
+                if (!response.ok) {
+                    throw new Error('Manifest not found');
+                }
+                const manifest = await response.json();
+                if (Array.isArray(manifest) && manifest.length > 0) {
+                    return manifest.map((item) => ({
+                        src: item.src ? `images/projects/${slug}/${item.src}` : '',
+                        alt: item.alt || `${project.name} image`,
+                        orientation: item.orientation || 'landscape'
+                    })).filter(img => img.src);
+                }
+                return manifest;
+            } catch (error) {
+                return [buildPlaceholderImage(project.name)];
+            }
+        };
+
+        const buildProjectGallery = (project) => {
+            const gallery = document.createElement('div');
+            gallery.className = 'project-gallery';
+
+            const prevBtn = document.createElement('button');
+            prevBtn.type = 'button';
+            prevBtn.className = 'gallery-nav gallery-nav--prev';
+            prevBtn.setAttribute('aria-label', `Previous screenshot for ${project.name}`);
+            prevBtn.innerHTML = '<span aria-hidden="true">⟵</span>';
+
+            const nextBtn = document.createElement('button');
+            nextBtn.type = 'button';
+            nextBtn.className = 'gallery-nav gallery-nav--next';
+            nextBtn.setAttribute('aria-label', `Next screenshot for ${project.name}`);
+            nextBtn.innerHTML = '<span aria-hidden="true">⟶</span>';
+
+            const frame = document.createElement('div');
+            frame.className = 'project-gallery-frame';
+
+            const img = document.createElement('img');
+            img.loading = 'lazy';
+            img.decoding = 'async';
+
+            const counter = document.createElement('span');
+            counter.className = 'project-gallery-counter';
+
+            let images = [buildPlaceholderImage(project.name)];
+            let currentIndex = 0;
+
+            const applyImage = (index) => {
+                const current = images[index];
+                img.src = current.src;
+                img.alt = current.alt || `${project.name} screenshot ${index + 1}`;
+                frame.dataset.orientation = current.orientation || 'landscape';
+                counter.textContent = `${index + 1}/${images.length}`;
+            };
+
+            applyImage(currentIndex);
+
+            const showNext = (direction) => {
+                if (images.length <= 1) return;
+                currentIndex = (currentIndex + direction + images.length) % images.length;
+                applyImage(currentIndex);
+            };
+
+            prevBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                showNext(-1);
+            });
+
+            nextBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                showNext(1);
+            });
+
+            const updateNavState = () => {
+                const single = images.length <= 1;
+                prevBtn.disabled = single;
+                nextBtn.disabled = single;
+                counter.hidden = single;
+            };
+
+            updateNavState();
+
+            frame.appendChild(img);
+            frame.appendChild(counter);
+
+            gallery.appendChild(prevBtn);
+            gallery.appendChild(frame);
+            gallery.appendChild(nextBtn);
+
+            frame.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (!images.length) return;
+                galleryModal.open(images, currentIndex, project.name);
+            });
+
+            availableProjectImages(project).then((remoteImages) => {
+                if (Array.isArray(remoteImages) && remoteImages.length) {
+                    images = remoteImages;
+                    currentIndex = 0;
+                    applyImage(currentIndex);
+                    updateNavState();
+                } else {
+                    gallery.remove();
+                }
+            }).catch(() => {
+                gallery.remove();
+            });
+
+            return gallery;
+        };
+
         const defaultTechIconSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>`;
 
         const customTechIcons = {
@@ -130,6 +367,9 @@ window.commands_projects_projects_js = {
             titleEl.className = 'project-title';
             titleEl.textContent = project.name;
             card.appendChild(titleEl);
+
+            const gallery = buildProjectGallery(project);
+            card.appendChild(gallery);
 
             // Description
             const desc = document.createElement('p');
