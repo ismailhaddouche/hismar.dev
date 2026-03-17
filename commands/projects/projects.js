@@ -8,7 +8,7 @@ window.commands_projects_projects_js = {
         const projectsData = [
             {
                 name: 'El Paredes',
-                description: 'Production-grade e-commerce for trailer sales with Redsys gateway (card + Bizum), Google OAuth sign-in, real-time Odoo ERP sync, and automated inventory management.',
+                description: 'Production-grade e-commerce for industrial vehicles and machinery featuring Redsys gateway (Card & Bizum), Google OAuth, and real-time Odoo ERP synchronization for automated inventory management.',
                 tech: ['Next.js', 'Firebase', 'Firestore', 'Redsys', 'Odoo', 'App Hosting'],
                 link: 'https://elparedes.es/',
                 linkLabel: 'elparedes.es',
@@ -16,7 +16,7 @@ window.commands_projects_projects_js = {
             },
             {
                 name: 'Disherio',
-                description: 'Open-source, self-hosted hospitality suite. QR ordering at the table (no app), real-time kitchen display, role-based POS (admin, kitchen, cashier), menu management with variants/allergens, local or cloud deployment.',
+                description: 'Open-source, self-hosted restaurant management suite. Featuring QR-code ordering, real-time Kitchen Display System (KDS), and a multi-role POS (Admin, Waitstaff, Kitchen, and Cashier). Supports menu management with variants/allergens and flexible local or cloud deployment.',
                 tech: ['TypeScript', 'Angular', 'Node.js', 'MongoDB', 'Socket.io', 'Docker'],
                 link: 'https://github.com/ismailhaddouche/disherio',
                 linkLabel: 'GitHub',

@@ -7,28 +7,25 @@ window.commands_education_education_js = {
 
         const educationData = [
             {
-                title: 'BSc in Computer Engineering',
-                institution: 'UNED — National Distance Education University',
-                dates: 'Feb 2026 — Present',
+                title: 'Bachelor of Science (BSc) in Computer Engineering',
+                institution: 'UNED — National Distance Education University | Feb 2026 — Present',
                 status: 'in-progress',
-                statusLabel: 'IN PROGRESS',
-                details: 'University-level training in software engineering, algorithms, computer architecture, and distributed systems.'
+                statusLabel: 'IN PROGRESS · LEVEL 6 EQF',
+                details: 'Focus: University-level training in software engineering, algorithms, computer architecture, and distributed systems.'
             },
             {
-                title: 'Higher Technician in Multiplatform Application Development (DAM)',
-                institution: 'ILERNA Online',
-                dates: 'Sept 2023 — Oct 2025',
+                title: 'Higher National Diploma (HND) in Multi-platform Software Development',
+                institution: 'ILERNA Online | Sept 2023 — Feb 2026',
                 status: 'completed',
-                statusLabel: 'COMPLETED',
-                details: 'Mobile development (Kotlin/Android), databases, object-oriented programming, computer systems, and development environments.'
+                statusLabel: 'COMPLETED · LEVEL 5 EQF',
+                details: 'Focus: Native mobile development (Kotlin/Android), cross-platform architectures, database management, and cloud-native environments.'
             },
             {
                 title: 'High School Diploma',
-                institution: 'IES Ricardo Ortega',
-                dates: '2004 — 2006',
+                institution: 'IES Ricardo Ortega | 2004 — 2006',
                 status: 'completed',
                 statusLabel: 'COMPLETED',
-                details: ''
+                details: 'Status: Completed'
             }
         ];
 

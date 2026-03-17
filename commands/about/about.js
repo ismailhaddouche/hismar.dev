@@ -43,10 +43,13 @@ window.commands_about_about_js = {
 
                 <h3 class="about-subtitle">My story</h3>
                 <p class="about-text">
-                    I did not start in tech. After several years in other industries I decided to bet everything on software: I completed the DAM program at ILERNA while building real products on the side. Today I maintain a production e-commerce store, an open-source hospitality platform, and two Android apps published on GitHub. I am now pursuing a Computer Engineering degree at UNED to continue deepening my craft.
+                    I didn’t start my career in tech. After several years in different industries, I decided to pivot and go all-in on software development. I completed my Higher National Diploma (HND) in Multi-platform Software Development at ILERNA while building real-world products on the side.
                 </p>
                 <p class="about-text">
-                    I work comfortably across the full stack and native mobile. I care about software that survives production, not demos running only on localhost.
+                    Today, I manage an e-commerce platform in production, an open-source restaurant management system, and two native Android apps. To further deepen my craft and master the fundamentals, I am currently pursuing a Bachelor of Science (BSc) in Computer Engineering at UNED.
+                </p>
+                <p class="about-text">
+                    I work comfortably across the full stack and native mobile. My focus is on building resilient software that thrives in production, not just demos that run on localhost.
                 </p>
 
                 <h3 class="about-subtitle">What sets me apart</h3>
