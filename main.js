@@ -102,8 +102,7 @@ class TerminalApp {
             hamburgerBtn: document.getElementById('hamburger-btn'),
             terminalMenu: document.getElementById('terminal-menu'),
             menuOverlay: document.getElementById('menu-overlay'),
-            closeBtn: document.querySelector('.control-btn.close'),
-            maximizeBtn: document.querySelector('.control-btn.maximize')
+            clearBtn: document.querySelector('.control-btn--clear')
         };
     }
 
@@ -145,8 +144,7 @@ class TerminalApp {
             hamburgerBtn,
             terminalMenu,
             menuOverlay,
-            closeBtn,
-            maximizeBtn
+            clearBtn
         } = this.dom;
 
         if (!input) return;
@@ -250,11 +248,8 @@ class TerminalApp {
             menuOverlay.addEventListener('click', () => toggleMobileMenu(false));
         }
 
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => window.location.reload());
-        }
-        if (maximizeBtn) {
-            maximizeBtn.addEventListener('click', () => this.executeCommand('clear'));
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => this.executeCommand('clear'));
         }
 
         // Esc: skip typing / close menu

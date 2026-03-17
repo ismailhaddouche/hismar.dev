@@ -15,8 +15,7 @@
     gap: 16px;
     margin-top: 16px;
     position: relative;
-    padding-left: 1.5rem;
-    border-left: 2px dashed rgba(255, 255, 255, 0.1);
+    padding-left: 0;
 }
 
 .experience-card {
@@ -31,41 +30,9 @@
     transition: all 0.3s ease;
 }
 
-.experience-card::before {
-    content: '';
-    position: absolute;
-    left: -1.5rem;
-    top: 1.5rem;
-    width: 1rem;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateX(-1px);
-}
-
+.experience-card::before,
 .experience-card::after {
-    content: '';
-    position: absolute;
-    left: -1.75rem;
-    top: 1.25rem;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: var(--terminal-light-green);
-    box-shadow: 0 0 10px var(--terminal-light-green);
-    transform: translateX(1px);
-}
-
-.experience-card.past::after {
-    background: #94a3b8;
-    box-shadow: none;
-}
-
-.experience-card.current {
-    border-left: 3px solid var(--terminal-light-green);
-}
-
-.experience-card.past {
-    border-left: 3px solid var(--terminal-dark-green);
+    display: none;
 }
 
 .experience-card:hover {

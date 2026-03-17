@@ -154,10 +154,10 @@
 }
 
 .project-gallery-modal__frame img {
-    width: 100%;
+    width: auto;
     height: auto;
     max-width: min(88vw, 960px);
-    max-height: 72vh;
+    max-height: 78vh;
     object-fit: contain;
     border-radius: 10px;
     background: #010302;
@@ -167,7 +167,7 @@
 
 .project-gallery-modal__frame img[data-orientation="portrait"] {
     max-width: min(70vw, 520px);
-    max-height: 80vh;
+    max-height: 82vh;
 }
 
 .project-gallery-modal__nav {

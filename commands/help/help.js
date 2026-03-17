@@ -5,68 +5,58 @@ window.commands_help_help_js = {
     async execute(terminal) {
         const { container, content } = terminal.createCommandContainer('help');
 
+        const groups = [
+            {
+                title: '<i class="fa-solid fa-terminal" aria-hidden="true"></i> Essentials',
+                commands: [
+                    { cmd: 'help', desc: 'list every available command' },
+                    { cmd: 'about', desc: 'personal background and contact' },
+                    { cmd: 'experience', desc: 'professional journey' },
+                    { cmd: 'projects', desc: 'production & open-source work' },
+                    { cmd: 'skills', desc: 'complete technology stack' },
+                    { cmd: 'education', desc: 'academic path' }
+                ]
+            },
+            {
+                title: '<i class="fa-solid fa-rocket" aria-hidden="true"></i> Extras',
+                commands: [
+                    { cmd: 'cv', desc: 'download latest CV PDF' },
+                    { cmd: 'tips', desc: 'workflow shortcuts & keyboard tricks', isTip: true },
+                    { cmd: 'hesystem', desc: 'system status & retro terminal info' }
+                ]
+            }
+        ];
+
         const helpSection = document.createElement('div');
         helpSection.innerHTML = `
             <h2 class="section-title">Command Guide</h2>
             <div class="help-content">
-                <div class="command-group">
-                    <h3 class="group-title">📋 Information</h3>
-                    <div class="commands-grid">
-                        <div class="command-item" data-cmd="about">
-                            <span class="command-name">about</span>
-                            <span class="command-desc">Who I am, background, and contact</span>
+                ${groups.map(group => `
+                    <div class="command-group">
+                        <h3 class="group-title">${group.title}</h3>
+                        <div class="commands-grid">
+                            ${group.commands.filter(item => !item.isTip).map(item => `
+                                <div class="command-item" data-cmd="${item.cmd}">
+                                    <span class="command-name">${item.cmd}</span>
+                                    <span class="command-desc">${item.desc}</span>
+                                </div>
+                            `).join('')}
                         </div>
-                        <div class="command-item" data-cmd="experience">
-                            <span class="command-name">experience</span>
-                            <span class="command-desc">Professional trajectory and work history</span>
-                        </div>
-                        <div class="command-item" data-cmd="skills">
-                            <span class="command-name">skills</span>
-                            <span class="command-desc">Complete technology stack</span>
-                        </div>
-                        <div class="command-item" data-cmd="projects">
-                            <span class="command-name">projects</span>
-                            <span class="command-desc">Production and open-source projects</span>
-                        </div>
-                        <div class="command-item" data-cmd="education">
-                            <span class="command-name">education</span>
-                            <span class="command-desc">Academic background (DAM + UNED)</span>
-                        </div>
-                        <div class="command-item" data-cmd="cv">
-                            <span class="command-name">cv</span>
-                            <span class="command-desc">Download the CV in PDF</span>
-                        </div>
+                        ${group.commands.some(item => item.isTip) ? `
+                            <div class="help-tips">
+                                <h4 class="group-title"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Tips</h4>
+                                <ul class="tips-list">
+                                    <li>help → list every available command</li>
+                                    <li>tips → workflow shortcuts & keyboard tricks</li>
+                                    <li>hesystem → retro terminal status panel</li>
+                                </ul>
+                            </div>
+                        ` : ''}
                     </div>
-                </div>
-
-                <div class="command-group">
-                    <h3 class="group-title">⚙️ System</h3>
-                    <div class="commands-grid">
-                        <div class="command-item" data-cmd="help">
-                            <span class="command-name">help</span>
-                            <span class="command-desc">Show this guide</span>
-                        </div>
-                        <div class="command-item" data-cmd="clear">
-                            <span class="command-name">clear</span>
-                            <span class="command-desc">Clear the console</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="help-tips">
-                    <h3 class="group-title">💡 Tips</h3>
-                    <ul class="tips-list">
-                        <li>Click any command above to run it directly</li>
-                        <li>Use <kbd>Tab</kbd> to autocomplete while typing</li>
-                        <li>Navigate command history with <kbd>↑</kbd> / <kbd>↓</kbd></li>
-                        <li>Press <kbd>Esc</kbd> to skip the typing animations</li>
-                        <li>Hover over the sidebar animations — they are interactive</li>
-                    </ul>
-                </div>
-
+                `).join('')}
                 <div class="help-footer">
-                    <p>// Built with 🧠 and far too much coffee in Murcia, Spain</p>
-                    <p>// If you made it here, you already speak terminal. That makes us peers.</p>
+                    <p>// Updated for the retro terminal 2.0 experience</p>
+                    <p>// Jump between commands with ↑/↓, autocomplete with Tab</p>
                 </div>
             </div>
         `;

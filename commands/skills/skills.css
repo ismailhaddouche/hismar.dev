@@ -9,12 +9,13 @@
     padding: 16px 20px;
     background: rgba(0, 255, 65, 0.02);
     border-radius: 6px;
-    border-left: 3px solid var(--terminal-dark-green);
-    transition: border-color 0.3s;
+    border: 1px solid rgba(0, 255, 65, 0.08);
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .skill-category:hover {
-    border-left-color: var(--terminal-light-green);
+    border-color: rgba(0, 255, 65, 0.2);
+    box-shadow: 0 6px 18px rgba(0, 255, 65, 0.08);
 }
 
 .skill-category-title {
