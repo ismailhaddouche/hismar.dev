@@ -264,6 +264,7 @@ window.commands_projects_projects_js = {
             gallery.appendChild(nextBtn);
 
             frame.addEventListener('click', (event) => {
+                event.preventDefault();
                 event.stopPropagation();
                 if (!images.length) return;
                 galleryModal.open(images, currentIndex, project.name);
@@ -361,9 +362,18 @@ window.commands_projects_projects_js = {
             card.setAttribute('role', 'link');
             card.setAttribute('tabindex', '0');
             card.setAttribute('aria-label', `${project.name}: ${project.description}`);
-            const openLink = () => window.open(project.link, '_blank', 'noopener,noreferrer');
-            card.onclick = openLink;
-            card.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLink(); } };
+            const openLink = (event) => {
+                if (event) {
+                    const guardTarget = event.target;
+                    if (guardTarget && (guardTarget.closest('.project-gallery-frame') || guardTarget.closest('.gallery-nav'))) {
+                        event.preventDefault();
+                        return;
+                    }
+                }
+                window.open(project.link, '_blank', 'noopener,noreferrer');
+            };
+            card.addEventListener('click', openLink);
+            card.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLink(e); } };
 
             // Badge
             const badge = document.createElement('span');

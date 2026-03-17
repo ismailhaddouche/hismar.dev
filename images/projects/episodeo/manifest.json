@@ -1,21 +1,21 @@
 [
     {
-        "src": "captura_main.jpeg",
+        "src": "captura_main.webp",
         "alt": "Episodeo dashboard with watching/pending lists",
         "orientation": "portrait"
     },
     {
-        "src": "captura_listado_busqueda.jpeg",
+        "src": "captura_listado_busqueda.webp",
         "alt": "Episodeo TMDB search results list",
         "orientation": "portrait"
     },
     {
-        "src": "captura_info_serie.jpeg",
+        "src": "captura_info_serie.webp",
         "alt": "Episodeo series detail view",
         "orientation": "portrait"
     },
     {
-        "src": "captura_listado_lista_seguidas.jpeg",
+        "src": "captura_listado_lista_seguidas.webp",
         "alt": "Episodeo followed lists screen",
         "orientation": "portrait"
     }

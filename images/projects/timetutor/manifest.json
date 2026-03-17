@@ -1,16 +1,16 @@
 [
     {
-        "src": "inicio_registro_cuenta_profesor_alumno.jpeg",
+        "src": "inicio_registro_cuenta_profesor_alumno.webp",
         "alt": "TimeTutor login and role selection screen",
         "orientation": "portrait"
     },
     {
-        "src": "edicion_creacion_clase_profesor.jpeg",
+        "src": "edicion_creacion_clase_profesor.webp",
         "alt": "TimeTutor class editing modal for professors",
         "orientation": "portrait"
     },
     {
-        "src": "vista_detallada_calendario_facturas_alumno.jpeg",
+        "src": "vista_detallada_calendario_facturas_alumno.webp",
         "alt": "TimeTutor billing history view for students",
         "orientation": "portrait"
     }

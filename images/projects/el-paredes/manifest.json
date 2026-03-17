@@ -1,26 +1,26 @@
 [
     {
-        "src": "dashboard_global.jpg",
+        "src": "dashboard_global.webp",
         "alt": "El Paredes admin dashboard with sales KPIs",
         "orientation": "landscape"
     },
     {
-        "src": "dashboard_sección_productos.jpg",
+        "src": "dashboard_sección_productos.webp",
         "alt": "El Paredes product management module",
         "orientation": "landscape"
     },
     {
-        "src": "vista_de_producto.jpg",
+        "src": "vista_de_producto.webp",
         "alt": "El Paredes industrial product detail page",
-        "orientation": "portrait"
+        "orientation": "landscape"
     },
     {
-        "src": "catalogo_de_sección.jpg",
+        "src": "catalogo_de_sección.webp",
         "alt": "El Paredes catalog section with filters",
         "orientation": "landscape"
     },
     {
-        "src": "vista_perfil_cliente.jpg",
+        "src": "vista_perfil_cliente.webp",
         "alt": "El Paredes customer profile view",
         "orientation": "landscape"
     }
