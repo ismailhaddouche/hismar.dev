@@ -39,9 +39,14 @@
     <div class="terminal">
         <div class="terminal-header">
             <div class="header-brand">
-                <span class="terminal-title">hismar.dev</span>
+                <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu" aria-expanded="false" aria-controls="terminal-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
-            <nav class="header-menu" aria-label="Primary">
+            <nav class="header-menu terminal-menu" id="terminal-menu" aria-label="Primary">
+                <div class="terminal-title-mobile">hismar.dev</div>
                 <a href="#about" class="menu-item" data-command="about">/about</a>
                 <a href="#experience" class="menu-item" data-command="experience">/experience</a>
                 <a href="#skills" class="menu-item" data-command="skills">/skills</a>
@@ -49,6 +54,13 @@
                 <a href="#education" class="menu-item" data-command="education">/education</a>
                 <a href="#cv" class="menu-item" data-command="cv">/cv</a>
                 <a href="#help" class="menu-item" data-command="help">/help</a>
+                <div class="social-links">
+                    <a href="https://github.com/ismailhaddouche" target="_blank" rel="noopener noreferrer"
+                        class="social-link">GitHub</a>
+                    <a href="https://www.linkedin.com/in/ismail-haddouche-rhali-194305334" target="_blank"
+                        rel="noopener noreferrer" class="social-link">LinkedIn</a>
+                    <a href="mailto:ismailhaddoucherhali@gmail.com" class="social-link">Email</a>
+                </div>
             </nav>
             <div class="header-right">
                 <div class="desktop-social-links">
@@ -86,6 +98,8 @@
                 </div>
             </div>
         </div>
+
+        <div class="menu-overlay" id="menu-overlay" aria-hidden="true"></div>
 
         <div class="terminal-body">
             <div class="console-output" id="console-output"></div>

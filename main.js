@@ -99,6 +99,9 @@ class TerminalApp {
             consoleOutput: document.getElementById('console-output'),
             input: document.getElementById('command-input'),
             menuItems: document.querySelectorAll('.menu-item'),
+            hamburgerBtn: document.getElementById('hamburger-btn'),
+            terminalMenu: document.getElementById('terminal-menu'),
+            menuOverlay: document.getElementById('menu-overlay'),
             closeBtn: document.querySelector('.control-btn.close'),
             maximizeBtn: document.querySelector('.control-btn.maximize')
         };
@@ -139,11 +142,27 @@ class TerminalApp {
         const {
             input,
             menuItems,
+            hamburgerBtn,
+            terminalMenu,
+            menuOverlay,
             closeBtn,
             maximizeBtn
         } = this.dom;
 
         if (!input) return;
+
+        const toggleMobileMenu = (force) => {
+            if (!hamburgerBtn || !terminalMenu || !menuOverlay) return;
+            const shouldOpen = typeof force === 'boolean'
+                ? force
+                : !terminalMenu.classList.contains('active');
+
+            terminalMenu.classList.toggle('active', shouldOpen);
+            menuOverlay.classList.toggle('active', shouldOpen);
+            hamburgerBtn.setAttribute('aria-expanded', String(shouldOpen));
+            menuOverlay.setAttribute('aria-hidden', String(!shouldOpen));
+            document.body.classList.toggle('no-scroll', shouldOpen);
+        };
 
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !this.isTyping) {
@@ -205,8 +224,18 @@ class TerminalApp {
                 e.preventDefault();
                 const command = item.dataset.command || item.getAttribute('href').substring(1);
                 this.executeCommand(command);
+                if (terminalMenu && terminalMenu.classList.contains('active')) {
+                    toggleMobileMenu(false);
+                }
             });
         });
+
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', () => toggleMobileMenu());
+        }
+        if (menuOverlay) {
+            menuOverlay.addEventListener('click', () => toggleMobileMenu(false));
+        }
 
         if (closeBtn) {
             closeBtn.addEventListener('click', () => window.location.reload());
@@ -220,6 +249,9 @@ class TerminalApp {
             if (e.key === 'Escape') {
                 if (this.isTyping) {
                     this.skipTyping = true;
+                }
+                if (terminalMenu && terminalMenu.classList.contains('active')) {
+                    toggleMobileMenu(false);
                 }
             }
         });

@@ -10,6 +10,9 @@
     --terminal-light-green: #39ff14;
     --terminal-dark-green: #00cc33;
     --terminal-border: #252c38;
+    --terminal-frame-outer: #2df0b8;
+    --terminal-frame-inner: #0a1d16;
+    --terminal-input-frame: rgba(45, 240, 184, 0.4);
     --text-color: #b8e0b8;
     --text-muted: #6a8a6a;
     --cursor-color: #00ff41;
@@ -40,6 +43,11 @@ body {
     overflow: hidden;
 }
 
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
 /* Text selection */
 ::selection {
     background: var(--terminal-green);
@@ -53,11 +61,12 @@ body {
 .terminal {
     width: 100%;
     background: var(--terminal-bg);
-    border: 1px solid var(--terminal-border);
+    border: 2px solid var(--terminal-frame-outer);
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 40px rgba(0, 255, 65, 0.08),
-                inset 0 0 80px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 25px rgba(45, 240, 184, 0.25),
+                0 0 45px rgba(0, 255, 65, 0.15),
+                inset 0 0 60px rgba(0, 0, 0, 0.35);
     position: relative;
 }
 
@@ -100,6 +109,45 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    background: none;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.hamburger-btn span {
+    width: 18px;
+    height: 2px;
+    background: var(--terminal-light-green);
+    display: block;
+    border-radius: 999px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-btn[aria-expanded="true"] {
+    background: rgba(0, 255, 65, 0.08);
+    border-color: var(--terminal-light-green);
+}
+
+.hamburger-btn[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger-btn[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-btn[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
 }
 
 .terminal-title {
@@ -376,11 +424,17 @@ body {
 
 .input-line {
     padding: 12px var(--console-padding);
-    border-top: 1px solid var(--terminal-border);
+    border-top: 1px solid var(--terminal-frame-outer);
+    border-left: 1px solid var(--terminal-frame-outer);
+    border-right: 1px solid var(--terminal-frame-outer);
+    border-bottom: 2px solid var(--terminal-frame-outer);
     display: flex;
     align-items: center;
-    background: rgba(0, 5, 15, 0.4);
+    background: linear-gradient(180deg, rgba(4, 34, 22, 0.65), rgba(1, 17, 12, 0.9));
+    box-shadow: inset 0 0 20px rgba(45, 240, 184, 0.08);
     flex-shrink: 0;
+    border-radius: 8px 8px 12px 12px;
+    margin: 0 var(--console-padding) var(--console-padding);
 }
 
 .prompt {
@@ -394,13 +448,16 @@ body {
 
 #command-input {
     flex: 1;
-    background: transparent;
-    border: none;
+    background: var(--terminal-frame-inner);
+    border: 1px solid var(--terminal-input-frame);
+    border-radius: 6px;
+    padding: 10px 14px;
     color: var(--terminal-light-green);
     font-family: inherit;
     font-size: clamp(13px, 2.5vw, 14px);
     outline: none;
     caret-color: var(--cursor-color);
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.6), 0 0 12px rgba(45, 240, 184, 0.2);
 }
 
 #command-input::placeholder {
