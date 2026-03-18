@@ -73,6 +73,8 @@ window.CharacterBase = {
             const focus = Math.min(Math.max(mood.focus || 0, 0), 1);
             const gaze = mood.gaze || { x: smx, y: smy };
             const browLift = typeof mood.browLift === 'number' ? mood.browLift : focus * 3 - 1.5;
+            const browCurve = typeof mood.browCurve === 'number' ? mood.browCurve : 8;
+            const browFurrow = typeof mood.browFurrow === 'number' ? mood.browFurrow : 0;
             const sweatLevel = Math.max(0, Math.min(1, mood.sweat || 0));
 
             // Glow aura
@@ -191,8 +193,25 @@ window.CharacterBase = {
             }
             // Eyebrows
             ctx.strokeStyle = C.hairDk; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(lex - 8, ey - 10 + browLift); ctx.quadraticCurveTo(lex, ey - 14 - browLift * 0.2, lex + 8, ey - 10 + browLift); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(rex - 8, ey - 10 + browLift); ctx.quadraticCurveTo(rex, ey - 14 - browLift * 0.2, rex + 8, ey - 10 + browLift); ctx.stroke();
+            const browMidOffset = browFurrow * 2;
+            ctx.beginPath();
+            ctx.moveTo(lex - 8, ey - 10 + browLift);
+            ctx.quadraticCurveTo(
+                lex - browMidOffset,
+                ey - browCurve - browLift * 0.2,
+                lex + 8,
+                ey - 10 + browLift
+            );
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(rex - 8, ey - 10 + browLift);
+            ctx.quadraticCurveTo(
+                rex + browMidOffset,
+                ey - browCurve - browLift * 0.2,
+                rex + 8,
+                ey - 10 + browLift
+            );
+            ctx.stroke();
 
             if (sweatLevel > 0.05) {
                 ctx.save();

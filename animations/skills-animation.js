@@ -1,69 +1,213 @@
 /**
- * ANIMACIÓN SKILLS - Matrix rain de fondo + bursts de símbolos
- * Usa CharacterBase para el personaje compartido.
+ * ANIMACIÓN SKILLS - Estudio concentrado con libro de Java.
+ * El personaje sólo levanta la mirada hacia el cursor si detecta movimiento o clic.
  */
 window.animations_skills_animation_js = {
     init(container) {
-        const W = 200, H = 200;
-        const cols = 18;
-        const drops = Array.from({ length: cols }, (_, i) => ({
-            x: i * (W / cols),
-            y: Math.random() * -H,
-            speed: 0.3 + Math.random() * 1.2,
-            chars: Array.from({ length: 4 + Math.random() * 6 }, () => String.fromCharCode(48 + Math.round(Math.random())))
-        }));
-        let bursts = [];
+        const W = 200;
+        const ATTENTION_MAX = 140;
+        let attentionTimer = 0;
+        let prevPointer = null;
+
+        const markAttention = () => {
+            attentionTimer = ATTENTION_MAX;
+        };
 
         window.CharacterBase.init(container, {
-            onClick({ W }) {
-                bursts = [];
-                for (let i = 0; i < 14; i++) {
-                    const a = Math.random() * Math.PI * 2;
-                    const sp = 1.5 + Math.random() * 3.5;
-                    bursts.push({
-                        x: W / 2, y: 78, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
-                        life: 1, dec: 0.013 + Math.random() * 0.015,
-                        ch: String.fromCharCode(48 + Math.round(Math.random()))
-                    });
+            extraColors: {
+                bg: '#07090f',
+                shirt: '#1a2433',
+                shirtDk: '#121925',
+                neon: '#f7c65d',
+                neonDk: '#f08c3b'
+            },
+            onClick() {
+                markAttention();
+            },
+            onFrame({ mx, my }) {
+                if (prevPointer) {
+                    const dx = mx - prevPointer.x;
+                    const dy = my - prevPointer.y;
+                    if (Math.abs(dx) > 0.8 || Math.abs(dy) > 0.8) {
+                        markAttention();
+                    }
+                }
+                prevPointer = { x: mx, y: my };
+                if (attentionTimer > 0) {
+                    attentionTimer--;
                 }
             },
             drawBefore({ ctx, W, H, frame }) {
-                ctx.font = '10px monospace';
-                ctx.textAlign = 'center';
-                drops.forEach(d => {
-                    d.y += d.speed;
-                    if (d.y > H + d.chars.length * 10) {
-                        d.y = Math.random() * -50 - d.chars.length * 10;
-                        d.speed = 0.3 + Math.random() * 1.2;
-                    }
-                    if (Math.random() < 0.04) {
-                        d.chars[Math.floor(Math.random() * d.chars.length)] = String.fromCharCode(48 + Math.round(Math.random()));
-                    }
-                    d.chars.forEach((ch, idx) => {
-                        const cy = d.y - idx * 10;
-                        if (cy > 0 && cy < H + 10) {
-                            ctx.fillStyle = idx === 0 ? '#fff' : (idx < 2 ? '#39ff14' : '#1b8c0b');
-                            ctx.globalAlpha = Math.max(0, 1 - (idx / d.chars.length));
-                            ctx.fillText(ch, d.x + (W / cols) / 2, cy);
-                        }
-                    });
-                });
-                ctx.globalAlpha = 1;
-                ctx.textAlign = 'start';
+                drawStudyBackdrop(ctx, W, H, frame);
             },
-            drawAfter({ ctx, C }) {
-                bursts = bursts.filter(b => b.life > 0);
-                bursts.forEach(b => {
-                    b.x += b.vx; b.y += b.vy;
-                    b.vy += 0.04; b.vx *= 0.98;
-                    b.life -= b.dec;
-                    ctx.save(); ctx.globalAlpha = b.life;
-                    ctx.fillStyle = C.neon;
-                    ctx.font = "11px 'Courier New', monospace";
-                    ctx.fillText(b.ch, b.x, b.y);
-                    ctx.restore();
-                });
+            drawAfter(state) {
+                const focusBlend = Math.max(0, Math.min(1, attentionTimer / ATTENTION_MAX));
+                drawBookScene(state, focusBlend);
+            },
+            getMood({ smx, smy, W, H }) {
+                const focusBlend = Math.max(0, Math.min(1, attentionTimer / ATTENTION_MAX));
+                if (focusBlend > 0) {
+                    return {
+                        focus: 0.65,
+                        gaze: { x: smx, y: smy },
+                        browLift: -1,
+                        browCurve: 6,
+                        browFurrow: 0.7
+                    };
+                }
+                return {
+                    focus: 0.92,
+                    gaze: { x: W / 2, y: 125 },
+                    browLift: -3.5,
+                    browCurve: 11,
+                    browFurrow: 1.4
+                };
             }
         });
     }
 };
+
+function drawStudyBackdrop(ctx, W, H, frame) {
+    ctx.save();
+    const gradient = ctx.createLinearGradient(0, 0, 0, H);
+    gradient.addColorStop(0, '#05060b');
+    gradient.addColorStop(1, '#0f1724');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.strokeStyle = 'rgba(247,198,93,0.08)';
+    ctx.lineWidth = 1;
+    const offset = (frame * 0.7) % 20;
+    for (let y = -20; y < H + 20; y += 14) {
+        const lineY = y + offset;
+        ctx.beginPath();
+        ctx.moveTo(24, lineY);
+        ctx.lineTo(W - 24, lineY);
+        ctx.stroke();
+    }
+
+    ctx.globalAlpha = 0.12;
+    ctx.beginPath();
+    ctx.arc(W / 2, 210, 140, 0, Math.PI, true);
+    ctx.fillStyle = '#f7c65d';
+    ctx.fill();
+    ctx.restore();
+}
+
+function drawBookScene(state, focusBlend) {
+    const { ctx, W, frame, tiltX, tiltY, C } = state;
+    const cx = W / 2;
+    const cy = 80;
+    const ox = tiltX * 0.5;
+    const oy = tiltY * 0.3;
+    const lookBlend = Math.max(0, Math.min(1, focusBlend));
+    const readBlend = 1 - lookBlend;
+    const bob = Math.sin(frame / 40) * 1.4 * readBlend;
+
+    const book = {
+        w: 96,
+        h: 60,
+        x: cx + ox - 48,
+        y: cy + oy + 36 + bob + lookBlend * 4
+    };
+
+    drawBook(ctx, book, readBlend);
+
+    const shouldersY = cy + oy + 30;
+    const leftShoulder = { x: cx + ox - 36, y: shouldersY };
+    const rightShoulder = { x: cx + ox + 36, y: shouldersY };
+    const tension = 0.35 + readBlend * 0.5;
+
+    drawReadingArm(
+        ctx,
+        C,
+        leftShoulder,
+        {
+            x: leftShoulder.x - 28 * tension,
+            y: book.y + book.h * (0.28 + 0.12 * readBlend)
+        },
+        {
+            x: book.x + 16,
+            y: book.y + book.h - 8
+        }
+    );
+
+    drawReadingArm(
+        ctx,
+        C,
+        rightShoulder,
+        {
+            x: rightShoulder.x + 28 * tension,
+            y: book.y + book.h * (0.28 + 0.12 * readBlend)
+        },
+        {
+            x: book.x + book.w - 16,
+            y: book.y + book.h - 8
+        }
+    );
+}
+
+function drawBook(ctx, book, readBlend) {
+    ctx.save();
+    const { x, y, w, h } = book;
+    const gradient = ctx.createLinearGradient(x, y, x, y + h);
+    gradient.addColorStop(0, '#1e2f44');
+    gradient.addColorStop(1, '#0f1724');
+    ctx.fillStyle = gradient;
+    roundedRect(ctx, x, y, w, h, 10);
+    ctx.fill();
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(247,198,93,0.95)';
+    roundedRect(ctx, x, y, w, h, 10);
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.beginPath();
+    ctx.moveTo(x + w / 2, y + 8);
+    ctx.lineTo(x + w / 2, y + h - 8);
+    ctx.stroke();
+
+    ctx.fillStyle = '#f7c65d';
+    ctx.font = 'bold 18px "Space Grotesk", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('JAVA', x + w / 2, y + h / 2 + 2);
+
+    ctx.globalAlpha = 0.18 + readBlend * 0.3;
+    ctx.fillStyle = '#fce19a';
+    ctx.fillRect(x + 8, y + h - 6, w - 16, 4);
+    ctx.restore();
+}
+
+function drawReadingArm(ctx, C, shoulder, elbow, hand) {
+    ctx.save();
+    ctx.strokeStyle = C.skin;
+    ctx.lineWidth = 9;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(shoulder.x, shoulder.y);
+    ctx.quadraticCurveTo(elbow.x, elbow.y, hand.x, hand.y);
+    ctx.stroke();
+
+    ctx.fillStyle = C.skin;
+    ctx.beginPath();
+    ctx.ellipse(hand.x, hand.y, 6.2, 5.3, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+}
+
+function roundedRect(ctx, x, y, width, height, radius) {
+    const r = Math.min(radius, width / 2, height / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + width - r, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+    ctx.lineTo(x + width, y + height - r);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+    ctx.lineTo(x + r, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+}
