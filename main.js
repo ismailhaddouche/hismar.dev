@@ -305,6 +305,7 @@ class TerminalApp {
             { text: `  projects   → production & open-source work`, type: 'cmd', cmd: 'projects' },
             { text: `  skills     → complete technology stack`, type: 'cmd', cmd: 'skills' },
             { text: `  education  → academic path`, type: 'cmd', cmd: 'education' },
+            { text: `  cv         → download résumé`, type: 'cmd', cmd: 'cv' },
             { text: ``, type: 'blank' },
             { text: `// Tab: autocomplete  ·  ↑↓: command history`, type: 'comment' },
             { text: ``, type: 'blank' }

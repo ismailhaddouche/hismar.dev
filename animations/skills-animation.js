@@ -188,22 +188,23 @@ function drawBook(ctx, book, readBlend) {
     ctx.fill();
     ctx.stroke();
 
-    // Pages
+    // Pages (white wedge pointing upward with flat crest)
     ctx.fillStyle = '#f5e4c3';
     ctx.beginPath();
-    ctx.moveTo(spine, y + h + spread - 3);
-    ctx.lineTo(spine - 10, y + 12);
-    ctx.lineTo(spine, y + 2);
-    ctx.lineTo(spine + 10, y + 12);
+    ctx.moveTo(spine, y + h - 4);
+    ctx.lineTo(spine - 14, y + 14);
+    ctx.lineTo(spine - 4, y - 6);
+    ctx.lineTo(spine + 4, y - 6);
+    ctx.lineTo(spine + 14, y + 14);
     ctx.closePath();
     ctx.fill();
 
-    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+    ctx.lineWidth = 1.1;
     for (let i = -1; i <= 1; i++) {
         ctx.beginPath();
-        ctx.moveTo(spine + i * 3, y + h + spread - 3);
-        ctx.lineTo(spine + i * 4, y + 12);
+        ctx.moveTo(spine + i * 3, y + h - 4);
+        ctx.lineTo(spine + i * 4, y + 10);
         ctx.stroke();
     }
 
@@ -212,20 +213,13 @@ function drawBook(ctx, book, readBlend) {
     ctx.fillRect(spine - 6, y + h / 3, 12, 6);
     ctx.fillRect(spine - 6, y + h / 3 + 13, 12, 5);
 
-    // Title badge
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px "Space Grotesk", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('JAVA', spine, y + h / 1.8);
-
     ctx.globalAlpha = 0.25;
     ctx.fillStyle = '#fce19a';
     ctx.beginPath();
-    ctx.moveTo(x + 10, y + h - 12);
-    ctx.lineTo(spine - 8, y + h + spread - 8);
-    ctx.quadraticCurveTo(spine - 4, y + h + spread - 2, spine - 12, y + h - 18);
-    ctx.lineTo(x + 8, y + h - 20);
+    ctx.moveTo(x + 12, y + h - 22);
+    ctx.lineTo(spine - 10, y + h - 8);
+    ctx.quadraticCurveTo(spine - 6, y + h - 2, spine - 16, y + h - 26);
+    ctx.lineTo(x + 10, y + h - 34);
     ctx.closePath();
     ctx.fill();
     ctx.restore();
