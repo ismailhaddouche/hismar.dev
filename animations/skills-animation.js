@@ -108,13 +108,13 @@ function drawBookScene(state, focusBlend) {
         w: 78,
         h: 46,
         x: cx + ox - 39,
-        y: cy + oy + 34 + bob + lookBlend * 3
+        y: cy + oy + 42 + bob + lookBlend * 3
     };
 
-    const shouldersY = cy + oy + 18;
+    const shouldersY = cy + oy + 32;
     const leftShoulder = { x: cx + ox - 32, y: shouldersY };
     const rightShoulder = { x: cx + ox + 32, y: shouldersY };
-    const elbowLift = book.y + book.h * (0.32 + 0.08 * readBlend);
+    const elbowLift = shouldersY + (book.y - shouldersY) * (0.55 + 0.15 * readBlend);
     const elbowReach = 18 + readBlend * 8;
 
     drawReadingArm(
