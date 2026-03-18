@@ -105,30 +105,29 @@ function drawBookScene(state, focusBlend) {
     const bob = Math.sin(frame / 40) * 1.4 * readBlend;
 
     const book = {
-        w: 96,
-        h: 60,
-        x: cx + ox - 48,
-        y: cy + oy + 36 + bob + lookBlend * 4
+        w: 78,
+        h: 46,
+        x: cx + ox - 39,
+        y: cy + oy + 34 + bob + lookBlend * 3
     };
 
-    drawBook(ctx, book, readBlend);
-
-    const shouldersY = cy + oy + 30;
-    const leftShoulder = { x: cx + ox - 36, y: shouldersY };
-    const rightShoulder = { x: cx + ox + 36, y: shouldersY };
-    const tension = 0.35 + readBlend * 0.5;
+    const shouldersY = cy + oy + 18;
+    const leftShoulder = { x: cx + ox - 32, y: shouldersY };
+    const rightShoulder = { x: cx + ox + 32, y: shouldersY };
+    const elbowLift = book.y + book.h * (0.32 + 0.08 * readBlend);
+    const elbowReach = 18 + readBlend * 8;
 
     drawReadingArm(
         ctx,
         C,
         leftShoulder,
         {
-            x: leftShoulder.x - 28 * tension,
-            y: book.y + book.h * (0.28 + 0.12 * readBlend)
+            x: leftShoulder.x - elbowReach,
+            y: elbowLift
         },
         {
-            x: book.x + 16,
-            y: book.y + book.h - 8
+            x: book.x + 13,
+            y: book.y + book.h - 6
         }
     );
 
@@ -137,14 +136,16 @@ function drawBookScene(state, focusBlend) {
         C,
         rightShoulder,
         {
-            x: rightShoulder.x + 28 * tension,
-            y: book.y + book.h * (0.28 + 0.12 * readBlend)
+            x: rightShoulder.x + elbowReach,
+            y: elbowLift
         },
         {
-            x: book.x + book.w - 16,
-            y: book.y + book.h - 8
+            x: book.x + book.w - 13,
+            y: book.y + book.h - 6
         }
     );
+
+    drawBook(ctx, book, readBlend);
 }
 
 function drawBook(ctx, book, readBlend) {
@@ -192,7 +193,12 @@ function drawReadingArm(ctx, C, shoulder, elbow, hand) {
 
     ctx.fillStyle = C.skin;
     ctx.beginPath();
-    ctx.ellipse(hand.x, hand.y, 6.2, 5.3, 0, 0, Math.PI * 2);
+    ctx.ellipse(hand.x, hand.y, 6, 5.1, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = C.shirt;
+    ctx.beginPath();
+    ctx.arc(shoulder.x, shoulder.y, 6, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 }
