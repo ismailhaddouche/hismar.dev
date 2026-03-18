@@ -67,9 +67,11 @@ window.CharacterBase = {
         };
 
         // ── DRAW CHARACTER ──
-        const drawCharacter = () => {
+        const drawCharacter = (mood = {}) => {
             const cx = W / 2, cy = 80;
             const ox = tiltX * 0.5, oy = tiltY * 0.3;
+            const focus = Math.min(Math.max(mood.focus || 0, 0), 1);
+            const gaze = mood.gaze || { x: smx, y: smy };
 
             // Glow aura
             const gl = ctx.createRadialGradient(cx, cy - 5, 10, cx, cy - 5, 90);
@@ -158,14 +160,15 @@ window.CharacterBase = {
 
             // Eyes
             const lex = cx + ox - 12, rex = cx + ox + 12, ey = cy + oy - 5;
-            const dx = smx - cx, dy = smy - cy;
+            const dx = gaze.x - cx, dy = gaze.y - cy;
             const d = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
             const px = (dx / d) * 4, py = (dy / d) * 3;
+            const eyeOpen = Math.max(2.2, 5.5 - focus * 2.7);
 
             if (!blink) {
-                ctx.beginPath(); ctx.ellipse(lex, ey, 7.5, 5.5, 0, 0, Math.PI * 2);
+                ctx.beginPath(); ctx.ellipse(lex, ey, 7.5, eyeOpen, 0, 0, Math.PI * 2);
                 ctx.fillStyle = C.eyeW; ctx.fill();
-                ctx.beginPath(); ctx.ellipse(rex, ey, 7.5, 5.5, 0, 0, Math.PI * 2);
+                ctx.beginPath(); ctx.ellipse(rex, ey, 7.5, eyeOpen, 0, 0, Math.PI * 2);
                 ctx.fillStyle = C.eyeW; ctx.fill();
                 ctx.beginPath(); ctx.arc(lex + px, ey + py * 0.5, 3.8, 0, Math.PI * 2);
                 ctx.fillStyle = C.iris; ctx.fill();
@@ -185,9 +188,10 @@ window.CharacterBase = {
                 ctx.beginPath(); ctx.moveTo(rex - 6, ey); ctx.lineTo(rex + 6, ey); ctx.stroke();
             }
             // Eyebrows
+            const browDrop = focus * 2.5;
             ctx.strokeStyle = C.hairDk; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(lex - 8, ey - 10); ctx.quadraticCurveTo(lex, ey - 14, lex + 8, ey - 10); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(rex - 8, ey - 10); ctx.quadraticCurveTo(rex, ey - 14, rex + 8, ey - 10); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(lex - 8, ey - 10 + browDrop); ctx.quadraticCurveTo(lex, ey - 14 - browDrop * 0.2, lex + 8, ey - 10 + browDrop); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(rex - 8, ey - 10 + browDrop); ctx.quadraticCurveTo(rex, ey - 14 - browDrop * 0.2, rex + 8, ey - 10 + browDrop); ctx.stroke();
 
             // Nose
             ctx.beginPath();
@@ -197,7 +201,8 @@ window.CharacterBase = {
             ctx.fillStyle = C.skinSh; ctx.fill();
 
             // Mouth
-            if (smile) {
+            const focusedMouth = focus > 0.35;
+            if (smile && !focusedMouth) {
                 ctx.beginPath();
                 ctx.moveTo(cx + ox - 9, cy + oy + 18);
                 ctx.quadraticCurveTo(cx + ox, cy + oy + 27, cx + ox + 9, cy + oy + 18);
@@ -209,6 +214,13 @@ window.CharacterBase = {
                 ctx.lineTo(cx + ox + 6, cy + oy + 20);
                 ctx.quadraticCurveTo(cx + ox, cy + oy + 21, cx + ox - 6, cy + oy + 20);
                 ctx.fillStyle = '#fff'; ctx.fill();
+            } else if (focusedMouth) {
+                ctx.beginPath();
+                ctx.moveTo(cx + ox - 10, cy + oy + 19);
+                ctx.quadraticCurveTo(cx + ox, cy + oy + 16, cx + ox + 10, cy + oy + 19);
+                ctx.strokeStyle = C.mouth;
+                ctx.lineWidth = 2;
+                ctx.stroke();
             } else {
                 ctx.beginPath();
                 ctx.moveTo(cx + ox - 7, cy + oy + 19);
@@ -237,10 +249,11 @@ window.CharacterBase = {
                 opts.onFrame({ frame, mx, my, smx, smy, W, H });
             }
 
-            const state = { ctx, W, H, frame, smx, smy, mx, my, C };
+            const mood = opts.getMood ? (opts.getMood({ frame, mx, my, smx, smy, W, H, tiltX, tiltY }) || {}) : {};
+            const state = { ctx, W, H, frame, smx, smy, mx, my, C, mood, tiltX, tiltY };
 
             if (opts.drawBefore) opts.drawBefore(state);
-            drawCharacter();
+            drawCharacter(mood);
             if (opts.drawAfter) opts.drawAfter(state);
 
             animId = requestAnimationFrame(animate);
