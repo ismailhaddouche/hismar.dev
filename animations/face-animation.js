@@ -129,11 +129,11 @@ function createFaceAnimationInstance(container) {
 
 function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left: 0, right: 0 }) {
     const torsoY = cy + oy + 42;
-    const drop = (1 - blend) * 32;
+    const drop = (1 - blend) * 28;
     const switchCenterX = cx + ox;
-    const switchCenterY = torsoY + 18 + drop * 0.35;
-    const switchWidth = 94;
-    const switchHeight = 28;
+    const switchCenterY = torsoY + 14 + drop * 0.35;
+    const switchWidth = 78;
+    const switchHeight = 22;
 
     // Draw the Nintendo Switch style handheld
     ctx.save();
@@ -146,7 +146,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
 
     // Screen
     ctx.fillStyle = '#111826';
-    roundedRect(ctx, bodyX + 10, bodyY + 5, switchWidth - 20, switchHeight - 10, 6);
+    roundedRect(ctx, bodyX + 9, bodyY + 4, switchWidth - 18, switchHeight - 8, 6);
     ctx.fill();
 
     const leftGlow = tapPulse.left * blend;
@@ -157,14 +157,14 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     roundedRect(ctx, bodyX, bodyY + 1, 16, switchHeight - 2, 8);
     ctx.fill();
     ctx.fillStyle = `rgba(255, 120, 150, ${0.15 + leftGlow * 0.5})`;
-    roundedRect(ctx, bodyX + 2, bodyY + 4, 12, switchHeight - 8, 6);
+    roundedRect(ctx, bodyX + 2, bodyY + 3, 11, switchHeight - 6, 6);
     ctx.fill();
 
     ctx.fillStyle = '#24c0ff';
     roundedRect(ctx, bodyX + switchWidth - 16, bodyY + 1, 16, switchHeight - 2, 8);
     ctx.fill();
     ctx.fillStyle = `rgba(100, 210, 255, ${0.15 + rightGlow * 0.5})`;
-    roundedRect(ctx, bodyX + switchWidth - 14, bodyY + 4, 12, switchHeight - 8, 6);
+    roundedRect(ctx, bodyX + switchWidth - 13, bodyY + 3, 11, switchHeight - 6, 6);
     ctx.fill();
 
     // Buttons (tap flicker)
@@ -173,23 +173,23 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     ctx.beginPath(); ctx.arc(bodyX + switchWidth - 6, bodyY + switchHeight / 2, 3 + rightGlow, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
 
-    const leftShoulder = { x: cx + ox - 38, y: torsoY };
-    const rightShoulder = { x: cx + ox + 38, y: torsoY };
+    const leftShoulder = { x: cx + ox - 32, y: torsoY + 2 };
+    const rightShoulder = { x: cx + ox + 32, y: torsoY + 2 };
     const leftHand = {
-        x: switchCenterX - 26 + drop * 0.25,
-        y: switchCenterY + 8 + drop * 0.6 + leftGlow * 4
+        x: switchCenterX - 22 + drop * 0.2,
+        y: switchCenterY + 6 + drop * 0.55 + leftGlow * 4
     };
     const rightHand = {
-        x: switchCenterX + 26 - drop * 0.25,
-        y: switchCenterY + 8 + drop * 0.6 + rightGlow * 4
+        x: switchCenterX + 22 - drop * 0.2,
+        y: switchCenterY + 6 + drop * 0.55 + rightGlow * 4
     };
     const leftElbow = {
-        x: leftShoulder.x - 18 - drop * 0.2,
-        y: torsoY + 28 + drop * 0.5
+        x: leftShoulder.x - 20 - drop * 0.15,
+        y: torsoY + 20 + drop * 0.45
     };
     const rightElbow = {
-        x: rightShoulder.x + 18 + drop * 0.2,
-        y: torsoY + 28 + drop * 0.5
+        x: rightShoulder.x + 20 + drop * 0.15,
+        y: torsoY + 20 + drop * 0.45
     };
 
     drawArm(ctx, C, leftShoulder, leftElbow, leftHand, blend);
@@ -198,20 +198,35 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
 
 function drawArm(ctx, C, shoulder, elbow, hand, blend) {
     ctx.save();
-    ctx.strokeStyle = C.skin;
-    ctx.lineWidth = 11;
+    ctx.strokeStyle = C.shirt;
+    ctx.lineWidth = 14;
     ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.globalAlpha = 0.55 + 0.45 * blend;
+    ctx.globalAlpha = 0.35 + 0.35 * blend;
     ctx.beginPath();
     ctx.moveTo(shoulder.x, shoulder.y);
+    ctx.quadraticCurveTo(shoulder.x + (elbow.x - shoulder.x) * 0.4, shoulder.y + 8, elbow.x, elbow.y);
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.strokeStyle = C.skin;
+    ctx.lineWidth = 9;
+    ctx.lineCap = 'round';
+    ctx.globalAlpha = 0.55 + 0.45 * blend;
+    ctx.beginPath();
+    ctx.moveTo(shoulder.x, shoulder.y + 1);
     ctx.quadraticCurveTo(elbow.x, elbow.y, hand.x, hand.y);
     ctx.stroke();
 
-    // Hand
     ctx.fillStyle = C.skin;
     ctx.beginPath();
-    ctx.ellipse(hand.x, hand.y, 7, 6, 0, 0, Math.PI * 2);
+    ctx.ellipse(hand.x, hand.y, 6.3, 5.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = C.shirt;
+    ctx.globalAlpha = 1;
+    ctx.beginPath();
+    ctx.arc(shoulder.x, shoulder.y, 6, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 }
