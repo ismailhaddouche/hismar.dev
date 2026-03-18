@@ -46,7 +46,6 @@ window.commands_education_education_js = {
             card.innerHTML = `
                 <div class="education-header">
                     <span class="education-status ${item.status}">${item.statusLabel}</span>
-                    <span class="education-dates">${item.dates}</span>
                 </div>
                 <h3 class="education-title">${item.title}</h3>
                 <div class="education-institution">${item.institution}</div>

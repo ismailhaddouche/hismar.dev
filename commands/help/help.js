@@ -65,8 +65,7 @@ window.commands_help_help_js = {
                 </div>
 
                 <div class="help-footer">
-                    <p>// Built with brains, far too much coffee, TodoCode, and MiduDev</p>
-                    <p>// Favorite learning stops: <a href="https://todocodeacademy.com/" target="_blank" rel="noreferrer">TodoCode Academy</a> & <a href="https://midu.dev/" target="_blank" rel="noreferrer">midu.dev</a></p>
+                    <p>// Built with brain, far too much coffee, and watching <a href="https://todocodeacademy.com/" target="_blank" rel="noreferrer">TodoCode</a> + <a href="https://midu.dev/" target="_blank" rel="noreferrer">Midudev</a></p>
                 </div>
             </div>
         `;

@@ -17,6 +17,9 @@ window.commands_cv_cv_js = {
                             <span class="cv-name">Curriculum Vitae — Ismail Haddouche Rhali</span>
                             <span class="cv-detail">CV_Ismail_Haddouche_Rhali_2026.pdf</span>
                         </div>
+                        <span class="cv-download-indicator" aria-hidden="true">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </span>
                     </a>
                 </div>
             </div>

@@ -23,13 +23,7 @@
     background: rgba(0, 255, 65, 0.04);
 }
 
-.education-card.in-progress {
-    border-left: 3px solid var(--terminal-light-green);
-}
-
-.education-card.completed {
-    border-left: 3px solid var(--terminal-dark-green);
-}
+/* Left border accent removed for cleaner cards */
 
 .education-header {
     display: flex;
