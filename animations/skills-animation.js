@@ -105,17 +105,17 @@ function drawBookScene(state, focusBlend) {
     const bob = Math.sin(frame / 40) * 1.4 * readBlend;
 
     const book = {
-        w: 78,
-        h: 46,
-        x: cx + ox - 39,
-        y: cy + oy + 42 + bob + lookBlend * 3
+        w: 92,
+        h: 52,
+        x: cx + ox - 46,
+        y: cy + oy + 48 + bob + lookBlend * 3
     };
 
-    const shouldersY = cy + oy + 32;
+    const shouldersY = cy + oy + 56;
     const leftShoulder = { x: cx + ox - 32, y: shouldersY };
     const rightShoulder = { x: cx + ox + 32, y: shouldersY };
-    const elbowLift = shouldersY + (book.y - shouldersY) * (0.55 + 0.15 * readBlend);
-    const elbowReach = 18 + readBlend * 8;
+    const elbowLift = shouldersY + (book.y - shouldersY) * (0.6 + 0.18 * readBlend);
+    const elbowReach = 24 + readBlend * 10;
 
     drawReadingArm(
         ctx,
@@ -126,7 +126,7 @@ function drawBookScene(state, focusBlend) {
             y: elbowLift
         },
         {
-            x: book.x + 13,
+            x: book.x + 18,
             y: book.y + book.h - 6
         }
     );
@@ -140,7 +140,7 @@ function drawBookScene(state, focusBlend) {
             y: elbowLift
         },
         {
-            x: book.x + book.w - 13,
+            x: book.x + book.w - 18,
             y: book.y + book.h - 6
         }
     );
@@ -151,33 +151,83 @@ function drawBookScene(state, focusBlend) {
 function drawBook(ctx, book, readBlend) {
     ctx.save();
     const { x, y, w, h } = book;
-    const gradient = ctx.createLinearGradient(x, y, x, y + h);
-    gradient.addColorStop(0, '#1e2f44');
-    gradient.addColorStop(1, '#0f1724');
-    ctx.fillStyle = gradient;
-    roundedRect(ctx, x, y, w, h, 10);
+    const spine = x + w / 2;
+    const spread = 20;
+
+    // Shadow drop
+    ctx.globalAlpha = 0.2;
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.ellipse(spine, y + h + 6, w * 0.6, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Covers
+    const coverGradient = ctx.createLinearGradient(x, y - spread, x, y + h);
+    coverGradient.addColorStop(0, '#2a3f60');
+    coverGradient.addColorStop(1, '#0c1522');
+    ctx.fillStyle = coverGradient;
+    ctx.strokeStyle = '#f7c65d';
+    ctx.lineWidth = 2.2;
+
+    ctx.beginPath();
+    ctx.moveTo(spine, y - spread);
+    ctx.lineTo(x + 6, y + 6);
+    ctx.lineTo(x, y + h);
+    ctx.lineTo(spine - 8, y + h - 4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(spine, y - spread);
+    ctx.lineTo(x + w - 6, y + 6);
+    ctx.lineTo(x + w, y + h);
+    ctx.lineTo(spine + 8, y + h - 4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Pages
+    ctx.fillStyle = '#f5e4c3';
+    ctx.beginPath();
+    ctx.moveTo(spine, y - spread + 2);
+    ctx.lineTo(spine - 9, y + h - 6);
+    ctx.lineTo(spine, y + h);
+    ctx.lineTo(spine + 9, y + h - 6);
+    ctx.closePath();
     ctx.fill();
 
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'rgba(247,198,93,0.95)';
-    roundedRect(ctx, x, y, w, h, 10);
-    ctx.stroke();
+    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+    ctx.lineWidth = 1.2;
+    for (let i = -1; i <= 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(spine + i * 3, y - spread + 2);
+        ctx.lineTo(spine + i * 4, y + h - 6);
+        ctx.stroke();
+    }
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-    ctx.beginPath();
-    ctx.moveTo(x + w / 2, y + 8);
-    ctx.lineTo(x + w / 2, y + h - 8);
-    ctx.stroke();
-
+    // Spine detail
     ctx.fillStyle = '#f7c65d';
-    ctx.font = 'bold 18px "Space Grotesk", sans-serif';
+    ctx.fillRect(spine - 6, y + h / 3, 12, 6);
+    ctx.fillRect(spine - 6, y + h / 3 + 12, 12, 5);
+
+    // Title badge
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 13px "Space Grotesk", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('JAVA', x + w / 2, y + h / 2 + 2);
+    ctx.fillText('JAVA', spine, y + h / 1.8);
 
-    ctx.globalAlpha = 0.18 + readBlend * 0.3;
+    ctx.globalAlpha = 0.25;
     ctx.fillStyle = '#fce19a';
-    ctx.fillRect(x + 8, y + h - 6, w - 16, 4);
+    ctx.beginPath();
+    ctx.moveTo(x + 8, y + 10);
+    ctx.lineTo(spine - 4, y - spread + 6);
+    ctx.quadraticCurveTo(spine - 6, y - spread + 10, spine - 12, y + 4);
+    ctx.lineTo(x + 6, y + 10);
+    ctx.closePath();
+    ctx.fill();
     ctx.restore();
 }
 
