@@ -198,17 +198,6 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
 
 function drawArm(ctx, C, shoulder, elbow, hand, blend) {
     ctx.save();
-    ctx.strokeStyle = C.shirt;
-    ctx.lineWidth = 14;
-    ctx.lineCap = 'round';
-    ctx.globalAlpha = 0.35 + 0.35 * blend;
-    ctx.beginPath();
-    ctx.moveTo(shoulder.x, shoulder.y);
-    ctx.quadraticCurveTo(shoulder.x + (elbow.x - shoulder.x) * 0.4, shoulder.y + 8, elbow.x, elbow.y);
-    ctx.stroke();
-    ctx.restore();
-
-    ctx.save();
     ctx.strokeStyle = C.skin;
     ctx.lineWidth = 9;
     ctx.lineCap = 'round';
