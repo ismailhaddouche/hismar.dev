@@ -152,7 +152,7 @@ function drawBook(ctx, book, readBlend) {
     ctx.save();
     const { x, y, w, h } = book;
     const spine = x + w / 2;
-    const spread = 20;
+    const spread = 22;
 
     // Shadow drop
     ctx.globalAlpha = 0.2;
@@ -171,19 +171,19 @@ function drawBook(ctx, book, readBlend) {
     ctx.lineWidth = 2.2;
 
     ctx.beginPath();
-    ctx.moveTo(spine, y - spread);
-    ctx.lineTo(x + 6, y + 6);
-    ctx.lineTo(x, y + h);
-    ctx.lineTo(spine - 8, y + h - 4);
+    ctx.moveTo(spine, y + h + spread);
+    ctx.lineTo(x + 6, y + h - 6);
+    ctx.lineTo(x, y + 4);
+    ctx.lineTo(spine - 10, y + 10);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(spine, y - spread);
-    ctx.lineTo(x + w - 6, y + 6);
-    ctx.lineTo(x + w, y + h);
-    ctx.lineTo(spine + 8, y + h - 4);
+    ctx.moveTo(spine, y + h + spread);
+    ctx.lineTo(x + w - 6, y + h - 6);
+    ctx.lineTo(x + w, y + 4);
+    ctx.lineTo(spine + 10, y + 10);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
@@ -191,10 +191,10 @@ function drawBook(ctx, book, readBlend) {
     // Pages
     ctx.fillStyle = '#f5e4c3';
     ctx.beginPath();
-    ctx.moveTo(spine, y - spread + 2);
-    ctx.lineTo(spine - 9, y + h - 6);
-    ctx.lineTo(spine, y + h);
-    ctx.lineTo(spine + 9, y + h - 6);
+    ctx.moveTo(spine, y + h + spread - 3);
+    ctx.lineTo(spine - 10, y + 12);
+    ctx.lineTo(spine, y + 2);
+    ctx.lineTo(spine + 10, y + 12);
     ctx.closePath();
     ctx.fill();
 
@@ -202,15 +202,15 @@ function drawBook(ctx, book, readBlend) {
     ctx.lineWidth = 1.2;
     for (let i = -1; i <= 1; i++) {
         ctx.beginPath();
-        ctx.moveTo(spine + i * 3, y - spread + 2);
-        ctx.lineTo(spine + i * 4, y + h - 6);
+        ctx.moveTo(spine + i * 3, y + h + spread - 3);
+        ctx.lineTo(spine + i * 4, y + 12);
         ctx.stroke();
     }
 
     // Spine detail
     ctx.fillStyle = '#f7c65d';
     ctx.fillRect(spine - 6, y + h / 3, 12, 6);
-    ctx.fillRect(spine - 6, y + h / 3 + 12, 12, 5);
+    ctx.fillRect(spine - 6, y + h / 3 + 13, 12, 5);
 
     // Title badge
     ctx.fillStyle = '#fff';
@@ -222,10 +222,10 @@ function drawBook(ctx, book, readBlend) {
     ctx.globalAlpha = 0.25;
     ctx.fillStyle = '#fce19a';
     ctx.beginPath();
-    ctx.moveTo(x + 8, y + 10);
-    ctx.lineTo(spine - 4, y - spread + 6);
-    ctx.quadraticCurveTo(spine - 6, y - spread + 10, spine - 12, y + 4);
-    ctx.lineTo(x + 6, y + 10);
+    ctx.moveTo(x + 10, y + h - 12);
+    ctx.lineTo(spine - 8, y + h + spread - 8);
+    ctx.quadraticCurveTo(spine - 4, y + h + spread - 2, spine - 12, y + h - 18);
+    ctx.lineTo(x + 8, y + h - 20);
     ctx.closePath();
     ctx.fill();
     ctx.restore();
