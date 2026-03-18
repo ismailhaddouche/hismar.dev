@@ -47,26 +47,56 @@ function createFaceAnimationInstance(container) {
         drawOverCharacter(state) {
             drawConsoleRig(state, gamingBlend, tapPulse);
         },
+        getMood({ W, H, mx, my }) {
+            const pointer = lastCursor || { x: mx ?? W / 2, y: my ?? H / 2 };
+            if (isGaming) {
+                return {
+                    focus: 0.85,
+                    gaze: { x: W / 2, y: H * 0.62 },
+                    sweat: 1
+                };
+            }
+            return {
+                focus: 0.08,
+                gaze: pointer,
+                sweat: 0
+            };
+        },
         onFrame({ mx, my }) {
             const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
             const delta = now - lastFrameTime;
             lastFrameTime = now;
 
             if (lastCursor) {
-                const deltaMove = Math.abs(mx - lastCursor.x) + Math.abs(my - lastCursor.y);
-                if (deltaMove > 1.2) {
-                    isGaming = false;
-                    lastInteractionTs = Date.now();
-                } else {
-                    const since = lastInteractionTs ? Date.now() - lastInteractionTs : Infinity;
-                    if (since >= 1000) {
-                        isGaming = true;
+                if (typeof mx === 'number' && typeof my === 'number') {
+                    const deltaMove = Math.abs(mx - lastCursor.x) + Math.abs(my - lastCursor.y);
+                    if (deltaMove > 1.2) {
+                        isGaming = false;
+                        lastInteractionTs = Date.now();
+                    } else {
+                        const since = lastInteractionTs ? Date.now() - lastInteractionTs : Infinity;
+                        if (since >= 1000) {
+                            isGaming = true;
+                        }
                     }
                 }
             }
-            lastCursor = { x: mx, y: my };
+            if (typeof mx === 'number' && typeof my === 'number') {
+                lastCursor = { x: mx, y: my };
+            }
             if (!lastInteractionTs) {
                 lastInteractionTs = Date.now();
+            }
+
+            if (!lastCursor) {
+                lastCursor = { x: 100, y: 100 };
+            }
+
+            if (!isGaming) {
+                const since = lastInteractionTs ? Date.now() - lastInteractionTs : 0;
+                if (since >= 1000) {
+                    isGaming = true;
+                }
             }
 
             const target = isGaming ? 1 : 0;
@@ -74,8 +104,8 @@ function createFaceAnimationInstance(container) {
 
             if (isGaming) {
                 tapClock += delta;
-                if (tapClock >= 400) {
-                    tapClock = tapClock % 400;
+                if (tapClock >= 200) {
+                    tapClock = tapClock % 200;
                     tapSide = tapSide === 'left' ? 'right' : 'left';
                 }
             } else {

@@ -72,6 +72,8 @@ window.CharacterBase = {
             const ox = tiltX * 0.5, oy = tiltY * 0.3;
             const focus = Math.min(Math.max(mood.focus || 0, 0), 1);
             const gaze = mood.gaze || { x: smx, y: smy };
+            const browLift = typeof mood.browLift === 'number' ? mood.browLift : focus * 3 - 1.5;
+            const sweatLevel = Math.max(0, Math.min(1, mood.sweat || 0));
 
             // Glow aura
             const gl = ctx.createRadialGradient(cx, cy - 5, 10, cx, cy - 5, 90);
@@ -188,10 +190,23 @@ window.CharacterBase = {
                 ctx.beginPath(); ctx.moveTo(rex - 6, ey); ctx.lineTo(rex + 6, ey); ctx.stroke();
             }
             // Eyebrows
-            const browDrop = focus * 2.5;
             ctx.strokeStyle = C.hairDk; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(lex - 8, ey - 10 + browDrop); ctx.quadraticCurveTo(lex, ey - 14 - browDrop * 0.2, lex + 8, ey - 10 + browDrop); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(rex - 8, ey - 10 + browDrop); ctx.quadraticCurveTo(rex, ey - 14 - browDrop * 0.2, rex + 8, ey - 10 + browDrop); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(lex - 8, ey - 10 + browLift); ctx.quadraticCurveTo(lex, ey - 14 - browLift * 0.2, lex + 8, ey - 10 + browLift); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(rex - 8, ey - 10 + browLift); ctx.quadraticCurveTo(rex, ey - 14 - browLift * 0.2, rex + 8, ey - 10 + browLift); ctx.stroke();
+
+            if (sweatLevel > 0.05) {
+                ctx.save();
+                ctx.globalAlpha = 0.25 + sweatLevel * 0.35;
+                ctx.fillStyle = 'rgba(120, 200, 255, 0.9)';
+                const dropX = cx + ox + 20;
+                const dropY = cy + oy - 6;
+                ctx.beginPath();
+                ctx.moveTo(dropX, dropY - 6);
+                ctx.quadraticCurveTo(dropX + 5, dropY, dropX, dropY + 8);
+                ctx.quadraticCurveTo(dropX - 5, dropY, dropX, dropY - 6);
+                ctx.fill();
+                ctx.restore();
+            }
 
             // Nose
             ctx.beginPath();
