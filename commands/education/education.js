@@ -5,34 +5,12 @@ window.commands_education_education_js = {
     async execute(terminal, animation) {
         const { container, content, sidebar } = terminal.createCommandContainer('education');
 
-        const educationData = [
-            {
-                title: 'Bachelor of Science (BSc) in Computer Engineering',
-                institution: 'UNED — National Distance Education University | Feb 2026 — Present',
-                status: 'in-progress',
-                statusLabel: 'IN PROGRESS · LEVEL 6 EQF',
-                details: 'Focus: University-level training in software engineering, algorithms, computer architecture, and distributed systems.'
-            },
-            {
-                title: 'Higher National Diploma (HND) in Multi-platform Software Development',
-                institution: 'ILERNA Online | Sept 2023 — Feb 2026',
-                status: 'completed',
-                statusLabel: 'COMPLETED · LEVEL 5 EQF',
-                details: 'Focus: Native mobile development (Kotlin/Android), cross-platform architectures, database management, and cloud-native environments.'
-            },
-            {
-                title: 'High School Diploma',
-                institution: 'IES Ricardo Ortega | 2004 — 2006',
-                status: 'completed',
-                statusLabel: 'COMPLETED',
-                details: 'Status: Completed'
-            }
-        ];
+        const educationData = window.i18n.t('commands.education.items');
 
         // Title
         const title = document.createElement('h2');
         title.className = 'section-title';
-        title.textContent = 'Education';
+        title.textContent = window.i18n.t('commands.education.title');
         content.appendChild(title);
 
         const educationList = document.createElement('div');

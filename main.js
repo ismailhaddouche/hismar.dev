@@ -6,17 +6,13 @@
 const COMMAND_DEFINITIONS = [
     {
         name: 'about',
-        label: 'About',
-        description: 'Biography & contact',
         script: 'commands/about/about.js',
         styles: 'commands/about/about.css',
-        animation: 'animations/face-animation.js',
+        animation: 'animations/about-animation.js',
         showInNav: true
     },
     {
         name: 'experience',
-        label: 'Experience',
-        description: 'Professional journey',
         script: 'commands/experience/experience.js',
         styles: 'commands/experience/experience.css',
         animation: 'animations/experience-animation.js',
@@ -24,8 +20,6 @@ const COMMAND_DEFINITIONS = [
     },
     {
         name: 'skills',
-        label: 'Skills',
-        description: 'Tech stack overview',
         script: 'commands/skills/skills.js',
         styles: 'commands/skills/skills.css',
         animation: 'animations/skills-animation.js',
@@ -33,8 +27,6 @@ const COMMAND_DEFINITIONS = [
     },
     {
         name: 'projects',
-        label: 'Projects',
-        description: 'Production & OSS',
         script: 'commands/projects/projects.js',
         styles: 'commands/projects/projects.css',
         animation: 'animations/projects-animation.js',
@@ -42,8 +34,6 @@ const COMMAND_DEFINITIONS = [
     },
     {
         name: 'education',
-        label: 'Education',
-        description: 'Academic path',
         script: 'commands/education/education.js',
         styles: 'commands/education/education.css',
         animation: 'animations/education-animation.js',
@@ -51,16 +41,12 @@ const COMMAND_DEFINITIONS = [
     },
     {
         name: 'cv',
-        label: 'CV',
-        description: 'Download résumé',
         script: 'commands/cv/cv.js',
         styles: 'commands/cv/cv.css',
         showInNav: true
     },
     {
         name: 'help',
-        label: 'Help',
-        description: 'All commands',
         script: 'commands/help/help.js',
         styles: 'commands/help/help.css',
         showInNav: true
@@ -91,6 +77,7 @@ class TerminalApp {
         this.displayWelcome();
         this.registerCommands();
         this.handleResize();
+        this.refreshUIStrings(); // Initial UI string refresh
     }
 
     cacheDomElements() {
@@ -102,8 +89,24 @@ class TerminalApp {
             hamburgerBtn: document.getElementById('hamburger-btn'),
             terminalMenu: document.getElementById('terminal-menu'),
             menuOverlay: document.getElementById('menu-overlay'),
-            clearBtn: document.querySelector('.control-btn--clear')
+            clearBtn: document.querySelector('.control-btn--clear'),
+            headerSocial: document.querySelector('.header-social')
         };
+    }
+
+    /**
+     * Ajusta el menú y placeholder según el idioma
+     */
+    refreshUIStrings() {
+        const { input, menuItems } = this.dom;
+        if (input) input.placeholder = window.i18n.t('ui.placeholder');
+
+        menuItems.forEach(item => {
+            const cmd = item.dataset.command;
+            if (cmd) {
+                item.textContent = window.i18n.t(`menu.${cmd}`);
+            }
+        });
     }
 
     /**
@@ -144,8 +147,40 @@ class TerminalApp {
             hamburgerBtn,
             terminalMenu,
             menuOverlay,
-            clearBtn
+            clearBtn,
+            headerSocial
         } = this.dom;
+
+        // Inyectar Selector de Idioma
+        if (headerSocial) {
+            const langBtn = document.createElement('button');
+            langBtn.className = 'social-btn lang-toggle';
+            langBtn.setAttribute('aria-label', 'Toggle Language');
+            const updateFlag = () => {
+                langBtn.innerHTML = window.i18n.current === 'es'
+                    ? '<span class="flag-icon">🇬🇧</span>'
+                    : '<span class="flag-icon">🇪🇸</span>';
+            };
+            updateFlag();
+            langBtn.onclick = () => {
+                const next = window.i18n.current === 'es' ? 'en' : 'es';
+                window.i18n.setLanguage(next);
+                updateFlag();
+            };
+            headerSocial.appendChild(langBtn);
+        }
+
+        // Escuchar cambios de idioma
+        document.addEventListener('languageChanged', () => {
+            this.refreshUIStrings();
+            // Limpiar consola y detener animaciones
+            this.cleanupAnimations();
+            if (this.dom.consoleOutput) {
+                this.dom.consoleOutput.innerHTML = '';
+            }
+            this.currentCommand = null;
+            this.displayWelcome();
+        });
 
         if (!input) return;
 
@@ -223,7 +258,8 @@ class TerminalApp {
                 if (matches.length === 1) {
                     input.value = matches[0];
                 } else if (matches.length > 1) {
-                    this.appendToConsole(`\nCommands: ${matches.join('  ')}`);
+                    const label = window.i18n.t('help.title') || 'Commands';
+                    this.appendToConsole(`\n${label}: ${matches.join('  ')}`);
                 }
                 return;
             }
@@ -290,24 +326,24 @@ class TerminalApp {
         badge.innerHTML = `
             <span>HismaR Dev</span>
             <div class="welcome-subtitle">Ismail Haddouche Rhali</div>
-            <div class="welcome-role">Full-stack · Mobile · Murcia, Spain</div>
+            <div class="welcome-role">${window.i18n.t('welcome.role')}</div>
         `;
 
         consoleOutput.appendChild(badge);
 
         const welcomeLines = [
-            { text: `// Welcome to my interactive terminal.`, type: 'comment' },
-            { text: `// Explore who I am, what I build, and how I think.`, type: 'comment' },
+            { text: window.i18n.t('welcome.title'), type: 'comment' },
+            { text: window.i18n.t('welcome.subtitle'), type: 'comment' },
             { text: ``, type: 'blank' },
-            { text: `  help       → list every available command`, type: 'cmd', cmd: 'help' },
-            { text: `  about      → personal background and contact`, type: 'cmd', cmd: 'about' },
-            { text: `  experience → professional journey`, type: 'cmd', cmd: 'experience' },
-            { text: `  projects   → production & open-source work`, type: 'cmd', cmd: 'projects' },
-            { text: `  skills     → complete technology stack`, type: 'cmd', cmd: 'skills' },
-            { text: `  education  → academic path`, type: 'cmd', cmd: 'education' },
-            { text: `  cv         → download résumé`, type: 'cmd', cmd: 'cv' },
+            { text: `  ${window.i18n.t('welcome.help')}`, type: 'cmd', cmd: 'help' },
+            { text: `  ${window.i18n.t('welcome.about')}`, type: 'cmd', cmd: 'about' },
+            { text: `  ${window.i18n.t('welcome.experience')}`, type: 'cmd', cmd: 'experience' },
+            { text: `  ${window.i18n.t('welcome.projects')}`, type: 'cmd', cmd: 'projects' },
+            { text: `  ${window.i18n.t('welcome.skills')}`, type: 'cmd', cmd: 'skills' },
+            { text: `  ${window.i18n.t('welcome.education')}`, type: 'cmd', cmd: 'education' },
+            { text: `  ${window.i18n.t('welcome.cv')}`, type: 'cmd', cmd: 'cv' },
             { text: ``, type: 'blank' },
-            { text: `// Tab: autocomplete  ·  ↑↓: command history`, type: 'comment' },
+            { text: window.i18n.t('welcome.footer'), type: 'comment' },
             { text: ``, type: 'blank' }
         ];
 
@@ -341,8 +377,8 @@ class TerminalApp {
             await this.loadAndExecuteCommand(command);
         } else {
             this.setActiveMenuItem(null);
-            this.appendToConsole(`Unrecognized command: '${command}'`);
-            this.appendToConsole(`Type 'help' to list the available commands.`);
+            this.appendToConsole(`${window.i18n.t('ui.unrecognized')}'${command}'`);
+            this.appendToConsole(window.i18n.t('ui.help_hint'));
         }
     }
 
@@ -361,7 +397,7 @@ class TerminalApp {
                 return true;
 
             case 'exit':
-                this.appendToConsole('Restarting terminal...');
+                this.appendToConsole(window.i18n.t('ui.restarting'));
                 setTimeout(() => window.location.reload(), 800);
                 return true;
 
@@ -439,7 +475,7 @@ class TerminalApp {
 
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = path + '?v=1.0.5'; // cache busting
+            link.href = path + '?v=' + Date.now(); // Dinámico para desarrollo
             link.onload = () => {
                 this.loadedStyles.add(path);
                 resolve();
@@ -463,7 +499,7 @@ class TerminalApp {
             }
 
             const script = document.createElement('script');
-            script.src = path + '?v=1.0.5'; // cache busting
+            script.src = path + '?v=' + Date.now(); // Dinámico para desarrollo
             script.onload = () => {
                 resolve(window[moduleName] || {});
             };

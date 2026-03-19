@@ -220,6 +220,19 @@ body.no-scroll {
     transform: scale(0.94);
 }
 
+.lang-toggle {
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Android Emoji", sans-serif;
+    background: linear-gradient(135deg, #0d9488, #12f7d6) !important;
+}
+
+.flag-icon {
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .terminal-controls {
     display: flex;
     gap: 8px;

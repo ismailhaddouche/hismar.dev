@@ -3,7 +3,7 @@
  * Partículas orbitales neon y explosión al clic.
  * Usa CharacterBase para el personaje compartido.
  */
-window.animations_face_animation_js = {
+window.animations_about_animation_js = {
     init(container) {
         let destroyCurrent = null;
         let resetTimer = null;
@@ -75,7 +75,7 @@ function createFaceAnimationInstance(container) {
                         lastInteractionTs = Date.now();
                     } else {
                         const since = lastInteractionTs ? Date.now() - lastInteractionTs : Infinity;
-                        if (since >= 1000) {
+                        if (since >= 1200) {
                             isGaming = true;
                         }
                     }
@@ -94,7 +94,7 @@ function createFaceAnimationInstance(container) {
 
             if (!isGaming) {
                 const since = lastInteractionTs ? Date.now() - lastInteractionTs : 0;
-                if (since >= 1000) {
+                if (since >= 1200) {
                     isGaming = true;
                 }
             }
@@ -129,70 +129,134 @@ function createFaceAnimationInstance(container) {
 
 function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left: 0, right: 0 }) {
     const torsoY = cy + oy + 42;
-    const drop = (1 - blend) * 28;
-    const switchCenterX = cx + ox;
-    const switchCenterY = torsoY + 14 + drop * 0.35;
-    const switchWidth = 78;
-    const switchHeight = 22;
+    const drop   = (1 - blend) * 28;
+    const pcx    = cx + ox;
+    const pcy    = torsoY + 26 + drop * 0.35;
 
-    // Draw the Nintendo Switch style handheld
+    // ── Geometría unificada (mismo ratio que libro/papel) ──
+    const botW = 88, topW = 72;   // perspRatio ≈ 0.82
+    const H    = 24;
+
+    const TL = { x: pcx - topW / 2, y: pcy - H / 2 };
+    const TR = { x: pcx + topW / 2, y: pcy - H / 2 };
+    const BL = { x: pcx - botW / 2, y: pcy + H / 2 };
+    const BR = { x: pcx + botW / 2, y: pcy + H / 2 };
+
+    // lerp horizontal: dada fracción f∈[0,1] devuelve x en top/bot
+    const topX = f => TL.x + (TR.x - TL.x) * f;
+    const botX = f => BL.x + (BR.x - BL.x) * f;
+    const topY = TL.y, botY = BL.y;
+
+    // fracciones del ancho total para las zonas
+    const jcW = 0.175;  // Joy-Con: 17.5% del ancho
+
     ctx.save();
     ctx.globalAlpha = 0.2 + 0.8 * blend;
-    const bodyX = switchCenterX - switchWidth / 2;
-    const bodyY = switchCenterY - switchHeight / 2;
-    roundedRect(ctx, bodyX, bodyY, switchWidth, switchHeight, 12);
+
+    // ── Cuerpo central ──
     ctx.fillStyle = '#0f141f';
+    ctx.beginPath();
+    ctx.moveTo(topX(jcW), topY);
+    ctx.lineTo(topX(1 - jcW), topY);
+    ctx.lineTo(botX(1 - jcW), botY);
+    ctx.lineTo(botX(jcW), botY);
+    ctx.closePath();
     ctx.fill();
 
-    // Screen
-    ctx.fillStyle = '#111826';
-    roundedRect(ctx, bodyX + 9, bodyY + 4, switchWidth - 18, switchHeight - 8, 6);
+    // Pantalla
+    const scrPad = 0.04;
+    ctx.fillStyle = '#0a1520';
+    ctx.beginPath();
+    ctx.moveTo(topX(jcW + scrPad), topY + 3);
+    ctx.lineTo(topX(1 - jcW - scrPad), topY + 3);
+    ctx.lineTo(botX(1 - jcW - scrPad), botY - 3);
+    ctx.lineTo(botX(jcW + scrPad), botY - 3);
+    ctx.closePath();
     ctx.fill();
 
-    const leftGlow = tapPulse.left * blend;
+    // Brillo pantalla
+    ctx.fillStyle = 'rgba(100,180,255,0.04)';
+    ctx.beginPath();
+    ctx.moveTo(topX(jcW + scrPad), topY + 3);
+    ctx.lineTo(topX(0.5), topY + 3);
+    ctx.lineTo(botX(0.5), botY - 3);
+    ctx.lineTo(botX(jcW + scrPad), botY - 3);
+    ctx.closePath();
+    ctx.fill();
+
+    const leftGlow  = tapPulse.left  * blend;
     const rightGlow = tapPulse.right * blend;
 
-    // Joy-Cons
+    // ── Joy-Con izquierdo (rojo) ──
     ctx.fillStyle = '#ff476c';
-    roundedRect(ctx, bodyX, bodyY + 1, 16, switchHeight - 2, 8);
-    ctx.fill();
-    ctx.fillStyle = `rgba(255, 120, 150, ${0.15 + leftGlow * 0.5})`;
-    roundedRect(ctx, bodyX + 2, bodyY + 3, 11, switchHeight - 6, 6);
+    ctx.beginPath();
+    ctx.moveTo(topX(0), topY);
+    ctx.lineTo(topX(jcW), topY);
+    ctx.lineTo(botX(jcW), botY);
+    ctx.lineTo(botX(0), botY);
+    ctx.closePath();
     ctx.fill();
 
+    // Glow izquierdo
+    ctx.fillStyle = `rgba(255,120,150,${0.1 + leftGlow * 0.55})`;
+    ctx.beginPath();
+    ctx.moveTo(topX(0.01), topY + 2);
+    ctx.lineTo(topX(jcW - 0.01), topY + 2);
+    ctx.lineTo(botX(jcW - 0.01), botY - 2);
+    ctx.lineTo(botX(0.01), botY - 2);
+    ctx.closePath();
+    ctx.fill();
+
+    // Stick analógico izquierdo
+    ctx.fillStyle = `rgba(30,30,50,${0.6 + leftGlow * 0.4})`;
+    ctx.beginPath();
+    ctx.arc(
+        (topX(jcW * 0.5) + botX(jcW * 0.5)) / 2,
+        (topY + botY) / 2,
+        4 + leftGlow * 1.5, 0, Math.PI * 2
+    );
+    ctx.fill();
+
+    // ── Joy-Con derecho (azul) ──
     ctx.fillStyle = '#24c0ff';
-    roundedRect(ctx, bodyX + switchWidth - 16, bodyY + 1, 16, switchHeight - 2, 8);
-    ctx.fill();
-    ctx.fillStyle = `rgba(100, 210, 255, ${0.15 + rightGlow * 0.5})`;
-    roundedRect(ctx, bodyX + switchWidth - 13, bodyY + 3, 11, switchHeight - 6, 6);
+    ctx.beginPath();
+    ctx.moveTo(topX(1 - jcW), topY);
+    ctx.lineTo(topX(1), topY);
+    ctx.lineTo(botX(1), botY);
+    ctx.lineTo(botX(1 - jcW), botY);
+    ctx.closePath();
     ctx.fill();
 
-    // Buttons (tap flicker)
-    ctx.fillStyle = '#1c2333';
-    ctx.beginPath(); ctx.arc(bodyX + 6, bodyY + switchHeight / 2, 3 + leftGlow, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(bodyX + switchWidth - 6, bodyY + switchHeight / 2, 3 + rightGlow, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = `rgba(100,210,255,${0.1 + rightGlow * 0.55})`;
+    ctx.beginPath();
+    ctx.moveTo(topX(1 - jcW + 0.01), topY + 2);
+    ctx.lineTo(topX(0.99), topY + 2);
+    ctx.lineTo(botX(0.99), botY - 2);
+    ctx.lineTo(botX(1 - jcW + 0.01), botY - 2);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = `rgba(30,30,50,${0.6 + rightGlow * 0.4})`;
+    ctx.beginPath();
+    ctx.arc(
+        (topX(1 - jcW * 0.5) + botX(1 - jcW * 0.5)) / 2,
+        (topY + botY) / 2,
+        4 + rightGlow * 1.5, 0, Math.PI * 2
+    );
+    ctx.fill();
+
     ctx.restore();
 
-    const leftShoulder = { x: cx + ox - 32, y: torsoY + 2 };
+    // ── Brazos ──
+    const leftShoulder  = { x: cx + ox - 32, y: torsoY + 2 };
     const rightShoulder = { x: cx + ox + 32, y: torsoY + 2 };
-    const leftHand = {
-        x: switchCenterX - 22 + drop * 0.2,
-        y: switchCenterY + 6 + drop * 0.55 + leftGlow * 4
-    };
-    const rightHand = {
-        x: switchCenterX + 22 - drop * 0.2,
-        y: switchCenterY + 6 + drop * 0.55 + rightGlow * 4
-    };
-    const leftElbow = {
-        x: leftShoulder.x - 20 - drop * 0.15,
-        y: torsoY + 20 + drop * 0.45
-    };
-    const rightElbow = {
-        x: rightShoulder.x + 20 + drop * 0.15,
-        y: torsoY + 20 + drop * 0.45
-    };
 
-    drawArm(ctx, C, leftShoulder, leftElbow, leftHand, blend);
+    const leftHand  = { x: BL.x + 6,       y: BL.y - 2 + leftGlow  * 3 };
+    const rightHand = { x: BR.x - 6,       y: BR.y - 2 + rightGlow * 3 };
+    const leftElbow  = { x: leftShoulder.x  - 18 - drop * 0.15, y: torsoY + 32 + drop * 0.45 };
+    const rightElbow = { x: rightShoulder.x + 18 + drop * 0.15, y: torsoY + 32 + drop * 0.45 };
+
+    drawArm(ctx, C, leftShoulder,  leftElbow,  leftHand,  blend);
     drawArm(ctx, C, rightShoulder, rightElbow, rightHand, blend);
 }
 

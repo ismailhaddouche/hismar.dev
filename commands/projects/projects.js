@@ -8,43 +8,43 @@ window.commands_projects_projects_js = {
         const projectsData = [
             {
                 name: 'El Paredes',
-                description: 'Production-grade e-commerce for industrial vehicles and machinery featuring Redsys gateway (Card & Bizum), Google OAuth, and real-time Odoo ERP synchronization for automated inventory management.',
+                description: window.i18n.t('commands.projects.items.paredes'),
                 tech: ['Next.js', 'Firebase', 'Firestore', 'Redsys', 'Odoo', 'App Hosting'],
                 link: 'https://elparedes.es/',
                 linkLabel: 'elparedes.es',
-                badge: 'IN PRODUCTION'
+                badge: window.i18n.t('commands.projects.badges.production')
             },
             {
                 name: 'Disherio',
-                description: 'Open-source, self-hosted restaurant management suite. Featuring QR-code ordering, real-time Kitchen Display System (KDS), and a multi-role POS (Admin, Waitstaff, Kitchen, and Cashier). Supports menu management with variants/allergens and flexible local or cloud deployment.',
+                description: window.i18n.t('commands.projects.items.disherio'),
                 tech: ['TypeScript', 'Angular', 'Node.js', 'MongoDB', 'Socket.io', 'Docker'],
                 link: 'https://github.com/ismailhaddouche/disherio',
                 linkLabel: 'GitHub',
-                badge: 'OPEN SOURCE'
+                badge: window.i18n.t('commands.projects.badges.oss')
             },
             {
                 name: 'TimeTutor',
-                description: 'Native Android app for private tutoring management. Interactive calendar, attendance tracking, automatic invoicing, push notifications, offline sync, and dedicated teacher/student roles.',
+                description: window.i18n.t('commands.projects.items.timetutor'),
                 tech: ['Kotlin', 'Jetpack Compose', 'Clean Architecture', 'MVVM', 'Firebase', 'Firebase Functions'],
                 link: 'https://github.com/ismailhaddouche/timetutor',
                 linkLabel: 'GitHub',
-                badge: 'ANDROID'
+                badge: window.i18n.t('commands.projects.badges.android')
             },
             {
                 name: 'Episodeo',
-                description: 'Personal TV-series tracker for Android with TMDB search, smart lists (watching, pending, finished, abandoned), list sharing via codes, offline-first cache, and theme switching. Built with Clean Architecture + MVVM.',
+                description: window.i18n.t('commands.projects.items.episodeo'),
                 tech: ['Kotlin', 'Jetpack Compose', 'Firebase', 'Room', 'Retrofit', 'TMDB API', 'Clean Architecture', 'MVVM', 'GitHub Actions'],
                 link: 'https://github.com/ismailhaddouche/episodeo',
                 linkLabel: 'GitHub',
-                badge: 'ANDROID'
+                badge: window.i18n.t('commands.projects.badges.android')
             },
             {
                 name: 'hismar.dev',
-                description: 'Interactive portfolio built as a fully functional retro terminal. Vanilla JS/CSS/HTML, physics-based canvas animations, modular architecture, state manager, dynamic commands, and pixel-art design.',
+                description: window.i18n.t('commands.projects.items.hismar'),
                 tech: ['JavaScript', 'HTML5', 'CSS3', 'Canvas API', 'Vanilla JS'],
                 link: 'https://github.com/ismailhaddouche/hismar.dev',
                 linkLabel: 'GitHub',
-                badge: 'VANILLA JS'
+                badge: window.i18n.t('commands.projects.badges.vanilla')
             }
         ];
 
@@ -362,7 +362,7 @@ window.commands_projects_projects_js = {
         // Title
         const title = document.createElement('h2');
         title.className = 'section-title';
-        title.textContent = 'Projects';
+        title.textContent = window.i18n.t('commands.projects.title');
         content.appendChild(title);
 
         const projectsGrid = document.createElement('div');

@@ -81,8 +81,11 @@
 }
 
 .project-gallery-frame[data-orientation="portrait"] {
-    aspect-ratio: 9 / 16;
-    max-width: 320px;
+    aspect-ratio: 16 / 9;
+}
+
+.project-gallery-frame[data-orientation="portrait"] img {
+    object-fit: contain;
 }
 
 .project-gallery-frame img {

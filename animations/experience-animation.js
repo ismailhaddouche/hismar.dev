@@ -1,87 +1,363 @@
 /**
- * ANIMACIÓN EXPERIENCE - Corbata, gafas, matrix rain y flash
+ * ANIMACIÓN EXPERIENCE - Retrato Interactivo Flotante (Copia de About)
+ * Partículas orbitales neon y explosión al clic.
  * Usa CharacterBase para el personaje compartido.
  */
 window.animations_experience_animation_js = {
     init(container) {
-        const W = 200, H = 200;
-        const cols = 20;
-        const matrixDrops = Array.from({ length: cols }, (_, i) => ({
-            x: i * (W / cols),
-            y: Math.random() * -H,
-            speed: 0.5 + Math.random() * 1.5,
-            chars: Array.from({ length: 5 + Math.random() * 8 }, () => String.fromCharCode(48 + Math.round(Math.random())))
-        }));
-        let flash = 0;
+        let destroyCurrent = null;
+        let resetTimer = null;
 
-        window.CharacterBase.init(container, {
-            extraColors: {
-                tie: '#ff3366', tieDk: '#cc0044', matrix: '#0f0'
-            },
-            onClick() {
-                flash = 1;
-                matrixDrops.forEach(d => { d.speed = 3 + Math.random() * 4; });
-            },
-            drawBefore({ ctx, W, H }) {
-                // Glow
-                const gl = ctx.createRadialGradient(W / 2, 50, 8, W / 2, 50, 90);
-                gl.addColorStop(0, 'rgba(57,255,20,0.04)');
-                gl.addColorStop(1, 'transparent');
-                ctx.fillStyle = gl;
-                ctx.fillRect(0, 0, W, H);
-                // Matrix rain
-                ctx.font = '10px monospace';
-                ctx.textAlign = 'center';
-                matrixDrops.forEach(d => {
-                    d.y += d.speed;
-                    if (d.y > H + d.chars.length * 10) {
-                        d.y = Math.random() * -50 - d.chars.length * 10;
-                        d.speed = 0.5 + Math.random() * 1.5;
-                    }
-                    if (Math.random() < 0.05) {
-                        d.chars[Math.floor(Math.random() * d.chars.length)] = String.fromCharCode(48 + Math.round(Math.random()));
-                    }
-                    d.chars.forEach((ch, idx) => {
-                        const cy = d.y - idx * 10;
-                        if (cy > 0 && cy < H + 10) {
-                            ctx.fillStyle = idx === 0 ? '#fff' : (idx < 3 ? '#39ff14' : '#1b8c0b');
-                            ctx.globalAlpha = Math.max(0, 1 - (idx / d.chars.length));
-                            ctx.fillText(ch, d.x + (W / cols) / 2, cy);
-                        }
-                    });
-                });
-                ctx.globalAlpha = 1;
-                ctx.textAlign = 'start';
-                // Flash
-                if (flash > 0) {
-                    ctx.fillStyle = 'rgba(57, 255, 20, ' + flash + ')';
-                    ctx.fillRect(0, 0, W, H);
-                    flash -= 0.05;
-                }
-            },
-            drawOverCharacter({ ctx, cx, cy, ox, oy, C }) {
-                // Tie (drawn before head covers it — placed on shirt area)
-                ctx.beginPath();
-                ctx.moveTo(cx + ox - 4, cy + oy + 45);
-                ctx.lineTo(cx + ox + 4, cy + oy + 45);
-                ctx.lineTo(cx + ox + 3, cy + oy + 65);
-                ctx.lineTo(cx + ox, cy + oy + 69);
-                ctx.lineTo(cx + ox - 3, cy + oy + 65);
-                ctx.fillStyle = C.tie; ctx.fill();
-                ctx.beginPath();
-                ctx.moveTo(cx + ox, cy + oy + 45);
-                ctx.lineTo(cx + ox + 4, cy + oy + 45);
-                ctx.lineTo(cx + ox + 3, cy + oy + 65);
-                ctx.lineTo(cx + ox, cy + oy + 69);
-                ctx.fillStyle = C.tieDk; ctx.fill();
-
-                // Glasses (over eyes area)
-                const lex = cx + ox - 12, rex = cx + ox + 12, ey = cy + oy - 5;
-                ctx.strokeStyle = '#222'; ctx.lineWidth = 1.5;
-                ctx.beginPath(); ctx.roundRect(lex - 10, ey - 7, 20, 14, 2); ctx.stroke();
-                ctx.beginPath(); ctx.roundRect(rex - 10, ey - 7, 20, 14, 2); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(lex + 10, ey); ctx.lineTo(rex - 10, ey); ctx.stroke();
+        const masterCleanup = () => {
+            if (resetTimer) {
+                clearInterval(resetTimer);
+                resetTimer = null;
             }
-        });
+            if (destroyCurrent) {
+                destroyCurrent();
+                destroyCurrent = null;
+            }
+        };
+
+        const restart = () => {
+            if (destroyCurrent) {
+                destroyCurrent();
+            }
+            destroyCurrent = createFaceAnimationInstance(container);
+            container._cleanup = masterCleanup;
+        };
+
+        restart();
+        resetTimer = setInterval(restart, 10000);
     }
 };
+
+function createFaceAnimationInstance(container) {
+    // Gaming state → while the pointer stays idle, the avatar sigue apretando los botones.
+    let isGaming = true;
+    let lastCursor = null;
+    let lastInteractionTs = null;
+    let gamingBlend = 1; // 1 = jugando, 0 = siguiendo el cursor
+    let tapPulse = { left: 0, right: 0 };
+    let tapSide = 'left';
+    let tapClock = 0;
+    let lastFrameTime = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+
+    window.CharacterBase.init(container, {
+        drawOverCharacter(state) {
+            drawTie(state.ctx, state.cx, state.cy, state.ox, state.oy);
+            drawKeyboardRig(state, gamingBlend, tapPulse);
+        },
+        drawAfter(state) {
+            drawGlasses(state.ctx, state.cx, state.cy, state.ox, state.oy, gamingBlend);
+        },
+        getMood({ W, H, mx, my }) {
+            const pointer = lastCursor || { x: mx ?? W / 2, y: my ?? H / 2 };
+            if (isGaming) {
+                return {
+                    focus: 0.85,
+                    gaze: { x: W / 2, y: H * 0.62 },
+                    sweat: 1
+                };
+            }
+            return {
+                focus: 0.08,
+                gaze: pointer,
+                sweat: 0
+            };
+        },
+        onFrame({ mx, my }) {
+            const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+            const delta = now - lastFrameTime;
+            lastFrameTime = now;
+
+            if (lastCursor) {
+                if (typeof mx === 'number' && typeof my === 'number') {
+                    const deltaMove = Math.abs(mx - lastCursor.x) + Math.abs(my - lastCursor.y);
+                    if (deltaMove > 1.2) {
+                        isGaming = false;
+                        lastInteractionTs = Date.now();
+                    } else {
+                        const since = lastInteractionTs ? Date.now() - lastInteractionTs : Infinity;
+                        if (since >= 1200) {
+                            isGaming = true;
+                        }
+                    }
+                }
+            }
+            if (typeof mx === 'number' && typeof my === 'number') {
+                lastCursor = { x: mx, y: my };
+            }
+            if (!lastInteractionTs) {
+                lastInteractionTs = Date.now();
+            }
+
+            if (!lastCursor) {
+                lastCursor = { x: 100, y: 100 };
+            }
+
+            if (!isGaming) {
+                const since = lastInteractionTs ? Date.now() - lastInteractionTs : 0;
+                if (since >= 1200) {
+                    isGaming = true;
+                }
+            }
+
+            const target = isGaming ? 1 : 0;
+            gamingBlend += (target - gamingBlend) * 0.08;
+
+            if (isGaming) {
+                tapClock += delta;
+                if (tapClock >= 200) {
+                    tapClock = tapClock % 200;
+                    tapSide = tapSide === 'left' ? 'right' : 'left';
+                }
+            } else {
+                tapClock = 0;
+            }
+
+            const leftTarget = isGaming && tapSide === 'left' ? 1 : 0;
+            const rightTarget = isGaming && tapSide === 'right' ? 1 : 0;
+            tapPulse.left += (leftTarget - tapPulse.left) * 0.25;
+            tapPulse.right += (rightTarget - tapPulse.right) * 0.25;
+        }
+    });
+
+    const baseCleanup = container._cleanup;
+    return () => {
+        if (baseCleanup) {
+            baseCleanup();
+        }
+    };
+}
+
+function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left: 0, right: 0 }) {
+    const torsoY = cy + oy + 42;
+    const drop   = (1 - blend) * 28;
+    const pcx    = cx + ox;
+    // Teclado más alejado del personaje (Y mucho mayor)
+    const pcy    = torsoY + 55 + drop * 0.35; 
+
+    // ── Geometría unificada (Teclado) más pequeño ──
+    const botW = 75, topW = 61;   // perspRatio ≈ 0.81
+    const H    = 21;
+
+    const TL = { x: pcx - topW / 2, y: pcy - H / 2 };
+    const TR = { x: pcx + topW / 2, y: pcy - H / 2 };
+    const BL = { x: pcx - botW / 2, y: pcy + H / 2 };
+    const BR = { x: pcx + botW / 2, y: pcy + H / 2 };
+
+    ctx.save();
+    ctx.globalAlpha = 0.2 + 0.8 * blend;
+
+    // ── Base del teclado ──
+    ctx.fillStyle = '#171920';
+    ctx.beginPath();
+    ctx.moveTo(TL.x, TL.y);
+    ctx.lineTo(TR.x, TR.y);
+    ctx.lineTo(BR.x, BR.y);
+    ctx.lineTo(BL.x, BL.y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#282b36';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    
+    // ── Cable visible (corto, hacia abajo desde el borde frontal) ──
+    ctx.beginPath();
+    ctx.moveTo(pcx, BL.y);
+    // Curva corta hacia abajo
+    ctx.quadraticCurveTo(pcx - 5, BL.y + 10, pcx + 10, BL.y + 25);
+    ctx.strokeStyle = '#4b5263'; 
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // ── Teclas (decorativas en perspectiva) ──
+    ctx.fillStyle = '#22252e';
+    for (let r = 0; r < 5; r++) {
+        const fY1 = (r + 0.15) / 5;
+        const fY2 = (r + 0.85) / 5;
+        const y1 = TL.y + (BL.y - TL.y) * fY1;
+        const y2 = TL.y + (BL.y - TL.y) * fY2;
+        
+        const rowW1 = topW + (botW - topW) * fY1;
+        const rowW2 = topW + (botW - topW) * fY2;
+        
+        for (let c = 0; c < 14; c++) {
+            // Tecla espaciadora más grande
+            let maxC = 13.9;
+            if (r === 4 && c > 3 && c < 10) {
+                if (c === 4) { maxC = 10; c = 9; } // saltar las demás
+            }
+            
+            const fX1 = c / 14 + 0.01;
+            const fX2 = c === 9 && r === 4 ? 10/14 - 0.01 : (c + 1) / 14 - 0.01;
+            
+            const x1_top = (pcx - rowW1 / 2) + rowW1 * fX1;
+            const x2_top = (pcx - rowW1 / 2) + rowW1 * fX2;
+            const x1_bot = (pcx - rowW2 / 2) + rowW2 * fX1;
+            const x2_bot = (pcx - rowW2 / 2) + rowW2 * fX2;
+            
+            ctx.beginPath();
+            ctx.moveTo(x1_top, y1);
+            ctx.lineTo(x2_top, y1);
+            ctx.lineTo(x2_bot, y2);
+            ctx.lineTo(x1_bot, y2);
+            ctx.fill();
+            
+            // Borde verde resaltado
+            ctx.strokeStyle = 'rgba(56, 235, 124, 0.4)';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+    }
+    
+    // Brillitos simulando LEDs gaming en la base
+    ctx.fillStyle = 'rgba(56, 235, 124, 0.12)';
+    ctx.beginPath();
+    ctx.moveTo(TL.x, TL.y);
+    ctx.lineTo(TR.x, TR.y);
+    ctx.lineTo(TR.x, TR.y + 3);
+    ctx.lineTo(TL.x, TL.y + 3);
+    ctx.fill();
+
+    ctx.restore();
+
+    // ── Brazos y Manos ──
+    const leftShoulder  = { x: cx + ox - 32, y: torsoY + 2 };
+    const rightShoulder = { x: cx + ox + 32, y: torsoY + 2 };
+
+    const leftGlow  = tapPulse.left  * blend;
+    const rightGlow = tapPulse.right * blend;
+
+    // Manos sobre el teclado (aprox 1/4 y 3/4)
+    const leftHandTargetX = pcx - 16;
+    const leftHandTargetY = pcy + 4 - leftGlow * 3;
+    const rightHandTargetX = pcx + 16;
+    const rightHandTargetY = pcy + 4 - rightGlow * 3;
+
+    const leftHand = { x: leftHandTargetX, y: leftHandTargetY };
+    
+    // Animación de mano derecha quitándose las gafas
+    const glassesY = (cy + oy - 5) * blend + (cy + oy + 42) * (1 - blend);
+    const targetChestX = cx + ox + 14;
+    const rightHand = { 
+        x: rightHandTargetX * blend + targetChestX * (1 - blend),
+        y: rightHandTargetY * blend + glassesY * (1 - blend)
+    };
+    
+    // Codos más adelantados para estirar el brazo
+    const leftElbow  = { x: leftShoulder.x  - 14 - drop * 0.15, y: torsoY + 45 + drop * 0.45 };
+    const rightElbow = { x: rightShoulder.x + 14 + drop * 0.15, y: torsoY + 45 + drop * 0.45 };
+
+    drawArm(ctx, C, leftShoulder,  leftElbow,  leftHand,  blend);
+    drawArm(ctx, C, rightShoulder, rightElbow, rightHand, blend);
+}
+
+function drawArm(ctx, C, shoulder, elbow, hand, blend) {
+    ctx.save();
+    ctx.strokeStyle = C.skin;
+    ctx.lineWidth = 9;
+    ctx.lineCap = 'round';
+    ctx.globalAlpha = 0.55 + 0.45 * blend;
+    ctx.beginPath();
+    ctx.moveTo(shoulder.x, shoulder.y + 1);
+    ctx.quadraticCurveTo(elbow.x, elbow.y, hand.x, hand.y);
+    ctx.stroke();
+
+    ctx.fillStyle = C.skin;
+    ctx.beginPath();
+    ctx.ellipse(hand.x, hand.y, 6.3, 5.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = C.shirt;
+    ctx.globalAlpha = 1;
+    ctx.beginPath();
+    ctx.arc(shoulder.x, shoulder.y, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+}
+
+function roundedRect(ctx, x, y, width, height, radius) {
+    const r = Math.min(radius, width / 2, height / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + width - r, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+    ctx.lineTo(x + width, y + height - r);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+    ctx.lineTo(x + r, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+}
+
+function drawTie(ctx, cx, cy, ox, oy) {
+    const pcx = cx + ox;
+    const pcy = cy + oy;
+    ctx.save();
+    ctx.fillStyle = '#b32424';
+    
+    // Nudo bajado a y + 36 (antes y + 32)
+    ctx.beginPath();
+    ctx.moveTo(pcx - 4, pcy + 36);
+    ctx.lineTo(pcx + 4, pcy + 36);
+    ctx.lineTo(pcx + 3, pcy + 42);
+    ctx.lineTo(pcx - 3, pcy + 42);
+    ctx.fill();
+    
+    // Cuerpo ajustado correspondientemente
+    ctx.beginPath();
+    ctx.moveTo(pcx - 3, pcy + 42);
+    ctx.lineTo(pcx + 3, pcy + 42);
+    ctx.lineTo(pcx + 5, pcy + 69);
+    ctx.lineTo(pcx, pcy + 79);
+    ctx.lineTo(pcx - 5, pcy + 69);
+    ctx.fill();
+    
+    ctx.restore();
+}
+
+function drawGlasses(ctx, cx, cy, ox, oy, blend) {
+    const gy = (cy + oy - 5) * blend + (cy + oy + 42) * (1 - blend);
+    const gcx = cx + ox;
+    ctx.save();
+    ctx.strokeStyle = '#222';
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    
+    // Lente izquierda
+    ctx.beginPath();
+    roundedRect(ctx, gcx - 22, gy - 6, 18, 14, 4);
+    ctx.stroke();
+    // Brillo sutil
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.fill();
+    
+    // Lente derecha
+    ctx.beginPath();
+    roundedRect(ctx, gcx + 4, gy - 6, 18, 14, 4);
+    ctx.stroke();
+    ctx.fill();
+    
+    // Puente
+    ctx.beginPath();
+    ctx.moveTo(gcx - 4, gy);
+    ctx.lineTo(gcx + 4, gy);
+    ctx.stroke();
+    
+    // Patillas (se difuminan si se quita las gafas)
+    ctx.globalAlpha = Math.max(0, blend * 2 - 1);
+    ctx.beginPath();
+    ctx.moveTo(gcx - 22, gy - 2);
+    ctx.lineTo(gcx - 28, gy - 5);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(gcx + 22, gy - 2);
+    ctx.lineTo(gcx + 28, gy - 5);
+    ctx.stroke();
+
+    ctx.restore();
+}

@@ -86,12 +86,13 @@ window.commands_skills_skills_js = {
             return `<i class="${iconDef} colored skill-icon" aria-hidden="true"></i>`;
         };
 
-        let html = '<h2 class="section-title">Technology Stack</h2>';
+        let html = `<h2 class="section-title">${window.i18n.t('commands.skills.title')}</h2>`;
         html += '<div class="skills-content">';
 
         for (const category in skills) {
             html += '<div class="skill-category">';
-            html += `<h3 class="skill-category-title">${category}</h3>`;
+            const translatedCategory = window.i18n.t(`commands.skills.categories.${category}`);
+            html += `<h3 class="skill-category-title">${translatedCategory}</h3>`;
             html += '<ul class="skill-list">';
             for (const skill of skills[category]) {
                 const iconMarkup = buildIconMarkup(skillIcons[skill.toLowerCase()]);
