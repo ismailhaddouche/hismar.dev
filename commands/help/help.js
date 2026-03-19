@@ -13,27 +13,27 @@ window.commands_help_help_js = {
                     <h3 class="group-title">${window.i18n.t('commands.help.info_group')}</h3>
                     <div class="commands-grid">
                         <div class="command-item" data-cmd="about">
-                            <span class="command-name">about</span>
+                            <span class="command-name">${window.i18n.t('commands.about.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.about_desc')}</span>
                         </div>
                         <div class="command-item" data-cmd="experience">
-                            <span class="command-name">experience</span>
+                            <span class="command-name">${window.i18n.t('commands.experience.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.exp_desc')}</span>
                         </div>
                         <div class="command-item" data-cmd="skills">
-                            <span class="command-name">skills</span>
+                            <span class="command-name">${window.i18n.t('commands.skills.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.skills_desc')}</span>
                         </div>
                         <div class="command-item" data-cmd="projects">
-                            <span class="command-name">projects</span>
+                            <span class="command-name">${window.i18n.t('commands.projects.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.proj_desc')}</span>
                         </div>
                         <div class="command-item" data-cmd="education">
-                            <span class="command-name">education</span>
+                            <span class="command-name">${window.i18n.t('commands.education.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.edu_desc')}</span>
                         </div>
                         <div class="command-item" data-cmd="cv">
-                            <span class="command-name">cv</span>
+                            <span class="command-name">${window.i18n.t('commands.cv.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.cv_desc')}</span>
                         </div>
                     </div>
@@ -43,12 +43,12 @@ window.commands_help_help_js = {
                     <h3 class="group-title">${window.i18n.t('commands.help.sys_group')}</h3>
                     <div class="commands-grid">
                         <div class="command-item" data-cmd="help">
-                            <span class="command-name">help</span>
+                            <span class="command-name">${window.i18n.t('commands.help.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.help_desc')}</span>
                         </div>
                         <div class="command-item" data-cmd="clear">
-                            <span class="command-name">clear</span>
-                            <span class="command-desc">${window.i18n.t('commands.help.clear_desc')}</span>
+                            <span class="command-name">${window.i18n.t('commands.help.clear.label')}</span>
+                            <span class="command-desc">${window.i18n.t('commands.help.clear.description')}</span>
                         </div>
                     </div>
                 </div>

@@ -168,6 +168,10 @@ window.i18n = {
                     edu_desc: "Formación académica",
                     cv_desc: "Descargar CV en PDF",
                     help_desc: "Mostrar esta guía",
+                    clear: {
+                        label: "Limpiar",
+                        description: "Limpiar la consola"
+                    },
                     clear_desc: "Limpiar la consola"
                 }
             },
@@ -342,6 +346,10 @@ window.i18n = {
                     edu_desc: "Academic background",
                     cv_desc: "Download the CV in PDF",
                     help_desc: "Show this guide",
+                    clear: {
+                        label: "Clear",
+                        description: "Clear the console"
+                    },
                     clear_desc: "Clear the console"
                 }
             },
