@@ -3,10 +3,9 @@
  */
 window.commands_cv_cv_js = {
     async execute(terminal) {
-        const container = document.createElement('div');
-        container.className = 'command-output';
+        const { container, content } = terminal.createCommandContainer('cv');
 
-        container.innerHTML = `
+        content.innerHTML = `
             <div class="cv-content">
                 <h2 class="section-title">${window.i18n.t('commands.cv.title')}</h2>
                 <p class="cv-description">${window.i18n.t('commands.cv.desc')}</p>
@@ -25,7 +24,6 @@ window.commands_cv_cv_js = {
             </div>
         `;
 
-        document.getElementById('console-output').appendChild(container);
         terminal.autoScrollConsole(container);
     }
 };
