@@ -18,7 +18,7 @@ window.i18n = {
                 neofetch: "neofetch   → stack visual de hismar.dev",
                 education: "education  → formación académica",
                 cv: "cv         → descargar currículum",
-                footer: "// Tab: autodecompletar  ·  ↑↓: historial de comandos  ·  hay easter eggs por descubrir 👀"
+                footer: "// Tab: autodecompletar  ·  ↑↓: historial de comandos  ·  hay easter eggs por descubrir"
             },
             menu: {
                 about: "/sobre-mi",
@@ -164,8 +164,7 @@ window.i18n = {
                     tip1: "Haz clic en cualquier comando para ejecutarlo",
                     tip2: "Usa <kbd>Tab</kbd> para autocompletar",
                     tip3: "Navega por el historial con <kbd>↑</kbd> / <kbd>↓</kbd>",
-                    tip4: "Pulsa <kbd>Esc</kbd> para saltar animaciones",
-                    tip5: "Hay varios easter eggs ocultos en la terminal: pruébala y diviértete encontrándolos",
+                    tip4: "Hay varios easter eggs ocultos en la terminal: pruébala y diviértete encontrándolos",
                     footer: "// Construido con cerebro, demasiado café y viendo a",
                     about_desc: "Quién soy, trayectoria y contacto",
                     exp_desc: "Trayectoria profesional e historial",
@@ -188,7 +187,7 @@ window.i18n = {
                 unrecognized: "Comando no reconocido: ",
                 help_hint: "Escribe 'help' para ver la lista de comandos.",
                 restarting: "Reiniciando terminal...",
-                sudo_denied: "Permiso denegado: no tienes permisos para usar sudo 😅"
+                sudo_denied: "Permiso denegado: no tienes permisos para usar sudo"
             }
         },
         en: {
@@ -204,7 +203,7 @@ window.i18n = {
                 neofetch: "neofetch   → visual stack of hismar.dev",
                 education: "education  → academic path",
                 cv: "cv         → download résumé",
-                footer: "// Tab: autocomplete  ·  ↑↓: command history  ·  there are easter eggs to discover 👀"
+                footer: "// Tab: autocomplete  ·  ↑↓: command history  ·  there are easter eggs to discover"
             },
             menu: {
                 about: "/about",
@@ -350,8 +349,7 @@ window.i18n = {
                     tip1: "Click any command to run it directly",
                     tip2: "Use <kbd>Tab</kbd> to autocomplete",
                     tip3: "Navigate history with <kbd>↑</kbd> / <kbd>↓</kbd>",
-                    tip4: "Press <kbd>Esc</kbd> to skip animations",
-                    tip5: "There are several hidden easter eggs in this terminal—explore and have fun finding them",
+                    tip4: "There are several hidden easter eggs in this terminal—explore and have fun finding them",
                     footer: "// Built with brain, far too much coffee, and watching",
                     about_desc: "Who I am, background, and contact",
                     exp_desc: "Professional trajectory and history",
@@ -374,7 +372,7 @@ window.i18n = {
                 unrecognized: "Unrecognized command: ",
                 help_hint: "Type 'help' to list the available commands.",
                 restarting: "Restarting terminal...",
-                sudo_denied: "Permission denied: you are not allowed to use sudo 😅"
+                sudo_denied: "Permission denied: you are not allowed to use sudo"
             }
         }
     },
