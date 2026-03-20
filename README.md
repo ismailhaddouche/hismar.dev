@@ -1,106 +1,170 @@
 ﻿# hismar.dev — Interactive Terminal Portfolio
 
-Interactive retro terminal experience built with vanilla HTML, CSS, and JavaScript. The UI mimics a command-line interface with pixel-art vibes, smooth animations, and a modular command system.
+hismar.dev is a terminal-inspired portfolio built with vanilla HTML, CSS, and JavaScript. It provides a command-driven user experience with modular features, dynamic loading, and production-focused frontend architecture.
 
-🌐 **Live site:** [https://hismar.dev/](https://hismar.dev/)
+Live site: https://hismar.dev/
 
----
+## Overview
 
-## 🚀 Key Features
-- **Console-style interface:** Sticky prompt at the bottom that accepts commands just like a shell.
-- **Quick navigation:** Desktop menu plus mobile hamburger overlay for instant command jumps.
-- **Modular command system:** Every command (about, skills, projects, education, help, etc.) lives in its own folder with isolated JS + CSS.
-- **Terminal utilities:** Command history (↑ / ↓), autocomplete (Tab), and built-in commands (clear, exit).
-- **Sandboxed animations:** Each command can wire up animations while the sandbox automatically cleans them up when switching views.
-- **Fully responsive:** Works seamlessly on desktop, tablet, and mobile.
+The project reproduces the interaction model of a terminal while keeping the implementation fully static and framework-free. Commands are loaded on demand, each command has isolated styles, and optional command-specific animations are safely cleaned up when the active view changes.
 
----
+## Core Features
 
-## 🛠️ Project Structure
-No bundlers required—everything is served as static assets.
+- Terminal-like UI with command prompt and output stream
+- Modular command system (`about`, `experience`, `skills`, `neofetch`, `projects`, `education`, `cv`, `help`)
+- Built-in utility commands (`clear`, `exit`)
+- Command history navigation (`ArrowUp` / `ArrowDown`)
+- Autocomplete support (`Tab`)
+- Mobile menu with command shortcuts
+- Language support (Spanish and English)
+- Accessibility improvements (landmarks, skip link, ARIA labels)
+- SEO enhancements (metadata, structured data, `robots.txt`, `sitemap.xml`, `llms.txt`)
+- Easter eggs, including `sudo` permission denial behavior
 
-`	ext
+## Technology Stack
+
+- HTML5
+- CSS3
+- JavaScript (ES modules pattern via dynamic script loading)
+- Firebase ecosystem references in product presentation (e.g., Firebase/App Hosting context)
+- Static hosting-friendly architecture (no bundler required to run)
+
+## Project Structure
+
+```text
 hismar.dev/
-├── index.html           # Entry point
-├── main.js              # Terminal core + command loader
-├── package.json         # Helper scripts (dev server, etc.)
-├── styles/              # Global + layout CSS
-├── animations/          # Reusable animation modules
-├── commands/            # One folder per command
+├── index.html
+├── main.js
+├── i18n.js
+├── package.json
+├── styles/
+│   ├── layout.css
+│   └── layout.min.css
+├── commands/
 │   ├── about/
-│   │   ├── about.js
-│   │   └── about.css
-│   └── ...
-└── README.md            # This file
-`
+│   ├── experience/
+│   ├── skills/
+│   ├── neofetch/
+│   ├── projects/
+│   ├── education/
+│   ├── cv/
+│   └── help/
+├── animations/
+├── robots.txt
+├── sitemap.xml
+├── llms.txt
+└── README.md
+```
 
----
+## Command Architecture
 
-## 💻 Local Development
-Spin up any static HTTP server.
+Command modules are registered in `main.js` through `COMMAND_DEFINITIONS`.
 
-1. **Clone the repo**
-   `ash
-   git clone https://github.com/ismailhaddouche/hismar.dev
-   cd hismar.dev
-   `
+Each command can define:
 
-2. **Start a server**
-   `ash
-   npm run dev        # uses http-server under the hood
-   # or with Python
-   python3 -m http.server 8000
-   `
+- `script`: command logic module path
+- `styles`: command-specific stylesheet path
+- `animation` (optional): animation module path
+- `showInNav`: whether it appears in navigation
 
-3. **Open the app**
-   Visit http://localhost:8000 and type help in the prompt to see available commands.
+At runtime, the terminal loads only what is needed for the executed command, then renders content via `createCommandContainer(commandName)`.
 
----
+## Available Commands
 
-## 🧩 Adding or Editing Commands
-The command sandbox makes extensibility straightforward.
+- `about`: personal background and contact
+- `experience`: professional trajectory
+- `skills`: technical stack overview
+- `neofetch`: graphical neofetch-style summary of website technologies
+- `projects`: production and open-source work
+- `education`: academic background
+- `cv`: curriculum download
+- `help`: command guide
+- `clear`: clear terminal output
+- `exit`: restart terminal session
 
-1. **Create a folder:** commands/my-command/
-2. **Add the JS module:** commands/my-command/my-command.js
-   `javascript
-   export default {
-     name: 'my-command',
-     description: 'Short description of the feature',
-     async execute(terminal, animation) {
-       const { container, content } = terminal.createCommandContainer('my-command');
+Easter egg behavior:
 
-       terminal.writeLine('Hello from my command');
-       content.innerHTML = '<p>Custom HTML, components, or canvas animations.</p>';
-     }
-   };
-   `
-3. **(Optional) Add scoped styles:** commands/my-command/my-command.css
-4. **Register the command:** Link script + CSS paths inside main.js so the loader can import them dynamically.
+- Any command prefixed with `sudo` returns a permission denial message.
 
-**Best practices**
-- Keep styles scoped to the command container returned by createCommandContainer().
-- If you spin up intervals, observers, or rAF loops, register cleanup callbacks so the sandbox can dispose them when the user clears the terminal or switches commands.
+## Local Development
 
----
+### Requirements
 
-## ✅ Validation Script (Optional)
-On Linux/macOS/WSL there is a helper script to confirm required files exist:
-`ash
-./validate-v2.sh
-`
-This ensures the core animation + command assets are present before deploying.
+- Node.js (recommended for npm scripts)
+- Optional: Python 3 for fallback local server
 
----
+### Start development server
 
-## 🚀 Deployment
-The project is 100% static, so deployment is painless:
-- Host on GitHub Pages, Vercel, Netlify, Firebase Hosting, or any static provider.
-- Ensure relative paths (/commands/, /styles/, etc.) resolve correctly. For GitHub Pages, deploy from the repository root (/).
+```bash
+npm run dev
+```
 
----
+The default development server is available at:
 
-## 📄 License
-Distributed under the MIT License. See LICENSE for details.
+- http://127.0.0.1:8000
 
-## ✉️ Contact
-**Ismail Haddouche Rhali** — [GitHub](https://github.com/ismailhaddouche)
+Alternative static server (Python):
+
+```bash
+python3 -m http.server 8000
+```
+
+## Build and Optimization
+
+Generate minified core assets:
+
+```bash
+npm run build
+```
+
+This updates:
+
+- `styles/layout.min.css`
+- `i18n.min.js`
+- `animations/character-base.min.js`
+- `main.min.js`
+
+## Validation Script
+
+A local validation helper is available as:
+
+```bash
+./validate.sh
+```
+
+It checks critical files/directories and can start a local Python server on an available port.
+
+## Accessibility and SEO
+
+Implemented improvements include:
+
+- Main landmark and skip link support
+- ARIA and accessible naming fixes
+- Image/icon accessibility adjustments where applicable
+- Structured metadata (Open Graph, Twitter, JSON-LD)
+- Crawl directives via `robots.txt`
+- `sitemap.xml` for indexing
+- `llms.txt` for machine-readable site guidance
+
+## Deployment
+
+The project is static and can be deployed to:
+
+- Firebase Hosting
+- Netlify
+- Vercel
+- GitHub Pages
+- Any static file host
+
+Deployment requirement: preserve root-relative asset paths and command directories.
+
+## License
+
+MIT License. See `LICENSE` for details.
+
+## Contact
+
+Ismail Haddouche Rhali
+
+- GitHub: https://github.com/ismailhaddouche
+- LinkedIn: https://www.linkedin.com/in/ismail-haddouche-rhali-194305334
