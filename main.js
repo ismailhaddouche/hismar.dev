@@ -29,7 +29,7 @@ const COMMAND_DEFINITIONS = [
         name: 'neofetch',
         script: 'commands/neofetch/neofetch.js',
         styles: 'commands/neofetch/neofetch.css',
-        showInNav: true
+        showInNav: false
     },
     {
         name: 'projects',
