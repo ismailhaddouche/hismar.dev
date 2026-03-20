@@ -17,7 +17,7 @@ window.i18n = {
                 skills: "skills     → stack tecnológico completo",
                 education: "education  → formación académica",
                 cv: "cv         → descargar currículum",
-                footer: "// Tab: autodecompletar  ·  ↑↓: historial de comandos"
+                footer: "// Tab: autodecompletar  ·  ↑↓: historial de comandos  ·  hay easter eggs por descubrir 👀"
             },
             menu: {
                 about: "/sobre-mi",
@@ -159,7 +159,7 @@ window.i18n = {
                     tip2: "Usa <kbd>Tab</kbd> para autocompletar",
                     tip3: "Navega por el historial con <kbd>↑</kbd> / <kbd>↓</kbd>",
                     tip4: "Pulsa <kbd>Esc</kbd> para saltar animaciones",
-                    tip5: "Las animaciones laterales son interactivas",
+                    tip5: "Hay varios easter eggs ocultos en la terminal: pruébala y diviértete encontrándolos",
                     footer: "// Construido con cerebro, demasiado café y viendo a",
                     about_desc: "Quién soy, trayectoria y contacto",
                     exp_desc: "Trayectoria profesional e historial",
@@ -195,7 +195,7 @@ window.i18n = {
                 skills: "skills     → complete technology stack",
                 education: "education  → academic path",
                 cv: "cv         → download résumé",
-                footer: "// Tab: autocomplete  ·  ↑↓: command history"
+                footer: "// Tab: autocomplete  ·  ↑↓: command history  ·  there are easter eggs to discover 👀"
             },
             menu: {
                 about: "/about",
@@ -337,7 +337,7 @@ window.i18n = {
                     tip2: "Use <kbd>Tab</kbd> to autocomplete",
                     tip3: "Navigate history with <kbd>↑</kbd> / <kbd>↓</kbd>",
                     tip4: "Press <kbd>Esc</kbd> to skip animations",
-                    tip5: "Sidebar animations are interactive",
+                    tip5: "There are several hidden easter eggs in this terminal—explore and have fun finding them",
                     footer: "// Built with brain, far too much coffee, and watching",
                     about_desc: "Who I am, background, and contact",
                     exp_desc: "Professional trajectory and history",
