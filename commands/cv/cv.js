@@ -17,7 +17,7 @@ window.commands_cv_cv_js = {
                             <span class="cv-detail">CV_Ismail_Haddouche_Rhali_2026.pdf</span>
                         </div>
                         <span class="cv-download-indicator" aria-hidden="true">
-                            <i class="fa-solid fa-arrow-down"></i>
+                            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
                         </span>
                     </a>
                 </div>

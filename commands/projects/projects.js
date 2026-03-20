@@ -3,6 +3,19 @@
  */
 window.commands_projects_projects_js = {
     async execute(terminal, animation) {
+        const deviconSelector = 'link[data-devicon="true"]';
+        if (!document.querySelector(deviconSelector)) {
+            await new Promise((resolve) => {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css';
+                link.setAttribute('data-devicon', 'true');
+                link.onload = resolve;
+                link.onerror = resolve;
+                document.head.appendChild(link);
+            });
+        }
+
         const { container, content, sidebar } = terminal.createCommandContainer('projects');
 
         const projectsData = [
@@ -80,7 +93,7 @@ window.commands_projects_projects_js = {
                         </div>
                         <div class="project-gallery-modal__frame">
                             <button class="project-gallery-modal__nav project-gallery-modal__nav--prev" aria-label="Previous image">⟵</button>
-                            <img src="" alt="">
+                            <img src="" alt="Project gallery image preview">
                             <button class="project-gallery-modal__nav project-gallery-modal__nav--next" aria-label="Next image">⟶</button>
                         </div>
                     </div>
@@ -215,6 +228,7 @@ window.commands_projects_projects_js = {
             const img = document.createElement('img');
             img.loading = 'lazy';
             img.decoding = 'async';
+            img.alt = `${project.name} screenshot preview`;
 
             const counter = document.createElement('span');
             counter.className = 'project-gallery-counter';

@@ -1,0 +1,27 @@
+# hismar.dev
+
+Official website of Ismail Haddouche Rhali.
+
+## Summary
+Interactive terminal-style portfolio showcasing profile, experience, projects, skills, education, and CV.
+
+## Canonical URL
+https://hismar.dev/
+
+## Owner
+- Name: Ismail Haddouche Rhali
+- Role: Full-stack + Mobile Developer
+- Location: Murcia, Spain
+
+## Main sections
+- / (single-page app with interactive terminal UI)
+
+## Contact
+- Email: ismailhaddoucherhali@gmail.com
+- GitHub: https://github.com/ismailhaddouche
+- LinkedIn: https://www.linkedin.com/in/ismail-haddouche-rhali-194305334
+
+## Content usage notes
+- You may cite short excerpts for indexing/summarization.
+- Do not misattribute authorship.
+- Prefer linking back to the canonical URL.

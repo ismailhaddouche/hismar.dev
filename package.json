@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "dev": "npx -y http-server -p 8000",
-    "build": "echo 'No build step required'",
+    "build": "npx -y clean-css-cli -o styles/layout.min.css styles/layout.css && npx -y terser i18n.js -c -m -o i18n.min.js && npx -y terser animations/character-base.js -c -m -o animations/character-base.min.js && npx -y terser main.js -c -m -o main.min.js",
     "start": "npx -y http-server -p 8080"
   },
   "keywords": [

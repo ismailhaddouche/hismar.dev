@@ -3,6 +3,19 @@
  */
 window.commands_skills_skills_js = {
     async execute(terminal, animation) {
+        const deviconSelector = 'link[data-devicon="true"]';
+        if (!document.querySelector(deviconSelector)) {
+            await new Promise((resolve) => {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css';
+                link.setAttribute('data-devicon', 'true');
+                link.onload = resolve;
+                link.onerror = resolve;
+                document.head.appendChild(link);
+            });
+        }
+
         const { container, content, sidebar } = terminal.createCommandContainer('skills');
 
         

@@ -48,6 +48,26 @@ body.no-scroll {
     height: 100vh;
 }
 
+.skip-link {
+    position: absolute;
+    left: 16px;
+    top: 8px;
+    transform: translateY(-160%);
+    background: #0b251a;
+    color: var(--terminal-light-green);
+    border: 1px solid var(--terminal-frame-outer);
+    border-radius: 6px;
+    padding: 8px 12px;
+    text-decoration: none;
+    z-index: 120;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+    outline: 2px dashed var(--accent-gold);
+    outline-offset: 2px;
+}
+
 /* Text selection */
 ::selection {
     background: var(--terminal-green);
@@ -295,10 +315,12 @@ body.no-scroll {
     border: 1px solid rgba(0, 255, 65, 0.08);
     background: rgba(0, 17, 10, 0.45);
     font-size: 12px;
+    font-family: inherit;
     letter-spacing: 0.6px;
     transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     position: relative;
     text-transform: uppercase;
+    cursor: pointer;
 }
 
 .menu-item::after {
@@ -834,7 +856,7 @@ body.no-scroll {
 
 /* Welcome comment lines */
 .console-output pre.welcome-comment {
-    color: #4a6a4a;
+    color: #89b689;
     font-size: 12px;
 }
 

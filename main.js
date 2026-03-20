@@ -153,11 +153,16 @@ class TerminalApp {
 
         // Inyectar Selector de Idioma
         if (headerSocial) {
-            const langBtn = document.createElement('button');
-            langBtn.className = 'social-btn lang-toggle';
-            langBtn.setAttribute('aria-label', 'Toggle Language');
+            const existingLangBtn = headerSocial.querySelector('.lang-toggle');
+            const langBtn = existingLangBtn || document.createElement('button');
+            if (!existingLangBtn) {
+                langBtn.type = 'button';
+                langBtn.className = 'social-btn lang-toggle';
+            }
             const updateLangLabel = () => {
-                langBtn.innerHTML = `<span class="lang-label">${window.i18n.current === 'es' ? 'ES' : 'EN'}</span>`;
+                const label = window.i18n.current === 'es' ? 'ES' : 'EN';
+                langBtn.innerHTML = `<span class="lang-label">${label}</span>`;
+                langBtn.setAttribute('aria-label', `${label} - Toggle language`);
             };
             updateLangLabel();
             langBtn.onclick = () => {
@@ -165,7 +170,9 @@ class TerminalApp {
                 window.i18n.setLanguage(next);
                 updateLangLabel();
             };
-            headerSocial.appendChild(langBtn);
+            if (!existingLangBtn) {
+                headerSocial.appendChild(langBtn);
+            }
         }
 
         // Escuchar cambios de idioma
@@ -267,7 +274,7 @@ class TerminalApp {
         menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                const command = item.dataset.command || item.getAttribute('href').substring(1);
+                const command = item.dataset.command || (item.getAttribute('href') || '').replace(/^#/, '');
                 this.executeCommand(command);
                 if (terminalMenu && terminalMenu.classList.contains('active')) {
                     toggleMobileMenu(false);
@@ -510,7 +517,7 @@ class TerminalApp {
         const { menuItems } = this.dom;
         if (!menuItems || !menuItems.length) return;
         menuItems.forEach(item => {
-            const cmd = item.dataset.command || item.getAttribute('href').substring(1);
+            const cmd = item.dataset.command || (item.getAttribute('href') || '').replace(/^#/, '');
             const isActive = !!commandName && cmd === commandName;
             item.classList.toggle('active', isActive);
         });
