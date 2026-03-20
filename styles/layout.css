@@ -267,6 +267,7 @@ body.no-scroll {
     background: radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.45), transparent), linear-gradient(135deg, #ff6b6b, #c91842);
     box-shadow: 0 8px 20px rgba(201, 24, 66, 0.35);
     border-color: rgba(255, 107, 107, 0.8);
+    cursor: default;
 }
 
 .control-btn--clear i {
