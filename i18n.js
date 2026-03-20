@@ -15,6 +15,7 @@ window.i18n = {
                 experience: "experience → trayectoria profesional",
                 projects: "projects   → proyectos en producción y open-source",
                 skills: "skills     → stack tecnológico completo",
+                neofetch: "neofetch   → stack visual de hismar.dev",
                 education: "education  → formación académica",
                 cv: "cv         → descargar currículum",
                 footer: "// Tab: autodecompletar  ·  ↑↓: historial de comandos  ·  hay easter eggs por descubrir 👀"
@@ -23,6 +24,7 @@ window.i18n = {
                 about: "/sobre-mi",
                 experience: "/experiencia",
                 skills: "/habilidades",
+                neofetch: "/neofetch",
                 projects: "/proyectos",
                 education: "/educacion",
                 cv: "/cv",
@@ -95,6 +97,10 @@ window.i18n = {
                         'Tooling': 'Herramientas'
                     }
                 },
+                neofetch: {
+                    label: "Neofetch",
+                    description: "Resumen gráfico del stack"
+                },
                 projects: {
                     label: "Proyectos",
                     description: "Producción y OSS",
@@ -164,6 +170,7 @@ window.i18n = {
                     about_desc: "Quién soy, trayectoria y contacto",
                     exp_desc: "Trayectoria profesional e historial",
                     skills_desc: "Stack tecnológico completo",
+                    neo_desc: "Resumen visual del stack de la web",
                     proj_desc: "Proyectos en producción y open-source",
                     edu_desc: "Formación académica",
                     cv_desc: "Descargar CV en PDF",
@@ -180,7 +187,8 @@ window.i18n = {
                 placeholder: "Escribe 'help' para empezar...",
                 unrecognized: "Comando no reconocido: ",
                 help_hint: "Escribe 'help' para ver la lista de comandos.",
-                restarting: "Reiniciando terminal..."
+                restarting: "Reiniciando terminal...",
+                sudo_denied: "Permiso denegado: no tienes permisos para usar sudo 😅"
             }
         },
         en: {
@@ -193,6 +201,7 @@ window.i18n = {
                 experience: "experience → professional journey",
                 projects: "projects   → production & open-source work",
                 skills: "skills     → complete technology stack",
+                neofetch: "neofetch   → visual stack of hismar.dev",
                 education: "education  → academic path",
                 cv: "cv         → download résumé",
                 footer: "// Tab: autocomplete  ·  ↑↓: command history  ·  there are easter eggs to discover 👀"
@@ -201,6 +210,7 @@ window.i18n = {
                 about: "/about",
                 experience: "/experience",
                 skills: "/skills",
+                neofetch: "/neofetch",
                 projects: "/projects",
                 education: "/education",
                 cv: "/cv",
@@ -273,6 +283,10 @@ window.i18n = {
                         'Tooling': 'Tooling'
                     }
                 },
+                neofetch: {
+                    label: "Neofetch",
+                    description: "Graphical stack summary"
+                },
                 projects: {
                     label: "Projects",
                     description: "Production & OSS",
@@ -342,6 +356,7 @@ window.i18n = {
                     about_desc: "Who I am, background, and contact",
                     exp_desc: "Professional trajectory and history",
                     skills_desc: "Complete technology stack",
+                    neo_desc: "Visual summary of this website stack",
                     proj_desc: "Production and open-source projects",
                     edu_desc: "Academic background",
                     cv_desc: "Download the CV in PDF",
@@ -358,7 +373,8 @@ window.i18n = {
                 placeholder: "Type 'help' to begin...",
                 unrecognized: "Unrecognized command: ",
                 help_hint: "Type 'help' to list the available commands.",
-                restarting: "Restarting terminal..."
+                restarting: "Restarting terminal...",
+                sudo_denied: "Permission denied: you are not allowed to use sudo 😅"
             }
         }
     },
