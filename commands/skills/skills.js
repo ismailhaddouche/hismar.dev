@@ -43,7 +43,7 @@ window.commands_skills_skills_js = {
             'Backend & APIs': ['Node.js', 'REST APIs', 'Socket.io', 'Firebase'],
             'Databases': ['Firestore', 'MongoDB', 'PostgreSQL', 'MySQL', 'SQLite'],
             'Full-stack & Mobile Ops': ['GCP', 'Docker', 'GitHub Actions', 'CI/CD'],
-            'Tooling': ['Git', 'GitHub', 'Android Studio', 'VS Code', 'Claude Code', 'Linux']
+            'Tooling': ['Git', 'GitHub', 'Figma', 'Claude Code', 'Linux']
         };
 
         const skillIcons = {
@@ -80,8 +80,7 @@ window.commands_skills_skills_js = {
             'ci/cd': customIcons.cicd,
             git: 'devicon-git-plain',
             github: 'devicon-github-original',
-            'android studio': 'devicon-androidstudio-plain',
-            'vs code': 'devicon-vscode-plain',
+            figma: 'devicon-figma-plain',
             'claude code': customIcons.spark,
             linux: 'devicon-linux-plain'
         };
