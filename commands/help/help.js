@@ -24,10 +24,6 @@ window.commands_help_help_js = {
                             <span class="command-name">${window.i18n.t('commands.skills.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.skills_desc')}</span>
                         </div>
-                        <div class="command-item" data-cmd="neofetch">
-                            <span class="command-name">${window.i18n.t('commands.neofetch.label')}</span>
-                            <span class="command-desc">${window.i18n.t('commands.help.neo_desc')}</span>
-                        </div>
                         <div class="command-item" data-cmd="projects">
                             <span class="command-name">${window.i18n.t('commands.projects.label')}</span>
                             <span class="command-desc">${window.i18n.t('commands.help.proj_desc')}</span>

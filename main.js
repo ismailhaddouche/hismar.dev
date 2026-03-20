@@ -351,7 +351,6 @@ class TerminalApp {
             { text: `  ${window.i18n.t('welcome.experience')}`, type: 'cmd', cmd: 'experience' },
             { text: `  ${window.i18n.t('welcome.projects')}`, type: 'cmd', cmd: 'projects' },
             { text: `  ${window.i18n.t('welcome.skills')}`, type: 'cmd', cmd: 'skills' },
-            { text: `  ${window.i18n.t('welcome.neofetch')}`, type: 'cmd', cmd: 'neofetch' },
             { text: `  ${window.i18n.t('welcome.education')}`, type: 'cmd', cmd: 'education' },
             { text: `  ${window.i18n.t('welcome.cv')}`, type: 'cmd', cmd: 'cv' },
             { text: ``, type: 'blank' },
