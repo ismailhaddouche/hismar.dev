@@ -622,7 +622,7 @@ body.no-scroll {
 }
 
 .retro-badge span {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Press Start 2P', 'Cascadia Mono', Consolas, 'Courier New', monospace;
     font-size: clamp(1.2rem, 4vw, 2rem);
     color: var(--accent-gold);
     background: #000;

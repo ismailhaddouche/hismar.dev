@@ -6,6 +6,13 @@
     margin-top: 10px;
 }
 
+.neofetch-logo-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
 .neofetch-logo {
     margin: 0;
     padding: 16px;
@@ -13,11 +20,20 @@
     border-radius: 10px;
     background: radial-gradient(circle at 20% 20%, rgba(0, 255, 65, 0.12), rgba(0, 0, 0, 0.7));
     color: #9bffb5;
-    font-size: clamp(6px, 1.5vw, 10px);
-    line-height: 1.22;
-    white-space: pre;
-    max-width: 100%;
-    overflow-x: auto;
+    font-family: 'Press Start 2P', 'Cascadia Mono', Consolas, 'Courier New', monospace;
+    font-size: clamp(10px, 2vw, 16px);
+    line-height: 1.25;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(110, 246, 176, 0.45);
+    letter-spacing: 0;
+    font-variant-ligatures: none;
+    white-space: nowrap;
+    width: fit-content;
+    min-width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-text-size-adjust: 100%;
 }
 
 .neofetch-specs {
@@ -98,6 +114,7 @@
     }
 
     .neofetch-logo {
-        font-size: clamp(6px, 2.2vw, 9px);
+        font-size: 11px;
+        line-height: 1.2;
     }
 }

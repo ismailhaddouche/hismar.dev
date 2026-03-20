@@ -27,14 +27,11 @@ window.commands_neofetch_neofetch_js = {
         content.innerHTML = `
             <h2 class="section-title">${window.i18n.t('commands.neofetch.label')}</h2>
             <div class="neofetch-wrapper">
-                <pre class="neofetch-logo" aria-label="HISMAR.DEV logo">
-██╗  ██╗██╗███████╗███╗   ███╗ █████╗ ██████╗ 
-██║  ██║██║██╔════╝████╗ ████║██╔══██╗██╔══██╗
-███████║██║███████╗██╔████╔██║███████║██████╔╝
-██╔══██║██║╚════██║██║╚██╔╝██║██╔══██║██╔══██╗
-██║  ██║██║███████║██║ ╚═╝ ██║██║  ██║██║  ██║
-╚═╝  ╚═╝╚═╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
-                </pre>
+                <div class="neofetch-logo-scroll">
+                    <div class="neofetch-logo" role="img" aria-label="HISMAR.DEV logo">
+                        HISMAR.DEV
+                    </div>
+                </div>
 
                 <div class="neofetch-specs">
                     <div class="neo-headline">HISMAR.DEV</div>
