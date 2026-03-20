@@ -4,33 +4,25 @@
 window.commands_neofetch_neofetch_js = {
     async execute(terminal) {
         const { container, content, sidebar } = terminal.createCommandContainer('neofetch');
+        container.style.gridTemplateColumns = '1fr';
+        sidebar.style.display = 'none';
 
         const isEs = window.i18n.current === 'es';
 
         const techStack = [
-            { name: 'JavaScript', icon: 'fa-brands fa-js', level: 96 },
-            { name: 'CSS3', icon: 'fa-brands fa-css3-alt', level: 94 },
-            { name: 'HTML5', icon: 'fa-brands fa-html5', level: 95 },
-            { name: 'Firebase', icon: 'fa-solid fa-fire', level: 92 },
-            { name: 'App Hosting', icon: 'fa-solid fa-cloud', level: 88 }
+            { name: 'JavaScript', icon: 'fa-brands fa-js' },
+            { name: 'CSS3', icon: 'fa-brands fa-css3-alt' },
+            { name: 'HTML5', icon: 'fa-brands fa-html5' },
+            { name: 'Firebase', icon: 'fa-solid fa-fire' },
+            { name: 'App Hosting', icon: 'fa-solid fa-cloud' }
         ];
 
         const techRows = techStack.map((tech) => `
-            <div class="neo-tech-row">
-                <div class="neo-tech-label">
-                    <i class="${tech.icon}" aria-hidden="true"></i>
-                    <span>${tech.name}</span>
-                </div>
-                <div class="neo-tech-bar-wrap" aria-label="${tech.name} ${tech.level}%">
-                    <div class="neo-tech-bar" style="width: ${tech.level}%"></div>
-                </div>
-                <span class="neo-tech-value">${tech.level}%</span>
+            <div class="neo-tech-chip">
+                <i class="${tech.icon}" aria-hidden="true"></i>
+                <span>${tech.name}</span>
             </div>
         `).join('');
-
-        const paletteBlocks = [
-            '#f7df1e', '#1572b6', '#e34f26', '#ff6f00', '#039be5', '#00c853', '#7c4dff', '#ff3d00'
-        ].map((color) => `<span class="neo-swatch" style="background:${color}"></span>`).join('');
 
         content.innerHTML = `
             <h2 class="section-title">${window.i18n.t('commands.neofetch.label')}</h2>
@@ -59,14 +51,6 @@ window.commands_neofetch_neofetch_js = {
                         ${techRows}
                     </div>
                 </div>
-            </div>
-        `;
-
-        sidebar.innerHTML = `
-            <div class="neo-sidecard">
-                <h3>${isEs ? 'Paleta' : 'Palette'}</h3>
-                <div class="neo-palette">${paletteBlocks}</div>
-                <p>${isEs ? 'Inspirado en neofetch, pero con ADN hismar.dev.' : 'Inspired by neofetch, but with hismar.dev DNA.'}</p>
             </div>
         `;
 
