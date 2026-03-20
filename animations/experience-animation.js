@@ -1,7 +1,7 @@
 /**
- * ANIMACIÓN EXPERIENCE - Retrato Interactivo Flotante (Copia de About)
- * Partículas orbitales neon y explosión al clic.
- * Usa CharacterBase para el personaje compartido.
+ * EXPERIENCE ANIMATION - Floating Interactive Portrait (About variant)
+ * Neon orbital particles and a click-triggered burst.
+ * Uses CharacterBase for the shared character.
  */
 window.animations_experience_animation_js = {
     init(container) {
@@ -33,11 +33,11 @@ window.animations_experience_animation_js = {
 };
 
 function createFaceAnimationInstance(container) {
-    // Gaming state → while the pointer stays idle, the avatar sigue apretando los botones.
+    // Gaming state → while the pointer stays idle, the avatar keeps pressing the buttons.
     let isGaming = true;
     let lastCursor = null;
     let lastInteractionTs = null;
-    let gamingBlend = 1; // 1 = jugando, 0 = siguiendo el cursor
+    let gamingBlend = 1; // 1 = playing, 0 = following the cursor
     let tapPulse = { left: 0, right: 0 };
     let tapSide = 'left';
     let tapClock = 0;
@@ -135,10 +135,10 @@ function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { lef
     const torsoY = cy + oy + 42;
     const drop   = (1 - blend) * 28;
     const pcx    = cx + ox;
-    // Teclado más alejado del personaje (Y mucho mayor)
+    // Keyboard further away from the character (and much larger)
     const pcy    = torsoY + 55 + drop * 0.35; 
 
-    // ── Geometría unificada (Teclado) más pequeño ──
+    // ── Unified geometry (smaller keyboard) ──
     const botW = 75, topW = 61;   // perspRatio ≈ 0.81
     const H    = 21;
 
@@ -150,7 +150,7 @@ function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { lef
     ctx.save();
     ctx.globalAlpha = 0.2 + 0.8 * blend;
 
-    // ── Base del teclado ──
+    // ── Keyboard base ──
     ctx.fillStyle = '#171920';
     ctx.beginPath();
     ctx.moveTo(TL.x, TL.y);
@@ -163,16 +163,16 @@ function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { lef
     ctx.lineWidth = 1;
     ctx.stroke();
     
-    // ── Cable visible (corto, hacia abajo desde el borde frontal) ──
+    // ── Visible cable (short, going down from the front edge) ──
     ctx.beginPath();
     ctx.moveTo(pcx, BL.y);
-    // Curva corta hacia abajo
+    // Short downward curve
     ctx.quadraticCurveTo(pcx - 5, BL.y + 10, pcx + 10, BL.y + 25);
     ctx.strokeStyle = '#4b5263'; 
     ctx.lineWidth = 2.5;
     ctx.stroke();
 
-    // ── Teclas (decorativas en perspectiva) ──
+    // ── Keys (decorative perspective rows) ──
     ctx.fillStyle = '#22252e';
     for (let r = 0; r < 5; r++) {
         const fY1 = (r + 0.15) / 5;
@@ -184,10 +184,10 @@ function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { lef
         const rowW2 = topW + (botW - topW) * fY2;
         
         for (let c = 0; c < 14; c++) {
-            // Tecla espaciadora más grande
+            // Larger space bar row
             let maxC = 13.9;
             if (r === 4 && c > 3 && c < 10) {
-                if (c === 4) { maxC = 10; c = 9; } // saltar las demás
+                if (c === 4) { maxC = 10; c = 9; } // skip the rest
             }
             
             const fX1 = c / 14 + 0.01;
@@ -205,14 +205,14 @@ function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { lef
             ctx.lineTo(x1_bot, y2);
             ctx.fill();
             
-            // Borde verde resaltado
+            // Highlighted green edge
             ctx.strokeStyle = 'rgba(56, 235, 124, 0.4)';
             ctx.lineWidth = 0.5;
             ctx.stroke();
         }
     }
     
-    // Brillitos simulando LEDs gaming en la base
+    // Tiny sparkles simulating gaming LEDs on the base
     ctx.fillStyle = 'rgba(56, 235, 124, 0.12)';
     ctx.beginPath();
     ctx.moveTo(TL.x, TL.y);
@@ -223,14 +223,14 @@ function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { lef
 
     ctx.restore();
 
-    // ── Brazos y Manos ──
+    // ── Arms and hands ──
     const leftShoulder  = { x: cx + ox - 32, y: torsoY + 2 };
     const rightShoulder = { x: cx + ox + 32, y: torsoY + 2 };
 
     const leftGlow  = tapPulse.left  * blend;
     const rightGlow = tapPulse.right * blend;
 
-    // Manos sobre el teclado (aprox 1/4 y 3/4)
+    // Hands over the keyboard (roughly at 1/4 and 3/4)
     const leftHandTargetX = pcx - 16;
     const leftHandTargetY = pcy + 4 - leftGlow * 3;
     const rightHandTargetX = pcx + 16;
@@ -238,7 +238,7 @@ function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { lef
 
     const leftHand = { x: leftHandTargetX, y: leftHandTargetY };
     
-    // Animación de mano derecha quitándose las gafas
+    // Right-hand animation removing the glasses
     const glassesY = (cy + oy - 5) * blend + (cy + oy + 42) * (1 - blend);
     const targetChestX = cx + ox + 14;
     const rightHand = { 
@@ -246,7 +246,7 @@ function drawKeyboardRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { lef
         y: rightHandTargetY * blend + glassesY * (1 - blend)
     };
     
-    // Codos más adelantados para estirar el brazo
+    // Elbows pushed forward to stretch the arm
     const leftElbow  = { x: leftShoulder.x  - 14 - drop * 0.15, y: torsoY + 45 + drop * 0.45 };
     const rightElbow = { x: rightShoulder.x + 14 + drop * 0.15, y: torsoY + 45 + drop * 0.45 };
 
@@ -299,7 +299,7 @@ function drawTie(ctx, cx, cy, ox, oy) {
     ctx.save();
     ctx.fillStyle = '#b32424';
     
-    // Nudo bajado a y + 36 (antes y + 32)
+    // Tie knot lowered to y + 36 (previously y + 32)
     ctx.beginPath();
     ctx.moveTo(pcx - 4, pcy + 36);
     ctx.lineTo(pcx + 4, pcy + 36);
@@ -307,7 +307,7 @@ function drawTie(ctx, cx, cy, ox, oy) {
     ctx.lineTo(pcx - 3, pcy + 42);
     ctx.fill();
     
-    // Cuerpo ajustado correspondientemente
+    // Tie body adjusted accordingly
     ctx.beginPath();
     ctx.moveTo(pcx - 3, pcy + 42);
     ctx.lineTo(pcx + 3, pcy + 42);
@@ -328,27 +328,27 @@ function drawGlasses(ctx, cx, cy, ox, oy, blend) {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     
-    // Lente izquierda
+    // Left lens
     ctx.beginPath();
     roundedRect(ctx, gcx - 22, gy - 6, 18, 14, 4);
     ctx.stroke();
-    // Brillo sutil
+    // Subtle sheen
     ctx.fillStyle = 'rgba(255,255,255,0.08)';
     ctx.fill();
     
-    // Lente derecha
+    // Right lens
     ctx.beginPath();
     roundedRect(ctx, gcx + 4, gy - 6, 18, 14, 4);
     ctx.stroke();
     ctx.fill();
     
-    // Puente
+    // Bridge
     ctx.beginPath();
     ctx.moveTo(gcx - 4, gy);
     ctx.lineTo(gcx + 4, gy);
     ctx.stroke();
     
-    // Patillas (se difuminan si se quita las gafas)
+    // Temples (fade if the glasses are removed)
     ctx.globalAlpha = Math.max(0, blend * 2 - 1);
     ctx.beginPath();
     ctx.moveTo(gcx - 22, gy - 2);

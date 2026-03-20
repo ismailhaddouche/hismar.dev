@@ -1,7 +1,7 @@
 /**
- * ANIMACIÓN EDUCATION - Retrato Interactivo Flotante
- * Personaje con gafas enfocado en un libro del cual pasa páginas.
- * Usa CharacterBase para el personaje compartido.
+ * EDUCATION ANIMATION - Floating Interactive Portrait
+ * Character with glasses focused on a book, turning its pages.
+ * Uses CharacterBase for the shared character.
  */
 window.animations_education_animation_js = {
     init(container) {
@@ -36,7 +36,7 @@ function createEducationAnimationInstance(container) {
     let isReading = true;
     let lastCursor = null;
     let lastInteractionTs = null;
-    let readingBlend = 1; // 1 = leyendo, 0 = mirando al cursor
+    let readingBlend = 1; // 1 = reading, 0 = looking at the cursor
     let lastFrameTime = (typeof performance !== 'undefined' ? performance.now() : Date.now());
 
     window.CharacterBase.init(container, {
@@ -116,7 +116,7 @@ function drawStaticGlasses(state) {
     const ox = tiltX * 0.5;
     const oy = tiltY * 0.3;
 
-    // A diferencia de experience, estas gafas siempre están puestas en la cara
+    // Unlike the experience animation, these glasses always stay on the face
     const gy = cy + oy - 5;
     const gcx = cx + ox;
     ctx.save();
@@ -125,7 +125,7 @@ function drawStaticGlasses(state) {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     
-    // Función de ayuda local
+    // Local helper function
     const rRect = (x, y, w, h, r) => {
         ctx.moveTo(x + r, y);
         ctx.lineTo(x + w - r, y);
@@ -161,16 +161,16 @@ function drawBookRig(state, blend = 1) {
     const torsoY = cy + oy + 42;
     const drop   = (1 - blend) * 28;
     const pcx    = cx + ox;
-    const pcy    = torsoY + 50 + drop * 0.35; // Libro más abajo (más lejos visualmente)
+    const pcy    = torsoY + 50 + drop * 0.35; // Book positioned lower (farther from the viewer)
 
-    // Geometría unificada (Trapecio del libro abierto, un pelín más pequeño por la distancia)
+    // Unified geometry (open-book trapezoid, slightly smaller due to distance)
     const botW = 85, topW = 70, H = 24;
     const TL = { x: pcx - topW / 2, y: pcy - H / 2 };
     const TR = { x: pcx + topW / 2, y: pcy - H / 2 };
     const BL = { x: pcx - botW / 2, y: pcy + H / 2 };
     const BR = { x: pcx + botW / 2, y: pcy + H / 2 };
 
-    // Función interpoladora de perspectiva horizontal
+    // Horizontal perspective interpolation helper
     const topX = f => TL.x + (TR.x - TL.x) * f;
     const botX = f => BL.x + (BR.x - BL.x) * f;
     const topY = TL.y, botY = BL.y;
@@ -178,7 +178,7 @@ function drawBookRig(state, blend = 1) {
     ctx.save();
     ctx.globalAlpha = 0.2 + 0.8 * blend;
 
-    // Tapa dura (Cubierta inferior oscura)
+    // Hard cover (dark lower layer)
     ctx.fillStyle = '#2b2a33'; 
     ctx.beginPath();
     ctx.moveTo(TL.x - 3, TL.y + 2);
@@ -187,33 +187,33 @@ function drawBookRig(state, blend = 1) {
     ctx.lineTo(BL.x - 3, BL.y + 3);
     ctx.fill();
 
-    // Bloque Izquierdo
-    ctx.fillStyle = '#f5e0c3'; // Papel viejo/cálido
+    // Left page block
+    ctx.fillStyle = '#f5e0c3'; // Warm aged-paper tone
     ctx.beginPath();
     ctx.moveTo(topX(0), topY); ctx.lineTo(topX(0.5), topY);
     ctx.lineTo(botX(0.5), botY); ctx.lineTo(botX(0), botY); ctx.fill();
     
-    // Sombra del interior izquierdo
+    // Left inner shadow
     ctx.fillStyle = '#e5d0b3';
     ctx.beginPath();
     ctx.moveTo(topX(0.48), topY); ctx.lineTo(topX(0.5), topY);
     ctx.lineTo(botX(0.5), botY); ctx.lineTo(botX(0.48), botY); ctx.fill();
 
-    // Bloque Derecho
+    // Right page block
     ctx.fillStyle = '#f5e0c3';
     ctx.beginPath();
     ctx.moveTo(topX(0.5), topY); ctx.lineTo(topX(1), topY);
     ctx.lineTo(botX(1), botY); ctx.lineTo(botX(0.5), botY); ctx.fill();
 
-    // Lomo central profundo
+    // Deep center spine
     ctx.strokeStyle = 'rgba(0,0,0,0.15)';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(topX(0.5), topY); ctx.lineTo(botX(0.5), botY); ctx.stroke();
 
-    // ── Animación de pasar hoja (Page Turn) ──
-    const turnCycle = 240; // 4 segundos a 60fps
+    // ── Page-turn animation ──
+    const turnCycle = 240; // 4 seconds at 60fps
     const t = frame % turnCycle;
-    const turnDuration = 40; // frames de la pasada de página
+    const turnDuration = 40; // frames needed to flip the page
     let turnP = null;
     
     if (t > (turnCycle - turnDuration)) {
@@ -225,11 +225,11 @@ function drawBookRig(state, blend = 1) {
         ctx.strokeStyle = 'rgba(0,0,0,0.08)';
         ctx.lineWidth = 0.5;
 
-        // La hoja vuela de f=1 (derecha) hacia f=0 (izquierda)
+        // The sheet travels from f=1 (right) toward f=0 (left)
         const fCurve = 1 - turnP; 
-        const lift = Math.sin(turnP * Math.PI) * 16; // Elevación parabólica 16px
+        const lift = Math.sin(turnP * Math.PI) * 16; // 16px parabolic elevation
 
-        // Transposición completa sobre el ancho
+        // Full translation across the width
         const cornerTopX = topX(fCurve);
         const cornerBotX = botX(fCurve);
 
@@ -247,18 +247,18 @@ function drawBookRig(state, blend = 1) {
         ctx.stroke();
     }
     
-    // Texturas sutiles (líneas) simulando párrafos
+    // Subtle textures (lines) simulating paragraphs
     ctx.strokeStyle = `rgba(0,0,0,${0.1 + 0.1 * blend})`;
     ctx.lineWidth = 1.5;
     ctx.lineCap = 'round';
     for (let r = 0.15; r < 0.9; r += 0.18) {
-        // Párrafo Izquierdo
+        // Left paragraph
         let lx1 = topX(0.08) * (1-r) + botX(0.08) * r;
         let lx2 = topX(0.42) * (1-r) + botX(0.42) * r;
         let y = topY * (1-r) + botY * r;
         ctx.beginPath(); ctx.moveTo(lx1, y); ctx.lineTo(lx2, y); ctx.stroke();
         
-        // Párrafo Derecho
+        // Right paragraph
         let rx1 = topX(0.58) * (1-r) + botX(0.58) * r;
         let rx2 = topX(0.92) * (1-r) + botX(0.92) * r;
         ctx.beginPath(); ctx.moveTo(rx1, y); ctx.lineTo(rx2, y); ctx.stroke();
@@ -273,15 +273,15 @@ function drawBookRig(state, blend = 1) {
     const leftHand = { x: BL.x - 4, y: BL.y - 2 };
     let rightHandP = { x: BR.x + 4, y: BR.y - 2 };
     
-    // La mano derecha acompaña la hoja físicamente si se está pasando
+    // Right hand follows the sheet physically while it is turning
     if (turnP !== null && blend > 0.8) {
         const fCurve = 1 - turnP;
         const lift = Math.sin(turnP * Math.PI) * 16;
         if (fCurve >= 0.5) {
-            // Mitad 1: Mano acompaña desde derecha al centro, subiendo
+            // First half: hand travels from the right edge to the center while lifting
             rightHandP = { x: botX(fCurve) + 6, y: botY - lift + 2 };
         } else {
-            // Mitad 2: Cae devolviendo rápido al costado
+            // Second half: drops quickly back to the side
             const returnP = Math.max(0, Math.min(1, (turnP - 0.5) * 2)); 
             const midX = botX(0.5) + 6;
             const midY = botY - 16 + 2;
@@ -297,7 +297,7 @@ function drawBookRig(state, blend = 1) {
         y: rightHandP.y * blend + (BR.y - 2) * (1-blend)
     };
     
-    // Codos más adelantados para estirar el brazo hasta el libro
+    // Elbows pushed forward to stretch the arm toward the book
     const leftElbow  = { x: leftShoulder.x - 16 - drop*0.15, y: torsoY + 45 + drop*0.45 };
     const rightElbow = { x: rightShoulder.x + 16 + drop*0.15, y: torsoY + 45 + drop*0.45 };
 

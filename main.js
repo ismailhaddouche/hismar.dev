@@ -493,7 +493,7 @@ class TerminalApp {
 
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = path + '?v=' + Date.now(); // Dinámico para desarrollo
+            link.href = path + '?v=' + Date.now(); // Dynamic cache busting for development
             link.onload = () => {
                 this.loadedStyles.add(path);
                 resolve();
@@ -517,7 +517,7 @@ class TerminalApp {
             }
 
             const script = document.createElement('script');
-            script.src = path + '?v=' + Date.now(); // Dinámico para desarrollo
+            script.src = path + '?v=' + Date.now(); // Dynamic cache busting for development
             script.onload = () => {
                 resolve(window[moduleName] || {});
             };

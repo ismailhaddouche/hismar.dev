@@ -1,5 +1,5 @@
 /**
- * I18N MANAGER - Sistema de Traducciones
+ * I18N MANAGER - Translation System
  */
 window.i18n = {
     current: localStorage.getItem('hismar_lang') || 'es',

@@ -1,7 +1,7 @@
 /**
- * ANIMACIÓN ABOUT - Retrato Interactivo Flotante
- * Partículas orbitales neon y explosión al clic.
- * Usa CharacterBase para el personaje compartido.
+ * ABOUT ANIMATION - Floating Interactive Portrait
+ * Neon orbital particles and a click-triggered burst.
+ * Uses CharacterBase for the shared character.
  */
 window.animations_about_animation_js = {
     init(container) {
@@ -33,11 +33,11 @@ window.animations_about_animation_js = {
 };
 
 function createFaceAnimationInstance(container) {
-    // Gaming state → while the pointer stays idle, the avatar sigue apretando los botones.
+    // Gaming state → while the pointer stays idle, the avatar keeps pressing the buttons.
     let isGaming = true;
     let lastCursor = null;
     let lastInteractionTs = null;
-    let gamingBlend = 1; // 1 = jugando, 0 = siguiendo el cursor
+    let gamingBlend = 1; // 1 = playing, 0 = following the cursor
     let tapPulse = { left: 0, right: 0 };
     let tapSide = 'left';
     let tapClock = 0;
@@ -133,7 +133,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     const pcx    = cx + ox;
     const pcy    = torsoY + 26 + drop * 0.35;
 
-    // ── Geometría unificada (mismo ratio que libro/papel) ──
+    // ── Unified geometry (same ratio as the book/page) ──
     const botW = 88, topW = 72;   // perspRatio ≈ 0.82
     const H    = 24;
 
@@ -142,18 +142,18 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     const BL = { x: pcx - botW / 2, y: pcy + H / 2 };
     const BR = { x: pcx + botW / 2, y: pcy + H / 2 };
 
-    // lerp horizontal: dada fracción f∈[0,1] devuelve x en top/bot
+    // Horizontal lerp: given f∈[0,1], return the corresponding x on top/bottom
     const topX = f => TL.x + (TR.x - TL.x) * f;
     const botX = f => BL.x + (BR.x - BL.x) * f;
     const topY = TL.y, botY = BL.y;
 
-    // fracciones del ancho total para las zonas
-    const jcW = 0.175;  // Joy-Con: 17.5% del ancho
+    // Fractions of the total width for each zone
+    const jcW = 0.175;  // Joy-Con: 17.5% of the width
 
     ctx.save();
     ctx.globalAlpha = 0.2 + 0.8 * blend;
 
-    // ── Cuerpo central ──
+    // ── Main body ──
     ctx.fillStyle = '#0f141f';
     ctx.beginPath();
     ctx.moveTo(topX(jcW), topY);
@@ -163,7 +163,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     ctx.closePath();
     ctx.fill();
 
-    // Pantalla
+    // Screen
     const scrPad = 0.04;
     ctx.fillStyle = '#0a1520';
     ctx.beginPath();
@@ -174,7 +174,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     ctx.closePath();
     ctx.fill();
 
-    // Brillo pantalla
+    // Screen sheen
     ctx.fillStyle = 'rgba(100,180,255,0.04)';
     ctx.beginPath();
     ctx.moveTo(topX(jcW + scrPad), topY + 3);
@@ -187,7 +187,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     const leftGlow  = tapPulse.left  * blend;
     const rightGlow = tapPulse.right * blend;
 
-    // ── Joy-Con izquierdo (rojo) ──
+    // ── Left Joy-Con (red) ──
     ctx.fillStyle = '#ff476c';
     ctx.beginPath();
     ctx.moveTo(topX(0), topY);
@@ -197,7 +197,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     ctx.closePath();
     ctx.fill();
 
-    // Glow izquierdo
+    // Left glow
     ctx.fillStyle = `rgba(255,120,150,${0.1 + leftGlow * 0.55})`;
     ctx.beginPath();
     ctx.moveTo(topX(0.01), topY + 2);
@@ -207,7 +207,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     ctx.closePath();
     ctx.fill();
 
-    // Stick analógico izquierdo
+    // Left analog stick
     ctx.fillStyle = `rgba(30,30,50,${0.6 + leftGlow * 0.4})`;
     ctx.beginPath();
     ctx.arc(
@@ -217,7 +217,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
     );
     ctx.fill();
 
-    // ── Joy-Con derecho (azul) ──
+    // ── Right Joy-Con (blue) ──
     ctx.fillStyle = '#24c0ff';
     ctx.beginPath();
     ctx.moveTo(topX(1 - jcW), topY);
@@ -247,7 +247,7 @@ function drawConsoleRig({ ctx, cx, cy, ox, oy, C }, blend = 1, tapPulse = { left
 
     ctx.restore();
 
-    // ── Brazos ──
+    // ── Arms ──
     const leftShoulder  = { x: cx + ox - 32, y: torsoY + 2 };
     const rightShoulder = { x: cx + ox + 32, y: torsoY + 2 };
 

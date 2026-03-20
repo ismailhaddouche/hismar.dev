@@ -1,7 +1,7 @@
 /**
- * ANIMACIÓN PROJECTS - Retrato Interactivo Flotante
- * Personaje pensando en proyectos técnicos.
- * Usa CharacterBase para el personaje compartido.
+ * PROJECTS ANIMATION - Floating Interactive Portrait
+ * Character pondering technical projects.
+ * Uses CharacterBase for the shared character.
  */
 window.animations_projects_animation_js = {
     init(container) {
@@ -43,7 +43,7 @@ function createProjectsAnimationInstance(container) {
             if (isThinking) {
                 return {
                     focus: 0.95,
-                    gaze: { x: W / 2 + 35, y: H * 0.4 }, // Mirada pensativa arriba a la derecha
+                    gaze: { x: W / 2 + 35, y: H * 0.4 }, // Thoughtful gaze toward the upper-right
                     sweat: 0
                 };
             }
@@ -82,14 +82,14 @@ function createProjectsAnimationInstance(container) {
             }
 
             const target = isThinking ? 1 : 0;
-            // Blend rápido para que el pop reaccione al instante
+            // Fast blend so the pop reacts instantly
             thinkingBlend += (target - thinkingBlend) * 0.2;
 
-            // Explosión de partículas al salir del pensamiento
+            // Particle burst when exiting the thinking state
             if (wasThinking && !isThinking) {
                 const cx = W ? W / 2 : 100;
                 const bubbleX = cx + 35;
-                const bubbleY = 80 - 48; // Ajustado al nuevo centro del bocadillo
+                const bubbleY = 80 - 48; // Adjusted to the new bubble center
                 for (let i = 0; i < 20; i++) {
                     const angle = Math.random() * Math.PI * 2;
                     const speed = 1.5 + Math.random() * 3.5;
@@ -104,7 +104,7 @@ function createProjectsAnimationInstance(container) {
             }
             wasThinking = isThinking;
 
-            // Actualizar sistema de partículas
+            // Update particle system
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.x += p.vx;
@@ -134,7 +134,7 @@ function drawThinkingRig(state, blend, particles) {
 
     ctx.save();
     
-    // ── Partículas (Explosión Popup) ──
+    // ── Particles (popup explosion) ──
     if (particles.length > 0) {
         ctx.save();
         ctx.lineCap = 'round';
@@ -150,24 +150,24 @@ function drawThinkingRig(state, blend, particles) {
         ctx.restore();
     }
 
-    // ── Bocadillo de Cómic (Nube) y Dibujos Internos ──
-    const cloudScale = Math.max(0, blend) * 0.75; // Escala reducida un 25%
-    const bubbleX = pcx + 35; // Más cerca de la cara (antes 60)
-    const bubbleY = pcy - 48; // Más abajo (antes -65)
+    // ── Comic speech bubble and internal doodles ──
+    const cloudScale = Math.max(0, blend) * 0.75; // Scale reduced by 25%
+    const bubbleX = pcx + 35; // Closer to the face (was 60)
+    const bubbleY = pcy - 48; // Lower (was -65)
     
     if (cloudScale > 0.01) {
         ctx.save();
         ctx.translate(bubbleX, bubbleY);
         
-        const floatY = Math.sin(frame * 0.05) * 2; // Ligera flotación continua
+        const floatY = Math.sin(frame * 0.05) * 2; // Light continuous float
         ctx.translate(0, floatY);
         ctx.scale(cloudScale, cloudScale);
         
-        // Circulitos conectores (desde el personaje a la nube)
+        // Connecting circles (from the character to the cloud)
         ctx.fillStyle = '#f8fafc';
         ctx.beginPath(); ctx.arc(-35, 35, 7, 0, Math.PI*2); ctx.fill();
         
-        // Cuerpo principal de la nube
+        // Main cloud body
         ctx.beginPath();
         ctx.arc(-22, -10, 26, 0, Math.PI*2);
         ctx.arc(15, -18, 30, 0, Math.PI*2);
@@ -180,7 +180,7 @@ function drawThinkingRig(state, blend, particles) {
         const r1 = frame * 0.03;
         const r2 = -frame * 0.04;
         
-        // Polígono azul que gira
+        // Rotating blue polygon
         ctx.save();
         ctx.translate(-15, -5);
         ctx.rotate(r1);
@@ -196,7 +196,7 @@ function drawThinkingRig(state, blend, particles) {
         ctx.stroke();
         ctx.restore();
         
-        // Ejes/cruz técnica girando al revés
+        // Technical axes/cross spinning in reverse
         ctx.save();
         ctx.translate(26, -4);
         ctx.rotate(r2);
@@ -212,7 +212,7 @@ function drawThinkingRig(state, blend, particles) {
         ctx.beginPath(); ctx.arc(0,0, 3, 0, Math.PI*2); ctx.fill();
         ctx.restore();
         
-        // Símbolo </> de código que palpita
+        // Pulsating </> code symbol
         ctx.save();
         ctx.translate(5, 18);
         const pulse = 1 + Math.sin(frame * 0.1) * 0.15;
@@ -228,17 +228,17 @@ function drawThinkingRig(state, blend, particles) {
         ctx.restore();
     }
     
-    // ── Brazos ──
+    // ── Arms ──
     const leftShoulder  = { x: cx + ox - 32, y: torsoY + 2 };
     const rightShoulder = { x: cx + ox + 32, y: torsoY + 2 };
     const drop = 1 - blend;
     
-    // Brazo izquierdo: Reposa siempre en el regazo
+    // Left arm: always resting on the lap
     const leftHand = { x: pcx - 22, y: torsoY + 48 };
     const leftElbow = { x: leftShoulder.x - 16, y: torsoY + 28 };
     
-    // Brazo derecho: Interpolado entre la pose pensativa (barbilla) y el regazo
-    // En blend=1 está en la barbilla apoyado (cruzado ligeramente hacia la izquierda de su cara)
+    // Right arm: interpolated between the thinking pose (chin) and the lap
+    // At blend=1 it rests on the chin (crossed slightly to the left of the face)
     const chinTarget = { x: pcx - 8, y: pcy + 22 }; 
     const lapTarget  = { x: pcx + 22, y: torsoY + 48 };
     
@@ -247,13 +247,13 @@ function drawThinkingRig(state, blend, particles) {
         y: chinTarget.y * blend + lapTarget.y * drop
     };
     
-    // Codo derecho: pegado al cuerpo cuando piensa, suelto cuando reposa
+    // Right elbow: close to the torso when thinking, relaxed when resting
     const rightElbow = {
         x: (rightShoulder.x + 8) * blend + (rightShoulder.x + 16) * drop,
         y: (torsoY + 35) * blend + (torsoY + 28) * drop
     };
 
-    drawArm(ctx, C, leftShoulder,  leftElbow,  leftHand,  1); // Izquierdo siempre igual visible
+    drawArm(ctx, C, leftShoulder,  leftElbow,  leftHand,  1); // Left arm always fully visible
     drawArm(ctx, C, rightShoulder, rightElbow, rightHand, 1);
     
     ctx.restore();

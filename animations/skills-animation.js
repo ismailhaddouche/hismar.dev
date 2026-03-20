@@ -1,7 +1,7 @@
 /**
- * ANIMACIÓN SKILLS - Retrato Interactivo Flotante
- * Personaje bebiendo una taza de café humeante.
- * Usa CharacterBase para el personaje compartido.
+ * SKILLS ANIMATION - Floating Interactive Portrait
+ * Character sipping a steaming cup of coffee.
+ * Uses CharacterBase for the shared character.
  */
 window.animations_skills_animation_js = {
     init(container) {
@@ -36,7 +36,7 @@ function createSkillsAnimationInstance(container) {
     let isDrinking = true;
     let lastCursor = null;
     let lastInteractionTs = null;
-    let coffeeBlend = 1; // 1 = bebiendo, 0 = mirando al cursor
+    let coffeeBlend = 1; // 1 = drinking, 0 = tracking the cursor
     let lastFrameTime = (typeof performance !== 'undefined' ? performance.now() : Date.now());
 
     window.CharacterBase.init(container, {
@@ -119,36 +119,36 @@ function drawCoffeeRig(state, blend = 1) {
     const drop   = (1 - blend) * 28;
     const pcx    = cx + ox;
     
-    // Ciclo de animación (160 frames a 60fps = ~2.66s)
+    // Animation cycle (160 frames at 60fps ≈ 2.66s)
     const cycle = 160;
     const t = frame % cycle;
     let drinkPhase = 0;
     
     if (t < 35) {
-        drinkPhase = t / 35; // subiendo
+        drinkPhase = t / 35; // lifting the cup
     } else if (t < 65) {
-        drinkPhase = 1; // permanece arriba 0.5s (30 frames)
+        drinkPhase = 1; // stays up for 0.5s (30 frames)
     } else if (t < 100) {
-        drinkPhase = 1 - ((t - 65) / 35); // bajando
+        drinkPhase = 1 - ((t - 65) / 35); // lowering the cup
     } else {
-        drinkPhase = 0; // permanece abajo 1s (60 frames)
+        drinkPhase = 0; // stays down for 1s (60 frames)
     }
     
-    // Suavizado polinómico (ease in/out) para movimiento natural
+    // Polynomial easing (smooth in/out) for natural motion
     const smoothPhase = drinkPhase * drinkPhase * (3 - 2 * drinkPhase);
     
-    // Alturas de la taza más bajas que antes
-    const upY = 40;   // Arriba (bebiendo)
-    const downY = 60; // Abajo (esperando)
+    // Lower cup heights than before
+    const upY = 40;   // Top position (drinking)
+    const downY = 60; // Bottom position (waiting)
     
-    // Posición interpolada de la taza: fase de beber (blend=1) al regazo (blend=0)
+    // Interpolated mug position: drinking phase (blend=1) to lap (blend=0)
     const mugYTarget = cy + oy + downY - (downY - upY) * smoothPhase;
-    const mugYLap = torsoY + 28;     // Posición de reposo (regazo)
+    const mugYLap = torsoY + 28;     // Resting position (lap)
     const pcy = mugYLap + drop * 0.35 - (mugYLap - mugYTarget) * blend;  
 
     ctx.save();
     
-    // ── Humo del café (sólo visible si está arriba, se desvanece al bajar) ──
+    // ── Coffee steam (only visible when lifted, fades while dropping) ──
     if (blend > 0.1) {
         ctx.save();
         ctx.strokeStyle = `rgba(255, 255, 255, ${0.8 * blend})`;
@@ -159,7 +159,7 @@ function drawCoffeeRig(state, blend = 1) {
             const h = phase * 0.45;
             const sw = Math.sin((frame + i * 30) * 0.04) * 7;
             
-            // Si el humo ha subido mucho, se desvanece
+            // Fade out if the smoke has risen too much
             ctx.globalAlpha = Math.max(0, 1 - (h / 90));
             
             ctx.beginPath();
@@ -172,7 +172,7 @@ function drawCoffeeRig(state, blend = 1) {
 
     ctx.globalAlpha = 0.2 + 0.8 * blend;
     
-    // ── Sombra de la taza en el regazo ──
+    // ── Cup shadow on the lap ──
     if (blend < 1) {
         ctx.fillStyle = `rgba(0,0,0,${0.15 * (1 - blend)})`;
         ctx.beginPath();
@@ -180,7 +180,7 @@ function drawCoffeeRig(state, blend = 1) {
         ctx.fill();
     }
     
-    // ── Asa de la taza (Derecha) ──
+    // ── Cup handle (right side) ──
     ctx.strokeStyle = '#cdd6f4'; // Color de la taza
     ctx.lineWidth = 4;
     ctx.lineCap = 'round';
@@ -198,7 +198,7 @@ function drawCoffeeRig(state, blend = 1) {
     // Middle rect
     ctx.fillRect(pcx - 15, pcy - 12, 30, 23);
     
-    // Borde oscurecido lateral (sutil sombreado 2D)
+    // Darkened side edge (subtle 2D shading)
     ctx.save();
     ctx.beginPath();
     ctx.ellipse(pcx, pcy + 11, 15, 5, 0, 0, Math.PI * 2);
@@ -207,27 +207,27 @@ function drawCoffeeRig(state, blend = 1) {
     ctx.fillRect(pcx + 6, pcy - 12, 10, 30);
     ctx.restore();
     
-    // ── Borde superior exterior ──
+    // ── Outer top rim ──
     ctx.fillStyle = '#b4befe';
     ctx.beginPath();
     ctx.ellipse(pcx, pcy - 12, 15, 5, 0, 0, Math.PI * 2);
     ctx.fill();
     
-    // ── Interior de la taza (Café) ──
+    // ── Cup interior (coffee) ──
     ctx.fillStyle = '#3a2012';
     ctx.beginPath();
     ctx.ellipse(pcx, pcy - 11.5, 13, 4, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // ── Brazos ──
+    // ── Arms ──
     const leftShoulder  = { x: cx + ox - 32, y: torsoY + 2 };
     const rightShoulder = { x: cx + ox + 32, y: torsoY + 2 };
     
-    // Manos sujetando la taza
+    // Hands holding the cup
     const leftHand = { x: pcx - 13, y: pcy + 6 };
-    const rightHand = { x: pcx + 19, y: pcy + 2 }; // Sobre el asa
+    const rightHand = { x: pcx + 19, y: pcy + 2 }; // On top of the handle
     
-    // Codos acompañan el movimiento de la taza
+    // Elbows follow the mug movement
     const armDrop = (mugYLap - pcy) * 0.4;
     const leftElbow  = { x: leftShoulder.x - 16 - drop*0.15, y: torsoY + 28 - armDrop + drop*0.45 };
     const rightElbow = { x: rightShoulder.x + 16 + drop*0.15, y: torsoY + 28 - armDrop + drop*0.45 };
