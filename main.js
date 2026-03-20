@@ -156,16 +156,14 @@ class TerminalApp {
             const langBtn = document.createElement('button');
             langBtn.className = 'social-btn lang-toggle';
             langBtn.setAttribute('aria-label', 'Toggle Language');
-            const updateFlag = () => {
-                langBtn.innerHTML = window.i18n.current === 'es'
-                    ? '<span class="flag-icon">🇬🇧</span>'
-                    : '<span class="flag-icon">🇪🇸</span>';
+            const updateLangLabel = () => {
+                langBtn.innerHTML = `<span class="lang-label">${window.i18n.current === 'es' ? 'ES' : 'EN'}</span>`;
             };
-            updateFlag();
+            updateLangLabel();
             langBtn.onclick = () => {
                 const next = window.i18n.current === 'es' ? 'en' : 'es';
                 window.i18n.setLanguage(next);
-                updateFlag();
+                updateLangLabel();
             };
             headerSocial.appendChild(langBtn);
         }

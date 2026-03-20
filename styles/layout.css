@@ -221,16 +221,22 @@ body.no-scroll {
 }
 
 .lang-toggle {
-    font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Android Emoji", sans-serif;
+    font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     background: linear-gradient(135deg, #0d9488, #12f7d6) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.flag-icon {
-    font-size: 18px;
+.lang-label {
+    font-size: 14px;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .terminal-controls {
