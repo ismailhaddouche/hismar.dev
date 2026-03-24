@@ -380,7 +380,7 @@ class TerminalApp {
         this.appendToConsole(`\n$ ${command}`);
 
         if (/^sudo(\s+|$)/i.test(command)) {
-            this.setActiveMenuItem(null);
+            this.triggerMenuEffect(null);
             this.appendToConsole(window.i18n.t('ui.sudo_denied'));
             return;
         }
@@ -390,10 +390,10 @@ class TerminalApp {
         }
 
         if (this.commands.has(command)) {
-            this.setActiveMenuItem(command);
+            this.triggerMenuEffect(command);
             await this.loadAndExecuteCommand(command);
         } else {
-            this.setActiveMenuItem(null);
+            this.triggerMenuEffect(null);
             this.appendToConsole(`${window.i18n.t('ui.unrecognized')}'${command}'`);
             this.appendToConsole(window.i18n.t('ui.help_hint'));
         }
@@ -525,13 +525,21 @@ class TerminalApp {
         });
     }
 
-    setActiveMenuItem(commandName) {
+    triggerMenuEffect(commandName) {
         const { menuItems } = this.dom;
-        if (!menuItems || !menuItems.length) return;
+        if (!menuItems || !menuItems.length || !commandName) return;
+
         menuItems.forEach(item => {
             const cmd = item.dataset.command || (item.getAttribute('href') || '').replace(/^#/, '');
-            const isActive = !!commandName && cmd === commandName;
-            item.classList.toggle('active', isActive);
+            if (cmd === commandName) {
+                item.classList.add('executing');
+                // Remove the class after the animation (600ms in CSS)
+                setTimeout(() => {
+                    item.classList.remove('executing');
+                }, 600);
+            } else {
+                item.classList.remove('executing');
+            }
         });
     }
 
