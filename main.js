@@ -166,7 +166,7 @@ class TerminalApp {
                 langBtn.className = 'social-btn lang-toggle';
             }
             const updateLangLabel = () => {
-                const label = window.i18n.current === 'es' ? 'ES' : 'EN';
+                const label = window.i18n.current === 'es' ? 'EN' : 'ES';
                 langBtn.innerHTML = `<span class="lang-label">${label}</span>`;
                 langBtn.setAttribute('aria-label', `${label} - Toggle language`);
             };
