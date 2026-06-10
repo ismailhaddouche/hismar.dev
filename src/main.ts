@@ -55,4 +55,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const i18n = createI18nManager();
   const terminal = new TerminalApp(i18n);
   registerAllCommands(terminal);
+  prefetchCommands(COMMAND_DEFINITIONS);
 });
+
+function prefetchCommands(defs: CommandDefinition[]): void {
+  const run = () => {
+    defs.forEach((def) => {
+      try { def.script(); } catch (_) { /* fire and forget */ }
+    });
+  };
+  if (typeof requestIdleCallback !== 'undefined') {
+    requestIdleCallback(run, { timeout: 3000 });
+  } else {
+    setTimeout(run, 200);
+  }
+}

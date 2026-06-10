@@ -279,6 +279,8 @@ export class TerminalApp implements TerminalAppFacade {
 
     if (this.registry.has(command)) {
       this.setActiveMenuItem(command);
+      this.dom.input!.disabled = true;
+      const spinnerEl = this.showSpinner();
       const def = this.registry.get(command)!;
       try {
         this.cleanupAnimations();
@@ -287,12 +289,25 @@ export class TerminalApp implements TerminalAppFacade {
       } catch (error) {
         console.error(`Error loading command ${command}:`, error);
         this.appendToConsole(`Error: Could not load module '${command}'`);
+      } finally {
+        spinnerEl.remove();
+        this.dom.input!.disabled = false;
+        this.dom.input!.focus();
       }
     } else {
       this.setActiveMenuItem(null);
       this.appendToConsole(`${this.i18n.t('ui.unrecognized')}'${command}'`);
       this.appendToConsole(this.i18n.t('ui.help_hint'));
     }
+  }
+
+  private showSpinner(): HTMLElement {
+    const el = document.createElement('span');
+    el.className = 'command-loading';
+    el.innerHTML = '<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span>';
+    this.dom.consoleOutput?.appendChild(el);
+    this.autoScrollConsole();
+    return el;
   }
 
   private handleBuiltIn(command: string): boolean {
