@@ -1,0 +1,29 @@
+.cv-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.cv-description {
+  color: var(--text-color, #b8e0b8);
+  font-size: 14px;
+}
+.cv-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  border: 2px solid var(--terminal-green, #00ff41);
+  border-radius: 10px;
+  background: rgba(0,255,65,0.08);
+  color: var(--terminal-light-green, #39ff14);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+  box-shadow: 0 0 20px rgba(0,255,65,0.15);
+}
+.cv-download-btn:hover {
+  background: rgba(0,255,65,0.15);
+  box-shadow: 0 0 30px rgba(0,255,65,0.25);
+  transform: translateY(-2px);
+}

@@ -1,19 +1,63 @@
 {
   "name": "hismar-dev",
-  "version": "2.0.0",
-  "description": "Portfolio interactivo de Ismail Haddouche Rhali",
-  "main": "main.js",
+  "version": "3.0.0",
+  "description": "Portfolio interactivo de Ismail Haddouche Rhali - Terminal interactivo",
+  "type": "module",
+  "main": "src/main.ts",
   "scripts": {
-    "dev": "npx -y http-server -p 8000",
-    "build": "npx -y clean-css-cli -o styles/layout.min.css styles/layout.css && npx -y terser i18n.js -c -m -o i18n.min.js && npx -y terser animations/character-base.js -c -m -o animations/character-base.min.js && npx -y terser main.js -c -m -o main.min.js",
-    "start": "npx -y http-server -p 8080"
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,json,md}\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "lighthouse": "lhci autorun",
+    "deploy": "npm run build && firebase deploy",
+    "validate": "./validate.sh"
   },
   "keywords": [
     "portfolio",
     "terminal",
     "developer",
-    "fullstack"
+    "fullstack",
+    "typescript",
+    "vite",
+    "threejs"
   ],
   "author": "Ismail Haddouche Rhali",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@lhci/cli": "^0.14.0",
+    "@playwright/test": "^1.60.0",
+    "@testing-library/jest-dom": "^6.4.0",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "husky": "^9.0.0",
+    "jsdom": "^29.1.1",
+    "lint-staged": "^15.2.0",
+    "playwright": "^1.42.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.1.0",
+    "vitest": "^1.3.0"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,json,md}": [
+      "prettier --write"
+    ]
+  }
 }

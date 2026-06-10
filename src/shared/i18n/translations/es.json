@@ -1,0 +1,186 @@
+{
+  "welcome": {
+    "title": "// Bienvenido a mi terminal interactiva.",
+    "subtitle": "// Explora quién soy, qué construyo y cómo pienso.",
+    "role": "Full-stack · Mobile · Murcia, España",
+    "help": "help       → listar todos los comandos disponibles",
+    "about": "about      → información personal y contacto",
+    "experience": "experience → trayectoria profesional",
+    "projects": "projects   → proyectos en producción y open-source",
+    "skills": "skills     → stack tecnológico completo",
+    "neofetch": "neofetch   → stack visual de hismar.dev",
+    "education": "education  → formación académica",
+    "cv": "cv         → descargar currículum",
+    "footer": "// Tab: autodecompletar  ·  ↑↓: historial de comandos  ·  hay easter eggs por descubrir 👀"
+  },
+  "menu": {
+    "about": "/sobre-mi",
+    "experience": "/experiencia",
+    "skills": "/habilidades",
+    "neofetch": "/neofetch",
+    "projects": "/proyectos",
+    "education": "/educacion",
+    "cv": "/cv",
+    "help": "/ayuda"
+  },
+  "commands": {
+    "about": {
+      "label": "Sobre mí",
+      "description": "Biografía y contacto",
+      "availability": "Disponible para nuevas oportunidades",
+      "age": "Edad",
+      "years": "años",
+      "location": "Ubicación",
+      "role": "Rol",
+      "story": "Mi historia",
+      "story1": "Mi carrera no empezó en la tecnología. Tras varios años en diferentes sectores, decidí dar un giro de 180 grados y apostar todo por el desarrollo de software. Completé mi Grado Superior en Desarrollo de Aplicaciones Multiplataforma en ILERNA mientras construía productos reales por mi cuenta.",
+      "story2": "Hoy en día, gestiono un e-commerce en producción, un sistema de gestión de restaurantes open-source y dos aplicaciones Android nativas. Para profundizar aún más en mi oficio y dominar los fundamentos, actualmente estoy cursando el Grado en Ingeniería Informática en la UNED.",
+      "story3": "Me muevo con comodidad en todo el stack y en mobile nativo. Mi enfoque es construir software resiliente que prospere en producción, no solo demos que funcionen en localhost.",
+      "traits": "Lo que me diferencia",
+      "trait1": "<strong>Entrega de nivel producción</strong> — elparedes.es con pagos Redsys, integración ERP y tráfico real.",
+      "trait2": "<strong>Arquitecturas limpias</strong> — Clean Architecture, MVVM y patrones sólidos en todo mi trabajo Android.",
+      "trait3": "<strong>Desarrollador de ciclo completo</strong> — diseño, desarrollo, despliegue y mantenimiento. Puedo poner en producción sin dependencias externas.",
+      "trait4": "<strong>Mentalidad de producto</strong> — el código es un medio, no el fin. Construyo cosas que la gente realmente usa.",
+      "beyond": "Más allá del teclado",
+      "beyondText": "Nerd de los juegos de mesa, consumidor compulsivo de anime y lector de fantasía épica. Si tu stack incluye café fuerte y debates sobre arquitectura, nos llevaremos bien.",
+      "contact": "Contacto"
+    },
+    "experience": {
+      "label": "Experiencia",
+      "description": "Trayectoria profesional",
+      "title": "Experiencia Profesional",
+      "items": [
+        {
+          "role": "Responsable de IT (Head of IT)",
+          "company": "El Paredes Chico SL",
+          "dates": "Oct 2025 — Actualidad",
+          "status": "current",
+          "statusLabel": "ACTUAL",
+          "details": "Liderando la transformación digital: despliegue de Odoo ERP, portal web corporativo (Next.js, Firebase) e integraciones de sistemas. Administración de servidores Linux y Windows, infraestructura GCP + Docker, pipelines CI/CD y configuración de redes/seguridad para productos full-stack y móviles."
+        },
+        {
+          "role": "CEO & Fundador",
+          "company": "Adoptaunordenador.com · Autónomo",
+          "dates": "Ene 2016 — Dic 2020",
+          "status": "past",
+          "statusLabel": "COMPLETADO",
+          "details": "Fundé y gestioné una startup social centrada en hardware reacondicionado. Construí y operé el negocio de e-commerce, la logística y el soporte técnico al cliente."
+        },
+        {
+          "role": "Responsable de Logística",
+          "company": "Globalatc SL",
+          "dates": "Oct 2012 — Ago 2015",
+          "status": "past",
+          "statusLabel": "COMPLETADO",
+          "details": "Gestión de operaciones logísticas internacionales, coordinación de proveedores y optimización de rutas."
+        }
+      ]
+    },
+    "skills": {
+      "label": "Habilidades",
+      "description": "Stack tecnológico completo",
+      "title": "Stack Tecnológico",
+      "categories": {
+        "Languages": "Lenguajes",
+        "Mobile": "Móvil",
+        "Frontend": "Frontend",
+        "Backend & APIs": "Backend & APIs",
+        "Databases": "Bases de Datos",
+        "Full-stack & Mobile Ops": "Full-stack & Mobile Ops",
+        "Tooling": "Herramientas"
+      }
+    },
+    "neofetch": {
+      "label": "Neofetch",
+      "description": "Resumen gráfico del stack"
+    },
+    "projects": {
+      "label": "Proyectos",
+      "description": "Producción y OSS",
+      "title": "Proyectos",
+      "badges": {
+        "production": "EN PRODUCCIÓN",
+        "oss": "OPEN SOURCE",
+        "android": "ANDROID",
+        "vanilla": "VANILLA JS"
+      },
+      "items": {
+        "paredes": "E-commerce de nivel producción para vehículos industriales y maquinaria con pasarela Redsys (Tarjeta y Bizum), Google OAuth y sincronización en tiempo real con Odoo ERP para gestión automatizada de inventario.",
+        "disherio": "Suite de gestión de restaurantes de código abierto y auto-hospedada. Con pedidos mediante código QR, Sistema de Visualización de Cocina (KDS) en tiempo real y TPV multi-rol (Admin, Camarero, Cocina y Caja). Soporta gestión de menús con variantes/alérgenos y despliegue flexible en local o nube.",
+        "timetutor": "App nativa Android para la gestión de tutorías privadas. Calendario interactivo, control de asistencia, facturación automática, notificaciones push, sincronización offline y roles dedicados para profesor/alumno.",
+        "episodeo": "Rastreador personal de series de TV para Android con búsqueda TMDB, listas inteligentes (viendo, pendiente, terminada, abandonada), uso compartido de listas mediante códigos, caché offline-first y cambio de tema. Construida con Clean Architecture + MVVM.",
+        "hismar": "Portfolio interactivo construido como una terminal retro totalmente funcional. Vanilla JS/CSS/HTML, animaciones canvas basadas en física, arquitectura modular, gestor de estado, comandos dinámicos y diseño pixel-art."
+      }
+    },
+    "education": {
+      "label": "Educación",
+      "description": "Formación académica",
+      "title": "Educación",
+      "items": [
+        {
+          "title": "Grado en Ingeniería Informática",
+          "institution": "UNED — Universidad Nacional de Educación a Distancia | Feb 2026 — Actualidad",
+          "status": "in-progress",
+          "statusLabel": "EN CURSO · NIVEL 6 EQF",
+          "details": "Enfoque: Formación universitaria en ingeniería de software, algoritmos, arquitectura de computadores y sistemas distribuidos."
+        },
+        {
+          "title": "Técnico Superior (DTS) en Desarrollo de Aplicaciones Multiplataforma",
+          "institution": "ILERNA Online | Sept 2023 — Feb 2026",
+          "status": "completed",
+          "statusLabel": "COMPLETADO · NIVEL 5 EQF",
+          "details": "Enfoque: Desarrollo móvil nativo (Kotlin/Android), arquitecturas multiplataforma, gestión de bases de datos y entornos cloud-native."
+        },
+        {
+          "title": "Bachillerato",
+          "institution": "IES Ricardo Ortega | 2004 — 2006",
+          "status": "completed",
+          "statusLabel": "COMPLETADO",
+          "details": "Estado: Completado"
+        }
+      ]
+    },
+    "cv": {
+      "label": "CV",
+      "description": "Descargar currículum",
+      "title": "Curriculum Vitae",
+      "desc": "Descarga la versión más reciente en PDF:",
+      "name": "Curriculum Vitae — Ismail Haddouche Rhali"
+    },
+    "help": {
+      "label": "Ayuda",
+      "description": "Todos los comandos",
+      "title": "Guía de Comandos",
+      "info_group": "Información",
+      "sys_group": "Sistema",
+      "tips_group": "Consejos",
+      "tip1": "Haz clic en cualquier comando para ejecutarlo",
+      "tip2": "Usa <kbd>Tab</kbd> para autocompletar",
+      "tip3": "Navega por el historial con <kbd>↑</kbd> / <kbd>↓</kbd>",
+      "tip4": "Pulsa <kbd>Esc</kbd> para saltar animaciones",
+      "tip5": "Hay varios easter eggs ocultos en la terminal: pruébala y diviértete encontrándolos",
+      "footer": "// Construido con cerebro, demasiado café y viendo a",
+      "about_desc": "Quién soy, trayectoria y contacto",
+      "exp_desc": "Trayectoria profesional e historial",
+      "skills_desc": "Stack tecnológico completo",
+      "neo_desc": "Resumen visual del stack de la web",
+      "proj_desc": "Proyectos en producción y open-source",
+      "edu_desc": "Formación académica",
+      "cv_desc": "Descargar CV en PDF",
+      "help_desc": "Mostrar esta guía",
+      "clear": {
+        "label": "Limpiar",
+        "description": "Limpiar la consola"
+      },
+      "clear_desc": "Limpiar la consola"
+    }
+  },
+  "ui": {
+    "clear_tooltip": "Limpiar terminal",
+    "placeholder": "Escribe 'help' para empezar...",
+    "unrecognized": "Comando no reconocido: ",
+    "help_hint": "Escribe 'help' para ver la lista de comandos.",
+    "restarting": "Reiniciando terminal...",
+    "sudo_denied": "Permiso denegado: no tienes permisos para usar sudo 😅"
+  }
+}

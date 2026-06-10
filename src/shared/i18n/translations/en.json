@@ -1,0 +1,186 @@
+{
+  "welcome": {
+    "title": "// Welcome to my interactive terminal.",
+    "subtitle": "// Explore who I am, what I build, and how I think.",
+    "role": "Full-stack · Mobile · Murcia, Spain",
+    "help": "help       → list every available command",
+    "about": "about      → personal background and contact",
+    "experience": "experience → professional journey",
+    "projects": "projects   → production & open-source work",
+    "skills": "skills     → complete technology stack",
+    "neofetch": "neofetch   → visual stack of hismar.dev",
+    "education": "education  → academic path",
+    "cv": "cv         → download résumé",
+    "footer": "// Tab: autocomplete  ·  ↑↓: command history  ·  there are easter eggs to discover 👀"
+  },
+  "menu": {
+    "about": "/about",
+    "experience": "/experience",
+    "skills": "/skills",
+    "neofetch": "/neofetch",
+    "projects": "/projects",
+    "education": "/education",
+    "cv": "/cv",
+    "help": "/help"
+  },
+  "commands": {
+    "about": {
+      "label": "About",
+      "description": "Biography & contact",
+      "availability": "Available for new opportunities",
+      "age": "Age",
+      "years": "years old",
+      "location": "Location",
+      "role": "Role",
+      "story": "My story",
+      "story1": "I didn't start my career in tech. After several years in different industries, I decided to pivot and go all-in on software development. I completed my Higher National Diploma (HND) in Multi-platform Software Development at ILERNA while building real-world products on the side.",
+      "story2": "Today, I manage an e-commerce platform in production, an open-source restaurant management system, and two native Android apps. To further deepen my craft and master the fundamentals, I am currently pursuing a Bachelor of Science (BSc) in Computer Engineering at UNED.",
+      "story3": "I work comfortably across the full stack and native mobile. My focus is on building resilient software that thrives in production, not just demos that run on localhost.",
+      "traits": "What sets me apart",
+      "trait1": "<strong>Production-grade delivery</strong> — elparedes.es with Redsys payments, ERP integration, and real customer traffic.",
+      "trait2": "<strong>Clean architectures</strong> — Clean Architecture, MVVM, and solid patterns across all my Android work.",
+      "trait3": "<strong>Full-cycle developer</strong> — design, development, deployment, and maintenance. I can ship to production without external dependencies.",
+      "trait4": "<strong>Product mindset</strong> — code is a means, not the end. I build things people actually use.",
+      "beyond": "Beyond the keyboard",
+      "beyondText": "Board-game nerd, compulsive anime watcher, and epic-fantasy reader. If your stack includes strong coffee and architecture debates, we will get along.",
+      "contact": "Contact"
+    },
+    "experience": {
+      "label": "Experience",
+      "description": "Professional journey",
+      "title": "Professional Experience",
+      "items": [
+        {
+          "role": "Head of IT",
+          "company": "El Paredes Chico SL",
+          "dates": "Oct 2025 — Present",
+          "status": "current",
+          "statusLabel": "CURRENT",
+          "details": "Leading the digital transformation: Odoo ERP rollout, corporate web portal (Next.js, Firebase), and system integrations. Linux and Windows Server administration, GCP + Docker infrastructure, CI/CD pipelines, and network/security configuration for full-stack and mobile products."
+        },
+        {
+          "role": "CEO & Founder",
+          "company": "Adoptaunordenador.com · Self-employed",
+          "dates": "Jan 2016 — Dec 2020",
+          "status": "past",
+          "statusLabel": "COMPLETED",
+          "details": "Founded and managed a social startup focused on refurbished hardware. Built and operated the e-commerce business, logistics, and customer technical support."
+        },
+        {
+          "role": "Logistics Manager",
+          "company": "Globalatc SL",
+          "dates": "Oct 2012 — Aug 2015",
+          "status": "past",
+          "statusLabel": "COMPLETED",
+          "details": "Managed international logistics operations, coordinated suppliers, and optimized routes."
+        }
+      ]
+    },
+    "skills": {
+      "label": "Skills",
+      "description": "Tech stack overview",
+      "title": "Technology Stack",
+      "categories": {
+        "Languages": "Languages",
+        "Mobile": "Mobile",
+        "Frontend": "Frontend",
+        "Backend & APIs": "Backend & APIs",
+        "Databases": "Databases",
+        "Full-stack & Mobile Ops": "Full-stack & Mobile Ops",
+        "Tooling": "Tooling"
+      }
+    },
+    "neofetch": {
+      "label": "Neofetch",
+      "description": "Graphical stack summary"
+    },
+    "projects": {
+      "label": "Projects",
+      "description": "Production & OSS",
+      "title": "Projects",
+      "badges": {
+        "production": "IN PRODUCTION",
+        "oss": "OPEN SOURCE",
+        "android": "ANDROID",
+        "vanilla": "VANILLA JS"
+      },
+      "items": {
+        "paredes": "Production-grade e-commerce for industrial vehicles and machinery featuring Redsys gateway (Card & Bizum), Google OAuth, and real-time Odoo ERP synchronization for automated inventory management.",
+        "disherio": "Open-source, self-hosted restaurant management suite. Featuring QR-code ordering, real-time Kitchen Display System (KDS), and a multi-role POS (Admin, Waitstaff, Kitchen, and Cashier). Supports menu management with variants/allergens and flexible local or cloud deployment.",
+        "timetutor": "Native Android app for private tutoring management. Interactive calendar, attendance tracking, automatic invoicing, push notifications, offline sync, and dedicated teacher/student roles.",
+        "episodeo": "Personal TV-series tracker for Android with TMDB search, smart lists (watching, pending, finished, abandoned), list sharing via codes, offline-first cache, and theme switching. Built with Clean Architecture + MVVM.",
+        "hismar": "Interactive portfolio built as a fully functional retro terminal. Vanilla JS/CSS/HTML, physics-based canvas animations, modular architecture, state manager, dynamic commands, and pixel-art design."
+      }
+    },
+    "education": {
+      "label": "Education",
+      "description": "Academic path",
+      "title": "Education",
+      "items": [
+        {
+          "title": "Bachelor of Science (BSc) in Computer Engineering",
+          "institution": "UNED — National Distance Education University | Feb 2026 — Present",
+          "status": "in-progress",
+          "statusLabel": "IN PROGRESS · LEVEL 6 EQF",
+          "details": "Focus: University-level training in software engineering, algorithms, computer architecture, and distributed systems."
+        },
+        {
+          "title": "Higher National Diploma (HND) in Multi-platform Software Development",
+          "institution": "ILERNA Online | Sept 2023 — Feb 2026",
+          "status": "completed",
+          "statusLabel": "COMPLETED · LEVEL 5 EQF",
+          "details": "Focus: Native mobile development (Kotlin/Android), cross-platform architectures, database management, and cloud-native environments."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "IES Ricardo Ortega | 2004 — 2006",
+          "status": "completed",
+          "statusLabel": "COMPLETED",
+          "details": "Status: Completed"
+        }
+      ]
+    },
+    "cv": {
+      "label": "CV",
+      "description": "Download résumé",
+      "title": "Curriculum Vitae",
+      "desc": "Download the latest PDF version:",
+      "name": "Curriculum Vitae — Ismail Haddouche Rhali"
+    },
+    "help": {
+      "label": "Help",
+      "description": "All commands",
+      "title": "Command Guide",
+      "info_group": "Information",
+      "sys_group": "System",
+      "tips_group": "Tips",
+      "tip1": "Click any command to run it directly",
+      "tip2": "Use <kbd>Tab</kbd> to autocomplete",
+      "tip3": "Navigate history with <kbd>↑</kbd> / <kbd>↓</kbd>",
+      "tip4": "Press <kbd>Esc</kbd> to skip animations",
+      "tip5": "There are several hidden easter eggs in this terminal—explore and have fun finding them",
+      "footer": "// Built with brain, far too much coffee, and watching",
+      "about_desc": "Who I am, background, and contact",
+      "exp_desc": "Professional trajectory and history",
+      "skills_desc": "Complete technology stack",
+      "neo_desc": "Visual summary of this website stack",
+      "proj_desc": "Production and open-source projects",
+      "edu_desc": "Academic background",
+      "cv_desc": "Download the CV in PDF",
+      "help_desc": "Show this guide",
+      "clear": {
+        "label": "Clear",
+        "description": "Clear the console"
+      },
+      "clear_desc": "Clear the console"
+    }
+  },
+  "ui": {
+    "clear_tooltip": "Clear terminal",
+    "placeholder": "Type 'help' to begin...",
+    "unrecognized": "Unrecognized command: ",
+    "help_hint": "Type 'help' to list the available commands.",
+    "restarting": "Restarting terminal...",
+    "sudo_denied": "Permission denied: you are not allowed to use sudo 😅"
+  }
+}
