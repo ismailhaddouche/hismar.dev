@@ -290,6 +290,7 @@ export class TerminalApp implements TerminalAppFacade {
         console.error(`Error loading command ${command}:`, error);
         this.appendToConsole(`Error: Could not load module '${command}'`);
       } finally {
+        (spinnerEl as HTMLElement & { _cleanup?: () => void })._cleanup?.();
         spinnerEl.remove();
         this.dom.input!.disabled = false;
         this.dom.input!.focus();
@@ -302,9 +303,16 @@ export class TerminalApp implements TerminalAppFacade {
   }
 
   private showSpinner(): HTMLElement {
-    const el = document.createElement('span');
+    const frames = ['/', '-', '\\', '|'];
+    let i = 0;
+    const el = document.createElement('pre');
     el.className = 'command-loading';
-    el.innerHTML = '<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span>';
+    el.textContent = frames[0]!;
+    const interval = setInterval(() => {
+      i = (i + 1) % frames.length;
+      el.textContent = frames[i]!;
+    }, 120);
+    (el as HTMLElement & { _cleanup?: () => void })._cleanup = () => clearInterval(interval);
     this.dom.consoleOutput?.appendChild(el);
     this.autoScrollConsole();
     return el;
