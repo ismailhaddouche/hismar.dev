@@ -32,10 +32,24 @@
   background: rgba(0,255,65,0.08);
   border-color: rgba(0,255,65,0.3);
 }
+.command-item__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .command-name {
   color: var(--terminal-light-green, #39ff14);
   font-size: 13px;
   font-weight: bold;
+}
+.command-cmd {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: var(--accent-gold, #ffd700);
+  background: rgba(255, 215, 0, 0.08);
+  padding: 1px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
 }
 .command-desc {
   color: var(--text-muted, #6a8a6a);
