@@ -80,9 +80,10 @@ export class TerminalApp implements TerminalAppFacade {
     const { terminal } = this.dom;
     if (!terminal) return;
     const setHeight = (): void => {
-      terminal.style.height = `${window.innerHeight}px`;
+      terminal.style.height = `${window.visualViewport?.height ?? window.innerHeight}px`;
     };
     window.addEventListener('resize', setHeight);
+    window.visualViewport?.addEventListener('resize', setHeight);
     setHeight();
   }
 

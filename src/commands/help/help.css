@@ -28,6 +28,10 @@
   cursor: pointer;
   transition: all 0.2s;
 }
+.command-item:focus-visible {
+  outline: 2px dashed var(--accent-gold, #ffd700);
+  outline-offset: 3px;
+}
 .command-item:hover {
   background: rgba(0,255,65,0.08);
   border-color: rgba(0,255,65,0.3);
@@ -36,6 +40,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 .command-name {
   color: var(--terminal-light-green, #39ff14);
@@ -50,6 +56,24 @@
   padding: 1px 8px;
   border-radius: 4px;
   letter-spacing: 0.3px;
+}
+.command-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid rgba(255, 215, 0, 0.22);
+  background: rgba(0, 0, 0, 0.32);
+  color: var(--accent-gold, #ffd700);
+  font-size: 13px;
+  font-weight: 700;
+  order: -1;
+}
+.command-prompt {
+  color: var(--terminal-green, #00ff41);
+}
+.command-label {
+  color: var(--text-color, #b8e0b8);
+  font-weight: 600;
 }
 .command-desc {
   color: var(--text-muted, #6a8a6a);

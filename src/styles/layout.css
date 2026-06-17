@@ -287,12 +287,13 @@ body.no-scroll {
     background: radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.45), transparent), linear-gradient(135deg, #ff6b6b, #c91842);
     box-shadow: 0 8px 20px rgba(201, 24, 66, 0.35);
     border-color: rgba(255, 107, 107, 0.8);
-    cursor: default;
+    cursor: pointer;
 }
 
 .control-btn--clear i {
     color: #1b0508;
-    font-size: 15px;
+    font-size: 17px;
+    line-height: 1;
 }
 
 .header-menu {
@@ -1099,14 +1100,31 @@ body::before {
 }
 
 .control-btn--clear {
+    width: 32px;
+    height: 32px;
+    border-radius: 2px;
     border-color: rgba(255, 98, 92, 0.55);
     background: linear-gradient(180deg, #3b1010, #120202);
     box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.12), inset -1px -1px 0 #000;
     cursor: pointer;
 }
 
+.control-btn--clear:hover,
+.control-btn--clear:focus-visible {
+    background: linear-gradient(180deg, #5a1717, #190303);
+    border-color: rgba(255, 118, 112, 0.82);
+    color: #ffd8d5;
+}
+
+.control-btn--clear:hover i,
+.control-btn--clear:focus-visible i {
+    color: #ffd8d5;
+}
+
 .control-btn--clear i {
     color: #ffb0ac;
+    font-size: 17px;
+    line-height: 1;
 }
 
 .terminal-body {
@@ -1473,5 +1491,432 @@ body::before {
     .control-btn {
         width: 28px;
         height: 28px;
+    }
+}
+
+/* ===================================
+   MOBILE UNIX TERMINAL UIX
+   =================================== */
+
+@media (max-width: 900px) {
+    :root {
+        --console-padding: clamp(10px, 3.4vw, 16px);
+        --grid-gap: 12px;
+    }
+
+    body.no-scroll {
+        height: 100dvh;
+    }
+
+    .terminal {
+        border-width: 1px;
+        box-shadow:
+            0 0 0 2px #020403,
+            0 0 0 3px rgba(73, 255, 122, 0.24),
+            inset 0 0 48px rgba(0, 0, 0, 0.78);
+    }
+
+    .terminal-header {
+        gap: 8px;
+        padding: 8px 10px;
+    }
+
+    .header-right,
+    .header-social,
+    .terminal-controls {
+        gap: 6px;
+    }
+
+    .terminal-title {
+        max-width: 46vw;
+    }
+
+    .console-output {
+        padding: 14px var(--console-padding);
+        font-size: 12px;
+        scroll-padding-bottom: 92px;
+    }
+
+    .command-container {
+        display: block;
+        min-height: 0;
+        margin: 20px 0 34px;
+    }
+
+    .command-meta {
+        margin-bottom: 10px;
+    }
+
+    .command-content {
+        min-width: 0;
+        padding: 16px;
+    }
+
+    .command-sidebar {
+        min-height: 0;
+        margin-top: 12px;
+    }
+
+    .section-title {
+        font-size: 14px;
+        letter-spacing: 1.2px;
+        margin-bottom: 16px;
+        overflow-wrap: anywhere;
+    }
+
+    .command-content p,
+    .command-content li,
+    .command-content span,
+    .command-content a,
+    .command-content strong,
+    .command-content h2,
+    .command-content h3 {
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 700px) {
+    .terminal-menu {
+        --mobile-menu-width: min(300px, 84vw);
+        padding: calc(14px + env(safe-area-inset-top, 0px)) 14px 14px;
+        gap: 10px;
+    }
+
+    .terminal-menu .menu-item {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 12px 14px;
+        font-size: 13px;
+        text-align: left;
+    }
+
+    .menu-overlay {
+        left: min(300px, 84vw);
+        width: calc(100% - min(300px, 84vw));
+    }
+
+    .header-social a.social-btn[aria-label="Send email"] {
+        display: none;
+    }
+
+    .terminal-status {
+        scrollbar-width: none;
+    }
+
+    .terminal-status::-webkit-scrollbar {
+        display: none;
+    }
+
+    .terminal-status span {
+        padding: 5px 9px;
+        font-size: 9px;
+        letter-spacing: 0.6px;
+    }
+
+    .input-line {
+        padding: 8px max(10px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
+    }
+
+    .prompt {
+        font-size: 11px;
+        line-height: 1.3;
+    }
+
+    #command-input {
+        font-size: 16px;
+        line-height: 1.35;
+    }
+}
+
+@media (max-width: 640px) {
+    .terminal-header {
+        min-height: 50px;
+    }
+
+    .terminal-title {
+        max-width: 42vw;
+    }
+
+    .terminal-title__text {
+        display: none;
+    }
+
+    .console-output pre {
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+    .console-output pre.console-line--command {
+        padding-left: 7px;
+    }
+
+    .command-meta {
+        gap: 6px;
+        padding: 7px;
+    }
+
+    .command-meta::before,
+    .command-status,
+    .command-timestamp {
+        font-size: 9px;
+    }
+
+    .command-chip {
+        padding: 4px 7px;
+        max-width: 100%;
+    }
+
+    .chip-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .command-content {
+        padding: 13px;
+    }
+
+    .retro-badge {
+        padding: 20px 4px 14px;
+        gap: 10px;
+    }
+
+    .retro-badge span {
+        padding: 14px 12px;
+        font-size: clamp(0.86rem, 6vw, 1.12rem);
+        line-height: 1.45;
+    }
+
+    .welcome-subtitle {
+        font-size: 10px;
+        letter-spacing: 1.8px;
+    }
+
+    .welcome-role {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+
+    .console-output pre.welcome-cmd {
+        padding: 4px 6px;
+        margin: 1px 0;
+    }
+
+    .about-header,
+    .about-details,
+    .about-links,
+    .education-card__header,
+    .project-gallery-modal__title-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .about-detail-item,
+    .about-link,
+    .cv-download-btn {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .commands-grid,
+    .skills-content,
+    .projects-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 12px;
+    }
+
+    .command-item,
+    .education-card,
+    .experience-item,
+    .project-card,
+    .skill-category {
+        padding: 13px;
+    }
+
+    .command-item__header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .experience-timeline {
+        padding-left: 20px;
+    }
+
+    .experience-dot {
+        left: -22px;
+    }
+
+    .experience-status,
+    .education-card__status,
+    .project-badge {
+        width: fit-content;
+        white-space: normal;
+    }
+
+    .project-badge {
+        position: static;
+        display: inline-flex;
+        margin-bottom: 10px;
+    }
+
+    .project-title {
+        margin-bottom: 10px;
+    }
+
+    .project-gallery {
+        gap: 4px;
+    }
+
+    .gallery-nav {
+        min-width: 32px;
+        padding: 9px 5px;
+    }
+
+    .project-gallery-frame {
+        min-height: 112px;
+    }
+
+    .project-tag {
+        max-width: 100%;
+    }
+
+    .neofetch-wrapper {
+        gap: 16px;
+    }
+
+    .neofetch-logo-scroll,
+    .neofetch-specs {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .neofetch-logo {
+        width: 100%;
+        padding: 14px 10px;
+        font-size: clamp(0.78rem, 5vw, 1rem);
+        white-space: normal;
+        text-align: center;
+    }
+
+    .neo-meta div {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    body .project-gallery-modal {
+        padding: 10px;
+    }
+
+    body .project-gallery-modal__dialog {
+        width: calc(100vw - 20px);
+        max-width: none;
+        max-height: calc(100dvh - 20px);
+        padding: 14px;
+        overflow: auto;
+    }
+
+    body .project-gallery-modal__frame {
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr) 34px;
+        gap: 6px;
+    }
+
+    body .project-gallery-modal__frame img {
+        width: 100%;
+        max-width: 100%;
+        max-height: 66dvh;
+        object-fit: contain;
+    }
+
+    body .project-gallery-modal__nav {
+        padding: 10px 4px;
+    }
+}
+
+@media (max-width: 560px) {
+    .header-social a.social-btn[aria-label="LinkedIn profile"] {
+        display: none;
+    }
+
+    .header-right {
+        gap: 5px;
+    }
+
+    .header-social {
+        gap: 5px;
+    }
+
+    .social-btn,
+    .control-btn {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 460px) {
+    .terminal-header {
+        padding-inline: 8px;
+    }
+
+    .terminal-title {
+        max-width: 46vw;
+        padding-inline: 7px;
+    }
+
+    .header-social a.social-btn {
+        display: none;
+    }
+
+    .terminal-status span:nth-child(4) {
+        display: none;
+    }
+
+    .command-content {
+        padding: 11px;
+    }
+
+    .section-title {
+        font-size: 13px;
+        letter-spacing: 0.9px;
+    }
+
+    .input-line {
+        gap: 6px;
+    }
+}
+
+@media (max-width: 360px) {
+    .terminal-title {
+        max-width: 40vw;
+    }
+
+    .terminal-title__user {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .terminal-status span:nth-child(3) {
+        display: none;
+    }
+
+    .command-meta::before {
+        display: none;
+    }
+}
+
+@media (hover: none) {
+    .command-content .command-item:hover,
+    .command-content .education-card:hover,
+    .command-content .experience-item:hover,
+    .command-content .project-card:hover,
+    .command-content .skill-category:hover,
+    .command-content .about-link:hover,
+    .command-content .cv-download-btn:hover,
+    .social-btn:hover,
+    .control-btn:hover,
+    .menu-item:hover {
+        transform: none;
     }
 }

@@ -24,10 +24,10 @@ const HelpCommand: CommandModule = {
       entries
         .map(
           (e) => `
-      <div class="command-item" data-cmd="${e.cmd}">
+      <div class="command-item" data-cmd="${e.cmd}" role="button" tabindex="0">
         <div class="command-item__header">
-          <span class="command-name">${e.label}</span>
-          <span class="command-cmd">/${e.cmd}</span>
+          <span class="command-cmd command-trigger"><span class="command-prompt">$</span> /${e.cmd}</span>
+          <span class="command-name command-label">${e.label}</span>
         </div>
         <span class="command-desc">${e.desc}</span>
       </div>`
@@ -65,9 +65,17 @@ const HelpCommand: CommandModule = {
     content.appendChild(helpEl);
 
     helpEl.querySelectorAll('.command-item[data-cmd]').forEach((item) => {
-      item.addEventListener('click', () => {
+      const runCommand = () => {
         const cmd = (item as HTMLElement).getAttribute('data-cmd');
         if (cmd) void terminal.executeCommand(cmd);
+      };
+      item.addEventListener('click', runCommand);
+      item.addEventListener('keydown', (event) => {
+        const keyboardEvent = event as KeyboardEvent;
+        if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
+          keyboardEvent.preventDefault();
+          runCommand();
+        }
       });
     });
 

@@ -19,6 +19,24 @@ test('executes help command', async ({ page }) => {
   await expect(page.locator('.command-chip')).toContainText('/help');
 });
 
+test('spanish help keeps executable command names visible', async ({ page }) => {
+  const langBtn = page.locator('.lang-toggle');
+  const currentLabel = await langBtn.textContent();
+  if (currentLabel?.trim() !== 'ES') {
+    await langBtn.click();
+  }
+
+  const input = page.locator('#command-input');
+  await input.fill('help');
+  await input.press('Enter');
+
+  const aboutItem = page.locator('.command-item[data-cmd="about"]');
+  await expect(aboutItem.locator('.command-trigger')).toContainText('/about');
+  await expect(aboutItem.locator('.command-label')).toContainText('Sobre mí');
+  await expect(aboutItem).not.toContainText('/sobre-mi');
+  await expect(page.locator('.menu-item[data-command="about"]')).toHaveText('/about');
+});
+
 test('executes about command', async ({ page }) => {
   const input = page.locator('#command-input');
   await input.fill('about');
