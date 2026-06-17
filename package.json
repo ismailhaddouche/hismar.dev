@@ -3,10 +3,12 @@
   "version": "3.0.0",
   "description": "Portfolio interactivo de Ismail Haddouche Rhali - Terminal interactivo",
   "type": "module",
-  "main": "src/main.ts",
+  "main": "server.mjs",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "gcp-build": "npm run build",
+    "start": "node server.mjs",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json,md}\"",
