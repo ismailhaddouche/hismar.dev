@@ -11,7 +11,13 @@ describe('CommandRegistry', () => {
 
   const createDef = (name: string, showInNav = true): CommandDefinition => ({
     name,
-    script: async () => ({ default: { async execute() {} } }),
+    script: async () => ({
+      default: {
+        async execute() {
+          await Promise.resolve();
+        },
+      },
+    }),
     showInNav,
   });
 

@@ -3,7 +3,7 @@ interface AnimationModule {
 }
 
 export class AnimationManager {
-  private cleanups: Array<() => void> = [];
+  private cleanups: (() => void)[] = [];
   private currentAnimation: AnimationModule | null = null;
 
   registerCleanup(fn: () => void): void {

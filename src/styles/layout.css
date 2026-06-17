@@ -566,6 +566,12 @@ body.no-scroll {
     flex-shrink: 0;
     border-radius: 8px 8px 12px 12px;
     margin: 0 var(--console-padding) var(--console-padding);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.input-line.is-busy {
+    border-color: var(--terminal-light-green);
+    box-shadow: inset 0 0 22px rgba(45, 240, 184, 0.12), 0 0 18px rgba(0, 255, 65, 0.14);
 }
 
 .prompt {
@@ -589,6 +595,12 @@ body.no-scroll {
     outline: none;
     caret-color: var(--cursor-color);
     box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.6), 0 0 12px rgba(45, 240, 184, 0.2);
+}
+
+#command-input:disabled {
+    opacity: 0.72;
+    cursor: progress;
+    color: var(--text-muted);
 }
 
 #command-input::placeholder {
@@ -702,12 +714,12 @@ body.no-scroll {
 
     .command-content {
         grid-column: 1;
-        grid-row: 1;
+        grid-row: auto;
     }
 
     .command-sidebar {
         grid-column: 1;
-        grid-row: 2;
+        grid-row: auto;
         position: static;
         margin-top: 16px;
     }
@@ -718,11 +730,12 @@ body.no-scroll {
     }
 
     .terminal-menu {
+        --mobile-menu-width: min(260px, 78vw);
         position: fixed;
         top: 0;
         left: 0;
         height: 100%;
-        width: 260px;
+        width: var(--mobile-menu-width);
         background: #131824;
         flex-direction: column;
         padding: 20px;
@@ -741,8 +754,8 @@ body.no-scroll {
         display: none;
         position: fixed;
         top: 0;
-        left: 0;
-        width: 100%;
+        left: min(260px, 78vw);
+        width: calc(100% - min(260px, 78vw));
         height: 100%;
         background: rgba(0, 0, 0, 0.6);
         z-index: 999;
@@ -892,5 +905,573 @@ body.no-scroll {
 .command-loading {
     color: var(--terminal-green);
     font-size: 13px;
+    margin: 8px 0 4px;
+    letter-spacing: 0.8px;
+    text-shadow: 0 0 8px var(--glow-color);
+}
+
+/* ===================================
+   UNIX TERMINAL UIX REFRESH
+   =================================== */
+
+:root {
+    --terminal-bg: #07110b;
+    --terminal-shell: #020403;
+    --terminal-panel: #06130d;
+    --terminal-panel-2: #0a1910;
+    --terminal-green: #22ff55;
+    --terminal-light-green: #9cffb1;
+    --terminal-dark-green: #009929;
+    --terminal-border: #21472d;
+    --terminal-frame-outer: #49ff7a;
+    --terminal-frame-inner: #000f08;
+    --terminal-input-frame: rgba(73, 255, 122, 0.5);
+    --text-color: #c8ffd2;
+    --text-muted: #75a47d;
+    --accent-blue: #68d8ff;
+    --accent-gold: #ffd866;
+    --accent-red: #ff625c;
+    --shadow-color: rgba(34, 255, 85, 0.12);
+    --glow-color: rgba(34, 255, 85, 0.35);
+}
+
+html,
+body {
+    background:
+        radial-gradient(circle at 50% -20%, rgba(73, 255, 122, 0.18), transparent 34%),
+        radial-gradient(circle at 90% 15%, rgba(104, 216, 255, 0.08), transparent 26%),
+        linear-gradient(135deg, #020403, #09100d 48%, #020403);
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(34, 255, 85, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 255, 85, 0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+}
+
+.terminal {
+    background: var(--terminal-shell);
+    border: 1px solid var(--terminal-frame-outer);
+    box-shadow:
+        0 0 0 3px #020403,
+        0 0 0 4px rgba(73, 255, 122, 0.28),
+        0 0 42px rgba(34, 255, 85, 0.2),
+        inset 0 0 70px rgba(0, 0, 0, 0.78);
+    animation: crtGlow 9s ease-in-out infinite;
+    isolation: isolate;
+}
+
+.terminal::before {
+    background:
+        radial-gradient(circle at 50% 22%, rgba(156, 255, 177, 0.12), transparent 45%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035), transparent 12%, transparent 88%, rgba(255, 255, 255, 0.025));
+    mix-blend-mode: screen;
+    opacity: 0.12;
+}
+
+.terminal::after {
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.22) 0,
+            rgba(0, 0, 0, 0.22) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+    opacity: 0.42;
+}
+
+.terminal-header {
+    position: relative;
+    z-index: 20;
+    height: 54px;
+    background:
+        linear-gradient(180deg, rgba(21, 45, 28, 0.96), rgba(4, 9, 6, 0.98)),
+        repeating-linear-gradient(90deg, rgba(34, 255, 85, 0.08) 0 1px, transparent 1px 9px);
+    border: 0;
+    border-bottom: 1px solid var(--terminal-frame-outer);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.13),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.9),
+        0 7px 20px rgba(0, 0, 0, 0.42);
+}
+
+.header-brand {
+    min-width: 190px;
+}
+
+.terminal-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 6px 10px;
+    border: 1px solid rgba(73, 255, 122, 0.3);
+    background: rgba(0, 0, 0, 0.36);
+    box-shadow: inset 1px 1px 0 rgba(156, 255, 177, 0.12), inset -1px -1px 0 rgba(0, 0, 0, 0.9);
+    color: var(--terminal-light-green);
+    font-size: 11px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.terminal-title__user {
+    color: var(--accent-gold);
+}
+
+.terminal-title__text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.terminal-title__state {
+    padding: 1px 6px;
+    border: 1px solid rgba(34, 255, 85, 0.28);
+    background: rgba(34, 255, 85, 0.08);
+    color: var(--terminal-green);
+    font-size: 9px;
+}
+
+.header-menu {
+    gap: 6px;
+}
+
+.menu-item,
+.social-btn,
+.control-btn {
+    border-radius: 2px;
+    font-family: Consolas, 'Courier New', monospace;
+}
+
+.menu-item {
+    padding: 8px 12px;
+    border: 1px solid rgba(73, 255, 122, 0.18);
+    background: linear-gradient(180deg, rgba(5, 20, 10, 0.92), rgba(0, 0, 0, 0.84));
+    color: rgba(200, 255, 210, 0.82);
+    box-shadow: inset 1px 1px 0 rgba(156, 255, 177, 0.08), inset -1px -1px 0 #000;
+}
+
+.menu-item::after {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    border-radius: 0;
+}
+
+.menu-item:hover,
+.menu-item:focus-visible,
+.menu-item.active,
+.menu-item.executing {
+    color: #021306;
+    border-color: var(--terminal-frame-outer);
+    background: linear-gradient(180deg, var(--terminal-light-green), var(--terminal-green));
+    text-shadow: none;
+}
+
+.social-btn,
+.control-btn {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(180deg, #0b1f12, #020403);
+    border: 1px solid rgba(73, 255, 122, 0.28);
+    color: var(--terminal-green);
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.08), inset -1px -1px 0 #000;
+}
+
+.social-btn:hover,
+.social-btn:focus-visible,
+.control-btn:hover,
+.control-btn:focus-visible {
+    background: linear-gradient(180deg, #12371e, #041108);
+    border-color: var(--terminal-frame-outer);
+    color: var(--terminal-light-green);
+    transform: translateY(-1px);
+}
+
+.lang-toggle {
+    background: linear-gradient(180deg, #0f321b, #020403) !important;
+}
+
+.control-btn--clear {
+    border-color: rgba(255, 98, 92, 0.55);
+    background: linear-gradient(180deg, #3b1010, #120202);
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.12), inset -1px -1px 0 #000;
+    cursor: pointer;
+}
+
+.control-btn--clear i {
+    color: #ffb0ac;
+}
+
+.terminal-body {
+    position: relative;
+    z-index: 1;
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 22%),
+        var(--terminal-shell);
+}
+
+.console-output {
+    padding: calc(var(--console-padding) + 4px) var(--console-padding);
+    background:
+        radial-gradient(circle at 50% 0, rgba(34, 255, 85, 0.08), transparent 38%),
+        linear-gradient(90deg, rgba(34, 255, 85, 0.04), transparent 7%, transparent 93%, rgba(34, 255, 85, 0.035)),
+        var(--terminal-shell);
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: clamp(12px, 1.15vw, 14px);
+    line-height: 1.58;
+    color: var(--text-color);
+}
+
+.console-output pre {
+    margin: 3px 0;
+    color: var(--text-muted);
+    text-shadow: 0 0 7px rgba(34, 255, 85, 0.18);
+}
+
+.console-output pre.console-line--command {
+    color: var(--terminal-light-green);
+    padding: 3px 0 3px 10px;
+    border-left: 2px solid var(--terminal-green);
+    background: linear-gradient(90deg, rgba(34, 255, 85, 0.08), transparent 42%);
+}
+
+.console-output pre.console-line--alert {
+    color: var(--accent-gold);
+}
+
+.terminal-status {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    overflow-x: auto;
+    border-top: 1px solid rgba(73, 255, 122, 0.18);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.9);
+    background: linear-gradient(180deg, #0d2013, #030604);
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: 0.9px;
+    white-space: nowrap;
+}
+
+.terminal-status span {
+    padding: 5px 12px;
+    border-right: 1px solid rgba(73, 255, 122, 0.16);
+}
+
+.terminal-status span:first-child {
+    color: var(--terminal-green);
+}
+
+.command-container {
+    gap: 14px var(--grid-gap);
+    margin: 28px 0 46px;
+    min-height: 240px;
+}
+
+.command-container::after {
+    bottom: -22px;
+    background: repeating-linear-gradient(90deg, transparent 0 10px, rgba(73, 255, 122, 0.38) 10px 16px, transparent 16px 28px);
+    opacity: 0.5;
+}
+
+.command-meta {
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: 0;
+    background: linear-gradient(180deg, #102517, #030604);
+    border: 1px solid rgba(73, 255, 122, 0.28);
+    box-shadow: inset 1px 1px 0 rgba(156, 255, 177, 0.1), inset -1px -1px 0 #000;
+}
+
+.command-meta::before {
+    content: 'EXEC';
+    color: var(--accent-gold);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+}
+
+.command-chip,
+.command-status,
+.command-timestamp {
+    border-radius: 0;
+    font-size: 11px;
+}
+
+.command-chip {
+    gap: 8px;
+    padding: 5px 10px;
+    background: #010302;
+    border-color: rgba(73, 255, 122, 0.34);
+    box-shadow: inset 1px 1px 0 rgba(156, 255, 177, 0.08), inset -1px -1px 0 #000;
+}
+
+.chip-icon {
+    color: var(--accent-gold);
+    font-size: 11px;
+}
+
+.command-status {
+    margin-left: auto;
+    padding: 3px 8px;
+    border: 1px solid rgba(34, 255, 85, 0.28);
+    color: var(--terminal-green);
+    background: rgba(34, 255, 85, 0.08);
+    letter-spacing: 1px;
+}
+
+.command-timestamp {
+    color: var(--text-muted);
+}
+
+.command-content {
+    padding: 22px;
+    border-radius: 0;
+    background:
+        linear-gradient(180deg, rgba(9, 25, 14, 0.95), rgba(2, 6, 3, 0.98)),
+        var(--terminal-panel);
+    border: 1px solid rgba(73, 255, 122, 0.22);
+    box-shadow:
+        inset 1px 1px 0 rgba(156, 255, 177, 0.08),
+        inset -1px -1px 0 #000,
+        0 18px 36px rgba(0, 0, 0, 0.42);
+}
+
+.command-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    pointer-events: none;
+}
+
+.section-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0 0 11px;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    text-shadow: 0 0 10px rgba(255, 216, 102, 0.25);
+    border-bottom: 1px solid rgba(73, 255, 122, 0.18);
+}
+
+.section-title::before {
+    content: '>';
+    color: var(--terminal-green);
+}
+
+.section-title::after {
+    width: 100%;
+    height: 1px;
+    left: 0;
+    background: linear-gradient(90deg, var(--terminal-green), transparent 36%);
+    opacity: 0.6;
+}
+
+.input-line {
+    gap: 10px;
+    padding: 10px var(--console-padding);
     margin: 0;
+    border: 0;
+    border-top: 1px solid var(--terminal-frame-outer);
+    border-radius: 0;
+    background: linear-gradient(180deg, #06130d, #010302);
+    box-shadow: inset 0 1px 0 rgba(156, 255, 177, 0.1), 0 -8px 22px rgba(0, 0, 0, 0.4);
+}
+
+.input-line.is-busy {
+    border-color: var(--terminal-light-green);
+    box-shadow: inset 0 1px 0 rgba(156, 255, 177, 0.12), 0 -8px 26px rgba(34, 255, 85, 0.12);
+}
+
+.prompt {
+    color: var(--terminal-light-green);
+    font-size: clamp(12px, 1.4vw, 14px);
+    text-shadow: 0 0 8px rgba(34, 255, 85, 0.34);
+}
+
+#command-input {
+    min-width: 0;
+    padding: 4px 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    color: var(--terminal-light-green);
+    text-shadow: 0 0 8px rgba(34, 255, 85, 0.28);
+}
+
+#command-input:focus {
+    box-shadow: inset 0 -1px 0 rgba(73, 255, 122, 0.32);
+}
+
+#command-input::placeholder {
+    color: rgba(117, 164, 125, 0.8);
+}
+
+.retro-badge {
+    padding: 30px 16px 18px;
+    gap: 12px;
+}
+
+.retro-badge span {
+    border: 2px solid var(--accent-gold);
+    border-radius: 0;
+    background:
+        repeating-linear-gradient(90deg, rgba(255, 216, 102, 0.06) 0 2px, transparent 2px 8px),
+        #020403;
+    box-shadow:
+        0 0 0 3px #020403,
+        0 0 0 4px rgba(255, 216, 102, 0.45),
+        6px 6px 0 #1b0508,
+        0 0 28px rgba(255, 216, 102, 0.18);
+}
+
+.welcome-subtitle {
+    color: var(--terminal-light-green);
+}
+
+.welcome-role {
+    border-radius: 0;
+    border-color: rgba(73, 255, 122, 0.25);
+    background: rgba(0, 0, 0, 0.34);
+}
+
+.console-output pre.welcome-cmd {
+    padding: 3px 8px;
+    border-left: 2px solid transparent;
+}
+
+.console-output pre.welcome-cmd:hover {
+    border-left-color: var(--terminal-green);
+    background: linear-gradient(90deg, rgba(34, 255, 85, 0.12), transparent 46%);
+}
+
+.command-loading {
+    width: fit-content;
+    padding: 4px 10px;
+    border: 1px solid rgba(73, 255, 122, 0.22);
+    background: rgba(0, 0, 0, 0.36);
+}
+
+.command-content .about-detail-item,
+.command-content .about-traits li,
+.command-content .about-link,
+.command-content .command-item,
+.command-content .education-card,
+.command-content .experience-item,
+.command-content .project-card,
+.command-content .skill-category,
+.command-content .neo-tech-chip,
+.command-content .cv-download-btn {
+    border-radius: 0;
+    background: linear-gradient(180deg, rgba(10, 25, 16, 0.84), rgba(0, 0, 0, 0.36));
+    border-color: rgba(73, 255, 122, 0.18);
+    box-shadow: inset 1px 1px 0 rgba(156, 255, 177, 0.08), inset -1px -1px 0 rgba(0, 0, 0, 0.82);
+}
+
+.command-content .command-item:hover,
+.command-content .education-card:hover,
+.command-content .experience-item:hover,
+.command-content .project-card:hover,
+.command-content .skill-category:hover,
+.command-content .about-link:hover,
+.command-content .cv-download-btn:hover {
+    border-color: rgba(73, 255, 122, 0.48);
+    background: linear-gradient(180deg, rgba(17, 52, 27, 0.9), rgba(2, 12, 5, 0.64));
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.58), inset 1px 1px 0 rgba(156, 255, 177, 0.16);
+}
+
+.command-content .group-title,
+.command-content .skill-category-title,
+.command-content .about-subtitle {
+    color: var(--accent-gold);
+    text-transform: uppercase;
+}
+
+.command-content .command-cmd,
+.command-content .experience-status,
+.command-content .education-card__status,
+.command-content .project-badge {
+    border-radius: 0;
+}
+
+@media (max-width: 1280px) {
+    .terminal-header {
+        min-height: 54px;
+        height: auto;
+    }
+
+    .header-brand {
+        min-width: 0;
+    }
+
+    .terminal-menu {
+        background:
+            linear-gradient(180deg, rgba(11, 31, 18, 0.98), rgba(1, 3, 2, 0.98)),
+            var(--terminal-shell);
+        border-right-color: var(--terminal-frame-outer);
+        box-shadow: 18px 0 30px rgba(0, 0, 0, 0.52);
+    }
+}
+
+@media (max-width: 720px) {
+    .terminal-title {
+        max-width: 44vw;
+    }
+
+    .terminal-title__state {
+        display: none;
+    }
+
+    .terminal-status span {
+        padding: 5px 9px;
+    }
+
+    .command-meta {
+        flex-wrap: wrap;
+    }
+
+    .command-status {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .input-line {
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .prompt {
+        padding: 0;
+        border: 0;
+        background: transparent;
+    }
+}
+
+@media (max-width: 480px) {
+    .terminal-title {
+        max-width: 38vw;
+        padding: 5px 7px;
+        font-size: 10px;
+    }
+
+    .social-btn,
+    .control-btn {
+        width: 28px;
+        height: 28px;
+    }
 }

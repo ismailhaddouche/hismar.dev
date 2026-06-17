@@ -59,14 +59,40 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function prefetchCommands(defs: CommandDefinition[]): void {
+  const connection = (navigator as Navigator & {
+    connection?: { saveData?: boolean; effectiveType?: string };
+  }).connection;
+  const saveData = connection?.saveData === true;
+  const slowConnection = /2g/.test(connection?.effectiveType ?? '');
+  if (saveData || slowConnection) return;
+
   const run = () => {
-    defs.forEach((def) => {
-      try { def.script(); } catch (_) { /* fire and forget */ }
-    });
+    void prefetchSequentially(defs);
   };
   if (typeof requestIdleCallback !== 'undefined') {
     requestIdleCallback(run, { timeout: 3000 });
   } else {
     setTimeout(run, 200);
   }
+}
+
+async function prefetchSequentially(defs: CommandDefinition[]): Promise<void> {
+  for (const def of defs) {
+    try {
+      await def.script();
+    } catch {
+      // Prefetch is opportunistic; execution still loads the command on demand.
+    }
+    await waitForIdle();
+  }
+}
+
+function waitForIdle(): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(() => resolve(), { timeout: 800 });
+      return;
+    }
+    setTimeout(resolve, 180);
+  });
 }

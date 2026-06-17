@@ -41,9 +41,7 @@ export interface CommandContainer {
   sidebar: HTMLElement;
 }
 
-export interface I18nTranslations {
-  [lang: string]: Record<string, unknown>;
-}
+export type I18nTranslations = Record<string, Record<string, unknown>>;
 
 export interface ProjectData {
   name: string;

@@ -16,7 +16,7 @@ const SkillsCommand: CommandModule = {
   async execute(terminal: TerminalAppFacade) {
     await iconRegistry.ensureDevIconLoaded();
 
-    const { container, content, sidebar } = terminal.createCommandContainer('skills');
+    const { container, content } = terminal.createCommandContainer('skills');
 
     let html = `<h2 class="section-title">${terminal.i18n.t('commands.skills.title')}</h2><div class="skills-content">`;
 

@@ -48,12 +48,26 @@ const projectsData: ProjectData[] = [
   },
 ];
 
+interface ProjectManifestItem {
+  src?: string;
+  alt?: string;
+  orientation?: string;
+}
+
 const ProjectsCommand: CommandModule = {
   async execute(terminal: TerminalAppFacade) {
     await iconRegistry.ensureDevIconLoaded();
 
     const { container, content } = terminal.createCommandContainer('projects');
     const galleryModal = new GalleryModal();
+    const manifestController = new AbortController();
+    let disposed = false;
+
+    terminal.animations.registerCleanup(() => {
+      disposed = true;
+      manifestController.abort();
+      galleryModal.destroy();
+    });
 
     const title = document.createElement('h2');
     title.className = 'section-title';
@@ -69,11 +83,13 @@ const ProjectsCommand: CommandModule = {
       card.className = 'project-card';
       const openLink = (event: Event) => {
         const target = event.target as HTMLElement | null;
-        if (target?.closest('.project-gallery-frame') || target?.closest('.gallery-nav')) return;
+        if (isGalleryTarget(target)) return;
         window.open(project.link, '_blank', 'noopener,noreferrer');
       };
       card.addEventListener('click', openLink);
       card.addEventListener('keydown', (e) => {
+        const target = e.target as HTMLElement | null;
+        if (isGalleryTarget(target)) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           window.open(project.link, '_blank', 'noopener,noreferrer');
@@ -92,7 +108,12 @@ const ProjectsCommand: CommandModule = {
       titleEl.textContent = project.name;
       card.appendChild(titleEl);
 
-      const gallery = buildProjectGallery(project, galleryModal, terminal);
+      const gallery = buildProjectGallery(
+        project,
+        galleryModal,
+        manifestController.signal,
+        () => disposed
+      );
       card.appendChild(gallery);
 
       const desc = document.createElement('p');
@@ -127,7 +148,8 @@ const ProjectsCommand: CommandModule = {
 function buildProjectGallery(
   project: ProjectData,
   galleryModal: GalleryModal,
-  terminal: TerminalAppFacade
+  signal: AbortSignal,
+  isDisposed: () => boolean
 ): HTMLElement {
   const gallery = document.createElement('div');
   gallery.className = 'project-gallery';
@@ -171,8 +193,8 @@ function buildProjectGallery(
     const current = images[index];
     if (!current) return;
     img.src = current.src;
-    img.alt = current.alt || `${project.name} screenshot ${index + 1}`;
-    frame.dataset['orientation'] = current.orientation || 'landscape';
+    img.alt = current.alt ?? `${project.name} screenshot ${index + 1}`;
+    frame.dataset.orientation = current.orientation ?? 'landscape';
     counter.textContent = `${index + 1}/${images.length}`;
   };
 
@@ -220,12 +242,14 @@ function buildProjectGallery(
   frame.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
+      event.stopPropagation();
       if (!images.length) return;
       galleryModal.open(images, currentIndex, project.name);
     }
   });
 
-  loadProjectImages(project, terminal).then((remoteImages) => {
+  void loadProjectImages(project, signal).then((remoteImages) => {
+    if (isDisposed() || signal.aborted || !gallery.isConnected) return;
     if (Array.isArray(remoteImages) && remoteImages.length) {
       images = remoteImages;
       currentIndex = 0;
@@ -237,28 +261,42 @@ function buildProjectGallery(
   return gallery;
 }
 
-async function loadProjectImages(
-  project: ProjectData,
-  terminal: TerminalAppFacade
-): Promise<GalleryImage[]> {
+async function loadProjectImages(project: ProjectData, signal: AbortSignal): Promise<GalleryImage[]> {
   try {
     const slug = slugify(project.name);
-    const response = await fetch(`images/projects/${slug}/manifest.json`);
+    const response = await fetch(`images/projects/${slug}/manifest.json`, { signal });
     if (!response.ok) throw new Error('Manifest not found');
-    const manifest = await response.json();
-    if (Array.isArray(manifest) && manifest.length > 0) {
+    const manifest = (await response.json()) as unknown;
+    if (isProjectManifest(manifest) && manifest.length > 0) {
       return manifest
-        .map((item: { src?: string; alt?: string; orientation?: string }) => ({
+        .map<GalleryImage>((item) => ({
           src: item.src ? `images/projects/${slug}/${item.src}` : '',
-          alt: item.alt || `${project.name} image`,
-          orientation: item.orientation || 'landscape',
+          alt: item.alt ?? `${project.name} image`,
+          orientation: item.orientation ?? 'landscape',
         }))
-        .filter((img: GalleryImage) => img.src);
+        .filter((img) => Boolean(img.src));
     }
-    return manifest;
+    return [];
   } catch {
     return [];
   }
+}
+
+function isGalleryTarget(target: HTMLElement | null): boolean {
+  return Boolean(target?.closest('.project-gallery-frame') ?? target?.closest('.gallery-nav'));
+}
+
+function isProjectManifest(value: unknown): value is ProjectManifestItem[] {
+  if (!Array.isArray(value)) return false;
+  return value.every((item) => {
+    if (!item || typeof item !== 'object') return false;
+    const candidate = item as Record<string, unknown>;
+    return (
+      (candidate.src === undefined || typeof candidate.src === 'string') &&
+      (candidate.alt === undefined || typeof candidate.alt === 'string') &&
+      (candidate.orientation === undefined || typeof candidate.orientation === 'string')
+    );
+  });
 }
 
 export default ProjectsCommand;

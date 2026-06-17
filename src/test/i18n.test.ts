@@ -23,7 +23,7 @@ describe('I18nManager', () => {
     const i18n = createI18nManager();
     i18n.setLanguage('es');
     expect(i18n.current).toBe('es');
-    expect(localStorage.setItem).toHaveBeenCalledWith('hismar_lang', 'es');
+    expect(localStorage.getItem('hismar_lang')).toBe('es');
   });
 
   it('should dispatch languageChanged event', () => {

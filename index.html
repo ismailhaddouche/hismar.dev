@@ -89,6 +89,11 @@
                     <span></span>
                     <span></span>
                 </button>
+                <div class="terminal-title" aria-hidden="true">
+                    <span class="terminal-title__user">hismar@tty1</span>
+                    <span class="terminal-title__text">~/portfolio</span>
+                    <span class="terminal-title__state">bash</span>
+                </div>
             </div>
             <nav class="header-menu terminal-menu" id="terminal-menu" aria-label="Primary">
                 <button type="button" class="menu-item" data-command="about">/about</button>
@@ -127,8 +132,15 @@
         <main class="terminal-body" id="main-content" tabindex="-1">
             <div class="console-output" id="console-output"></div>
 
+            <div class="terminal-status" aria-hidden="true">
+                <span>tty1</span>
+                <span>shell: /bin/bash</span>
+                <span>tab: complete</span>
+                <span>esc: skip output</span>
+            </div>
+
             <div class="input-line">
-                <span class="prompt">$ visitor@hismar.dev:</span>
+                <span class="prompt">visitor@hismar.dev:~$</span>
                 <input type="text" id="command-input" autocomplete="off" spellcheck="false"
                     placeholder="Type 'help' to begin..." aria-label="Command input">
             </div>

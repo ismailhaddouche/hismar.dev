@@ -90,14 +90,14 @@ test('sudo returns permission denied', async ({ page }) => {
   const input = page.locator('#command-input');
   await input.fill('sudo help');
   await input.press('Enter');
-  await expect(page.locator('pre')).toContainText(/permisos|permission/i);
+  await expect(page.locator('#console-output')).toContainText(/permisos|permission/i);
 });
 
 test('unrecognized command shows error', async ({ page }) => {
   const input = page.locator('#command-input');
   await input.fill('foobar');
   await input.press('Enter');
-  await expect(page.locator('pre')).toContainText(/No reconocido|Unrecognized/i);
+  await expect(page.locator('#console-output')).toContainText(/No reconocido|Unrecognized/i);
 });
 
 test('Tab key autocompletes command', async ({ page }) => {

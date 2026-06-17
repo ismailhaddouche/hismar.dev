@@ -12,10 +12,9 @@ export class GalleryModal {
   private prevBtn!: HTMLButtonElement;
   private nextBtn!: HTMLButtonElement;
   private closeBtn!: HTMLButtonElement;
-  private galleryCloseBtn!: HTMLButtonElement;
-  private backdrop!: HTMLDivElement;
   private currentImages: GalleryImage[] = [];
   private currentIndex = 0;
+  private isListening = false;
 
   open(images: GalleryImage[], startIndex: number, title: string): void {
     if (!images.length) return;
@@ -23,6 +22,7 @@ export class GalleryModal {
     this.currentImages = images;
     this.currentIndex = startIndex || 0;
     this.modalTitle.textContent = title;
+    this.listenForKeys();
     this.modal?.classList.add('active');
     document.body.classList.add('gallery-modal-open');
     this.update();
@@ -32,7 +32,15 @@ export class GalleryModal {
     if (!this.modal) return;
     this.modal.classList.remove('active');
     document.body.classList.remove('gallery-modal-open');
-    document.removeEventListener('keydown', this.handleKeydown);
+    this.destroy();
+  }
+
+  destroy(): void {
+    this.stopListeningForKeys();
+    this.modal?.remove();
+    this.modal = null;
+    this.currentImages = [];
+    document.body.classList.remove('gallery-modal-open');
   }
 
   private ensureModal(): void {
@@ -65,7 +73,6 @@ export class GalleryModal {
     this.closeBtn = this.modal.querySelector('.project-gallery-modal__close')!;
     const backdrop = this.modal.querySelector('.project-gallery-modal__backdrop')!;
 
-    document.addEventListener('keydown', this.handleKeydown);
     this.prevBtn.addEventListener('click', (e) => { e.stopPropagation(); this.show(-1); });
     this.nextBtn.addEventListener('click', (e) => { e.stopPropagation(); this.show(1); });
     this.closeBtn.addEventListener('click', (e) => { e.stopPropagation(); this.close(); });
@@ -87,8 +94,8 @@ export class GalleryModal {
     const current = this.currentImages[this.currentIndex];
     if (!current) return;
     this.modalImg.src = current.src;
-    this.modalImg.alt = current.alt || this.modalTitle.textContent || '';
-    this.modalImg.dataset['orientation'] = current.orientation || 'landscape';
+    this.modalImg.alt = current.alt ?? this.modalTitle.textContent ?? '';
+    this.modalImg.dataset.orientation = current.orientation ?? 'landscape';
     this.modalCounter.textContent = `${this.currentIndex + 1}/${this.currentImages.length}`;
     this.prevBtn.disabled = this.currentImages.length <= 1;
     this.nextBtn.disabled = this.currentImages.length <= 1;
@@ -99,5 +106,17 @@ export class GalleryModal {
     this.currentIndex =
       (this.currentIndex + step + this.currentImages.length) % this.currentImages.length;
     this.update();
+  }
+
+  private listenForKeys(): void {
+    if (this.isListening) return;
+    document.addEventListener('keydown', this.handleKeydown);
+    this.isListening = true;
+  }
+
+  private stopListeningForKeys(): void {
+    if (!this.isListening) return;
+    document.removeEventListener('keydown', this.handleKeydown);
+    this.isListening = false;
   }
 }

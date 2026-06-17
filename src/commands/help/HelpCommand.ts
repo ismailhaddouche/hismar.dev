@@ -4,7 +4,7 @@ import './help.css';
 const HelpCommand: CommandModule = {
   async execute(terminal: TerminalAppFacade) {
     const { container, content } = terminal.createCommandContainer('help');
-    const t = terminal.i18n.t;
+    const t = <T = string>(path: string): T => terminal.i18n.t<T>(path);
 
     const infoEntries = [
       { cmd: 'about',       label: t('commands.about.label'),       desc: t('commands.help.about_desc') },
@@ -20,7 +20,7 @@ const HelpCommand: CommandModule = {
       { cmd: 'clear', label: t('commands.help.clear.label'),   desc: t('commands.help.clear.description') },
     ];
 
-    const buildItems = (entries: Array<{ cmd: string; label: string; desc: string }>) =>
+    const buildItems = (entries: { cmd: string; label: string; desc: string }[]) =>
       entries
         .map(
           (e) => `
@@ -67,7 +67,7 @@ const HelpCommand: CommandModule = {
     helpEl.querySelectorAll('.command-item[data-cmd]').forEach((item) => {
       item.addEventListener('click', () => {
         const cmd = (item as HTMLElement).getAttribute('data-cmd');
-        if (cmd) terminal.executeCommand(cmd);
+        if (cmd) void terminal.executeCommand(cmd);
       });
     });
 

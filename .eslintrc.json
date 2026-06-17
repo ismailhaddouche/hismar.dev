@@ -24,7 +24,7 @@
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-floating-promises": "warn",
-    "@typescript-eslint/require-await": "warn",
+    "@typescript-eslint/require-await": "off",
     "jsx-a11y/anchor-is-valid": "error",
     "jsx-a11y/click-events-have-key-events": "error",
     "jsx-a11y/no-noninteractive-element-interactions": "error",

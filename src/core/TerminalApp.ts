@@ -5,6 +5,9 @@ import { EventBus } from './EventBus';
 import { formatTimestamp } from '@/shared/utils/strings';
 import { sleep } from '@/shared/utils/async';
 
+const MAX_CONSOLE_NODES = 140;
+const SHELL_PROMPT = 'visitor@hismar.dev:~$';
+
 interface DOMCache {
   terminal: HTMLElement | null;
   consoleOutput: HTMLElement | null;
@@ -27,6 +30,8 @@ export class TerminalApp implements TerminalAppFacade {
   private dom!: DOMCache;
   private isTyping = false;
   private skipTyping = false;
+  private pendingCommands = 0;
+  private commandQueue: Promise<void> = Promise.resolve();
   private commandHistory: string[] = [];
   private historyIndex = -1;
 
@@ -101,14 +106,16 @@ export class TerminalApp implements TerminalAppFacade {
       item.addEventListener('click', (e) => {
         e.preventDefault();
         const cmd = item.dataset.command;
-        if (cmd) this.executeCommand(cmd);
+        if (cmd) void this.executeCommand(cmd);
         if (terminalMenu?.classList.contains('active')) this.toggleMobileMenu(false);
       });
     });
 
     hamburgerBtn?.addEventListener('click', () => this.toggleMobileMenu());
     menuOverlay?.addEventListener('click', () => this.toggleMobileMenu(false));
-    clearBtn?.addEventListener('click', () => this.executeCommand('clear'));
+    clearBtn?.addEventListener('click', () => {
+      void this.executeCommand('clear');
+    });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -121,7 +128,7 @@ export class TerminalApp implements TerminalAppFacade {
     document.addEventListener('click', (e) => {
       if (!autoFocusEnabled || !input) return;
       const target = e.target as HTMLElement;
-      if (target.closest('.console-output') || target.closest('.input-line')) {
+      if (target.closest('.console-output') ?? target.closest('.input-line')) {
         input.focus();
       }
     });
@@ -141,8 +148,8 @@ export class TerminalApp implements TerminalAppFacade {
 
   private setupLangToggle(headerSocial: HTMLElement | null): void {
     if (!headerSocial) return;
-    const existingBtn = headerSocial.querySelector('.lang-toggle') as HTMLButtonElement | null;
-    const langBtn = existingBtn || document.createElement('button');
+    const existingBtn = headerSocial.querySelector<HTMLButtonElement>('.lang-toggle');
+    const langBtn = existingBtn ?? document.createElement('button');
     if (!existingBtn) {
       langBtn.type = 'button';
       langBtn.className = 'social-btn lang-toggle';
@@ -183,7 +190,7 @@ export class TerminalApp implements TerminalAppFacade {
         }
         this.historyIndex = -1;
       }
-      this.executeCommand(cmd);
+      void this.executeCommand(cmd);
       input.value = '';
       return;
     }
@@ -192,7 +199,7 @@ export class TerminalApp implements TerminalAppFacade {
       e.preventDefault();
       if (this.historyIndex < this.commandHistory.length - 1) {
         this.historyIndex++;
-        input.value = this.commandHistory[this.historyIndex!] || '';
+        input.value = this.commandHistory[this.historyIndex] ?? '';
         setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
       }
       return;
@@ -202,7 +209,7 @@ export class TerminalApp implements TerminalAppFacade {
       e.preventDefault();
       if (this.historyIndex > 0) {
         this.historyIndex--;
-        input.value = this.commandHistory[this.historyIndex!] || '';
+        input.value = this.commandHistory[this.historyIndex] ?? '';
       } else {
         this.historyIndex = -1;
         input.value = '';
@@ -259,15 +266,39 @@ export class TerminalApp implements TerminalAppFacade {
       if (line.type === 'comment') pre.className = 'welcome-comment';
       else if (line.type === 'cmd' && line.cmd) {
         pre.className = 'welcome-cmd';
-        pre.addEventListener('click', () => this.executeCommand(line.cmd!));
+        const command = line.cmd;
+        pre.addEventListener('click', () => {
+          void this.executeCommand(command);
+        });
       }
       consoleOutput.appendChild(pre);
     });
   }
 
-  async executeCommand(command: string): Promise<void> {
-    if (!command) return;
-    this.appendToConsole(`\n$ ${command}`);
+  executeCommand(command: string): Promise<void> {
+    const normalizedCommand = command.trim().toLowerCase().replace(/^\/+/, '');
+    if (!normalizedCommand) return Promise.resolve();
+
+    this.pendingCommands += 1;
+    this.setBusyState(true);
+
+    const run = async (): Promise<void> => {
+      try {
+        await this.runCommand(normalizedCommand);
+      } finally {
+        this.pendingCommands -= 1;
+        if (this.pendingCommands === 0) {
+          this.setBusyState(false);
+        }
+      }
+    };
+
+    this.commandQueue = this.commandQueue.then(run, run);
+    return this.commandQueue;
+  }
+
+  private async runCommand(command: string): Promise<void> {
+    this.appendToConsole(`\n${SHELL_PROMPT} ${command}`);
 
     if (/^sudo(\s+|$)/i.test(command)) {
       this.setActiveMenuItem(null);
@@ -279,8 +310,7 @@ export class TerminalApp implements TerminalAppFacade {
 
     if (this.registry.has(command)) {
       this.setActiveMenuItem(command);
-      this.dom.input!.disabled = true;
-      const spinnerEl = this.showSpinner();
+      const spinnerEl = this.showSpinner(command);
       const def = this.registry.get(command)!;
       try {
         this.cleanupAnimations();
@@ -292,8 +322,7 @@ export class TerminalApp implements TerminalAppFacade {
       } finally {
         (spinnerEl as HTMLElement & { _cleanup?: () => void })._cleanup?.();
         spinnerEl.remove();
-        this.dom.input!.disabled = false;
-        this.dom.input!.focus();
+        this.autoScrollConsole();
       }
     } else {
       this.setActiveMenuItem(null);
@@ -302,15 +331,16 @@ export class TerminalApp implements TerminalAppFacade {
     }
   }
 
-  private showSpinner(): HTMLElement {
-    const frames = ['/', '-', '\\', '|'];
+  private showSpinner(command: string): HTMLElement {
+    const frames = ['/', '-', '\\', '|'] as const;
     let i = 0;
     const el = document.createElement('pre');
     el.className = 'command-loading';
-    el.textContent = frames[0]!;
+    el.setAttribute('aria-live', 'polite');
+    el.textContent = `${frames[0]} loading /${command}`;
     const interval = setInterval(() => {
       i = (i + 1) % frames.length;
-      el.textContent = frames[i]!;
+      el.textContent = `${frames[i] ?? frames[0]} loading /${command}`;
     }, 120);
     (el as HTMLElement & { _cleanup?: () => void })._cleanup = () => clearInterval(interval);
     this.dom.consoleOutput?.appendChild(el);
@@ -349,21 +379,28 @@ export class TerminalApp implements TerminalAppFacade {
     this.isTyping = true;
     this.skipTyping = false;
     const consoleOutput = this.dom.consoleOutput;
-    if (!consoleOutput) return;
+    if (!consoleOutput) {
+      this.isTyping = false;
+      this.skipTyping = false;
+      return;
+    }
     const textContainer = document.createElement('span');
     consoleOutput.appendChild(textContainer);
 
-    for (let i = 0; i < text.length; i++) {
-      if (this.skipTyping) {
-        textContainer.textContent = text;
-        break;
+    try {
+      for (let i = 0; i < text.length; i++) {
+        if (this.skipTyping) {
+          textContainer.textContent = text;
+          break;
+        }
+        textContainer.textContent = text.slice(0, i + 1);
+        this.autoScrollConsole();
+        if (text[i] !== ' ') await sleep(speed);
       }
-      textContainer.textContent = text.slice(0, i + 1);
-      this.autoScrollConsole();
-      if (text[i] !== ' ') await sleep(speed);
+    } finally {
+      this.isTyping = false;
+      this.skipTyping = false;
     }
-    this.isTyping = false;
-    this.skipTyping = false;
   }
 
   appendToConsole(text: string): void {
@@ -371,7 +408,15 @@ export class TerminalApp implements TerminalAppFacade {
     if (!consoleOutput) return;
     const pre = document.createElement('pre');
     pre.textContent = text;
+    pre.className = 'console-line';
+    const cleanText = text.trimStart();
+    if (cleanText.startsWith(SHELL_PROMPT)) {
+      pre.classList.add('console-line--command');
+    } else if (/error|unrecognized|no reconocido|permission|permisos/i.test(cleanText)) {
+      pre.classList.add('console-line--alert');
+    }
     consoleOutput.appendChild(pre);
+    this.pruneConsoleOutput();
     this.autoScrollConsole();
   }
 
@@ -396,26 +441,45 @@ export class TerminalApp implements TerminalAppFacade {
     metaBar.className = 'command-meta';
     metaBar.innerHTML = `
       <span class="command-chip">
-        <span class="chip-icon" aria-hidden="true">❯</span>
+        <span class="chip-icon" aria-hidden="true">$</span>
         <span class="chip-text">/${commandName}</span>
       </span>
+      <span class="command-status" aria-label="Command status">exit 0</span>
       <span class="command-timestamp" aria-label="Execution time">${timestamp}</span>
     `;
 
     const content = document.createElement('div');
     content.className = `command-content ${commandName}-content`;
     content.id = `${commandName}-content-${uniqueId}`;
-    content.appendChild(metaBar);
 
     const sidebar = document.createElement('div');
     sidebar.className = 'command-sidebar';
     sidebar.id = `${commandName}-sidebar-${uniqueId}`;
 
+    container.appendChild(metaBar);
     container.appendChild(content);
     container.appendChild(sidebar);
     this.dom.consoleOutput?.appendChild(container);
+    this.pruneConsoleOutput();
 
     return { container, content, sidebar };
+  }
+
+  private setBusyState(isBusy: boolean): void {
+    const input = this.dom.input;
+    if (!input) return;
+    input.disabled = isBusy;
+    input.setAttribute('aria-busy', String(isBusy));
+    input.closest('.input-line')?.classList.toggle('is-busy', isBusy);
+    if (!isBusy) input.focus();
+  }
+
+  private pruneConsoleOutput(): void {
+    const consoleOutput = this.dom.consoleOutput;
+    if (!consoleOutput) return;
+    while (consoleOutput.childElementCount > MAX_CONSOLE_NODES) {
+      consoleOutput.firstElementChild?.remove();
+    }
   }
 
 }

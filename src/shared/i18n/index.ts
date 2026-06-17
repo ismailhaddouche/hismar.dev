@@ -19,7 +19,7 @@ export function createI18nManager(): I18n {
     },
 
     t<T = string>(path: string): T {
-      return resolvePath(translations[manager.current] as Record<string, unknown>, path) as T;
+      return resolvePath(translations[manager.current]!, path) as T;
     },
 
     setLanguage(lang: string) {
