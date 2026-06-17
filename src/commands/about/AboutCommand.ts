@@ -13,10 +13,6 @@ const AboutCommand: CommandModule = {
       <div class="about-info">
         <div class="about-header">
           <h2 class="section-title">Ismail Haddouche Rhali</h2>
-          <span class="availability-badge">
-            <span class="availability-dot"></span>
-            ${terminal.i18n.t('commands.about.availability')}
-          </span>
         </div>
         <div class="about-details">
           <div class="about-detail-item">
@@ -41,10 +37,10 @@ const AboutCommand: CommandModule = {
         <p class="about-text">${terminal.i18n.t('commands.about.story3')}</p>
         <h3 class="about-subtitle">${terminal.i18n.t('commands.about.traits')}</h3>
         <ul class="about-traits">
-          <li><span class="trait-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"></path></svg></span><span>${terminal.i18n.t('commands.about.trait1')}</span></li>
-          <li><span class="trait-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 18 18"></path><path d="M9 9h6v6H9z"></path><path d="M3 3h6v6H3z"></path><path d="M15 15h6v6h-6z"></path></svg></span><span>${terminal.i18n.t('commands.about.trait2')}</span></li>
-          <li><span class="trait-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3 3"></path><path d="M12 8l-6.5 6.5A2.121 2.121 0 0 0 5 16.914V19h2.086a2.121 2.121 0 0 0 2.414-.5L16 12"></path><path d="m16 12 2.5-2.5a3.536 3.536 0 0 0-5-5L11 4l3 3"></path></svg></span><span>${terminal.i18n.t('commands.about.trait3')}</span></li>
-          <li><span class="trait-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle><path d="M22 2 12 12"></path><path d="m16 6 6 0 0 6"></path></svg></span><span>${terminal.i18n.t('commands.about.trait4')}</span></li>
+          <li><span class="trait-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"></rect><rect x="3" y="13" width="18" height="7" rx="2"></rect><path d="M7 8h.01"></path><path d="M7 17h.01"></path><path d="m13 17 2 2 4-4"></path></svg></span><span>${terminal.i18n.t('commands.about.trait1')}</span></li>
+          <li><span class="trait-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 4.5-9 4.5-9-4.5L12 3Z"></path><path d="m3 12 9 4.5 9-4.5"></path><path d="m3 16.5 9 4.5 9-4.5"></path></svg></span><span>${terminal.i18n.t('commands.about.trait2')}</span></li>
+          <li><span class="trait-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="m8 10 3 2-3 2"></path><path d="M13 15h4"></path></svg></span><span>${terminal.i18n.t('commands.about.trait3')}</span></li>
+          <li><span class="trait-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span>${terminal.i18n.t('commands.about.trait4')}</span></li>
         </ul>
         <h3 class="about-subtitle">${terminal.i18n.t('commands.about.beyond')}</h3>
         <p class="about-text">${terminal.i18n.t('commands.about.beyondText')}</p>

@@ -8,16 +8,19 @@ const COMMAND_DEFINITIONS: CommandDefinition[] = [
   {
     name: 'about',
     script: () => import('./commands/about/AboutCommand'),
+    animation: () => import('./animations/aboutAnimation'),
     showInNav: true,
   },
   {
     name: 'experience',
     script: () => import('./commands/experience/ExperienceCommand'),
+    animation: () => import('./animations/experienceAnimation'),
     showInNav: true,
   },
   {
     name: 'skills',
     script: () => import('./commands/skills/SkillsCommand'),
+    animation: () => import('./animations/skillsAnimation'),
     showInNav: true,
   },
   {
@@ -28,11 +31,13 @@ const COMMAND_DEFINITIONS: CommandDefinition[] = [
   {
     name: 'projects',
     script: () => import('./commands/projects/ProjectsCommand'),
+    animation: () => import('./animations/projectsAnimation'),
     showInNav: true,
   },
   {
     name: 'education',
     script: () => import('./commands/education/EducationCommand'),
+    animation: () => import('./animations/educationAnimation'),
     showInNav: true,
   },
   {

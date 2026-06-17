@@ -18,6 +18,7 @@ interface DOMCache {
   menuOverlay: HTMLElement | null;
   clearBtn: HTMLElement | null;
   headerSocial: HTMLElement | null;
+  commandContainers: Map<string, HTMLElement>;
 }
 
 export class TerminalApp implements TerminalAppFacade {
@@ -64,6 +65,7 @@ export class TerminalApp implements TerminalAppFacade {
       menuOverlay: document.getElementById('menu-overlay'),
       clearBtn: document.querySelector('.control-btn--clear'),
       headerSocial: document.querySelector('.header-social'),
+      commandContainers: new Map(),
     };
   }
 
@@ -317,6 +319,22 @@ export class TerminalApp implements TerminalAppFacade {
         this.cleanupAnimations();
         const cmdModule = (await def.script()).default;
         await cmdModule.execute(this);
+        if (def.animation) {
+          const module = (await def.animation()) as { default?: { init(container: HTMLElement): void | (() => void) } };
+          const animationModule = module.default;
+          if (animationModule) {
+            const container = this.dom.commandContainers.get(command) ?? this.dom.consoleOutput;
+            if (container) {
+              const sidebar = container.querySelector(`.command-sidebar`) as HTMLElement | null;
+              if (sidebar) {
+                const cleanup = animationModule.init(sidebar);
+                if (typeof cleanup === 'function') {
+                  this.animations.registerCleanup(cleanup);
+                }
+              }
+            }
+          }
+        }
       } catch (error) {
         console.error(`Error loading command ${command}:`, error);
         this.appendToConsole(`Error: Could not load module '${command}'`);
@@ -354,6 +372,7 @@ export class TerminalApp implements TerminalAppFacade {
       case 'clear':
         this.cleanupAnimations();
         if (this.dom.consoleOutput) this.dom.consoleOutput.innerHTML = '';
+        this.dom.commandContainers.clear();
         this.displayWelcome();
         return true;
       case 'exit':
@@ -461,6 +480,7 @@ export class TerminalApp implements TerminalAppFacade {
     container.appendChild(content);
     container.appendChild(sidebar);
     this.dom.consoleOutput?.appendChild(container);
+    this.dom.commandContainers.set(commandName, container);
     this.pruneConsoleOutput();
 
     return { container, content, sidebar };

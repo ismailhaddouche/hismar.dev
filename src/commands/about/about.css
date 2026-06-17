@@ -91,9 +91,22 @@
   color: var(--terminal-light-green, #39ff14);
 }
 .trait-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  margin-top: 2px;
-  color: var(--accent-gold, #ffd700);
+  width: 28px;
+  height: 28px;
+  margin-top: -1px;
+  border: 1px solid rgba(18, 247, 214, 0.32);
+  border-radius: 6px;
+  background: rgba(18, 247, 214, 0.08);
+  color: var(--terminal-light-green, #39ff14);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.08), inset -1px -1px 0 #000;
+}
+.trait-icon svg {
+  width: 16px;
+  height: 16px;
 }
 .about-links {
   display: flex;

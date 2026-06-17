@@ -5,6 +5,7 @@ export interface CommandDefinition {
   script: () => Promise<{ default: CommandModule }>;
   showInNav: boolean;
   builtIn?: boolean;
+  animation?: () => Promise<unknown>;
 }
 
 export interface CommandModule {
