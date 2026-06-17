@@ -3,9 +3,8 @@ import './neofetch.css';
 
 const NeofetchCommand: CommandModule = {
   async execute(terminal: TerminalAppFacade) {
-    const { container, content, sidebar } = terminal.createCommandContainer('neofetch');
-    container.style.gridTemplateColumns = '1fr';
-    sidebar.style.display = 'none';
+    const { container, content } = terminal.createCommandContainer('neofetch');
+    container.style.gridTemplateColumns = '1fr 0px';
 
     const techStack = [
       { name: 'JavaScript', icon: 'fa-brands fa-js' },

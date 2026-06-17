@@ -325,7 +325,7 @@ export class TerminalApp implements TerminalAppFacade {
           if (animationModule) {
             const container = this.dom.commandContainers.get(command) ?? this.dom.consoleOutput;
             if (container) {
-              const sidebar = container.querySelector(`.command-sidebar`) as HTMLElement | null;
+              const sidebar = container.querySelector<HTMLElement>(`.command-sidebar`);
               if (sidebar) {
                 const cleanup = animationModule.init(sidebar);
                 if (typeof cleanup === 'function') {

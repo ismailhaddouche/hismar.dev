@@ -12,7 +12,7 @@ interface ExperienceData {
 
 const ExperienceCommand: CommandModule = {
   async execute(terminal: TerminalAppFacade) {
-    const { container, content, sidebar } = terminal.createCommandContainer('experience');
+    const { container, content } = terminal.createCommandContainer('experience');
 
     const items = terminal.i18n.t<ExperienceData[]>('commands.experience.items');
 
@@ -42,8 +42,7 @@ const ExperienceCommand: CommandModule = {
     }
 
     content.appendChild(timeline);
-    sidebar.style.display = 'none';
-    container.style.gridTemplateColumns = '1fr';
+    container.style.gridTemplateColumns = '1fr 0px';
     terminal.autoScrollConsole(container);
   },
 };

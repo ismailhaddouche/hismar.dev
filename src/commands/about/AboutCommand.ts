@@ -5,7 +5,7 @@ import './about.css';
 const AboutCommand: CommandModule = {
   async execute(terminal: TerminalAppFacade) {
     const { container, content } = terminal.createCommandContainer('about');
-    container.style.gridTemplateColumns = '1fr';
+    container.style.gridTemplateColumns = '1fr 0px';
 
     const age = getAge(new Date(1988, 4, 14));
 

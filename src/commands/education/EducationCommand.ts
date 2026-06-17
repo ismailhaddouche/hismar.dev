@@ -11,7 +11,7 @@ interface EducationData {
 
 const EducationCommand: CommandModule = {
   async execute(terminal: TerminalAppFacade) {
-    const { container, content, sidebar } = terminal.createCommandContainer('education');
+    const { container, content } = terminal.createCommandContainer('education');
 
     const items = terminal.i18n.t<EducationData[]>('commands.education.items');
 
@@ -37,8 +37,7 @@ const EducationCommand: CommandModule = {
     }
 
     content.appendChild(list);
-    sidebar.style.display = 'none';
-    container.style.gridTemplateColumns = '1fr';
+    container.style.gridTemplateColumns = '1fr 0px';
     terminal.autoScrollConsole(container);
   },
 };
