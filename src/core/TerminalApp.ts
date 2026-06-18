@@ -320,14 +320,14 @@ export class TerminalApp implements TerminalAppFacade {
         const cmdModule = (await def.script()).default;
         await cmdModule.execute(this);
         if (def.animation) {
-          const module = (await def.animation()) as { default?: { init(container: HTMLElement): void | (() => void) } };
-          const animationModule = module.default;
-          if (animationModule) {
+          const module = (await def.animation()) as { init?: (container: HTMLElement) => void | (() => void) };
+          const initFn = module.init;
+          if (initFn) {
             const container = this.dom.commandContainers.get(command) ?? this.dom.consoleOutput;
             if (container) {
               const sidebar = container.querySelector<HTMLElement>(`.command-sidebar`);
               if (sidebar) {
-                const cleanup = animationModule.init(sidebar);
+                const cleanup = initFn(sidebar);
                 if (typeof cleanup === 'function') {
                   this.animations.registerCleanup(cleanup);
                 }
