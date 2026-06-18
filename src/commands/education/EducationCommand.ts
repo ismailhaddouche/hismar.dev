@@ -37,7 +37,6 @@ const EducationCommand: CommandModule = {
     }
 
     content.appendChild(list);
-    container.style.gridTemplateColumns = '1fr 0px';
     terminal.autoScrollConsole(container);
   },
 };
