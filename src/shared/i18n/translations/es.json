@@ -43,7 +43,9 @@
       "trait4": "<strong>Mentalidad de producto</strong> — el código es un medio, no el fin. Construyo cosas que la gente realmente usa.",
       "beyond": "Más allá del teclado",
       "beyondText": "Nerd de los juegos de mesa, consumidor compulsivo de anime y lector de fantasía épica. Si tu stack incluye café fuerte y debates sobre arquitectura, nos llevaremos bien.",
-      "contact": "Contacto"
+      "contact": "Contacto",
+      "volunteer_title": "Voluntariado",
+      "volunteer_text": "Tiempo dedicado a causas sociales y comunitarias. Estos son algunos momentos de esas experiencias."
     },
     "experience": {
       "label": "Experiencia",

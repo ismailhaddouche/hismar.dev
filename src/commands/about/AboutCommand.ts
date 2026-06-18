@@ -1,5 +1,6 @@
 import type { CommandModule, TerminalAppFacade } from '@/core/types';
 import { getAge } from '@/shared/utils/strings';
+import { VolunteerGallery } from '@/shared/ui/VolunteerGallery';
 import './about.css';
 
 const AboutCommand: CommandModule = {
@@ -49,8 +50,19 @@ const AboutCommand: CommandModule = {
           <a href="https://www.linkedin.com/in/ismail-haddouche-rhali-194305334" target="_blank" rel="noopener noreferrer" class="about-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path></svg> LinkedIn</a>
           <a href="mailto:ismailhaddoucherhali@gmail.com" class="about-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Email</a>
         </div>
+
+        <h3 class="about-subtitle">${terminal.i18n.t('commands.about.volunteer_title')}</h3>
+        <p class="about-text">${terminal.i18n.t('commands.about.volunteer_text')}</p>
+        <div class="volunteer-gallery-mount"></div>
       </div>
     `;
+
+    const galleryMount = content.querySelector<HTMLElement>('.volunteer-gallery-mount');
+    if (galleryMount) {
+      const gallery = new VolunteerGallery();
+      void gallery.mount(galleryMount);
+      terminal.animations.registerCleanup(() => gallery.destroy());
+    }
 
     terminal.autoScrollConsole(container);
   },
