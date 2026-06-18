@@ -14,14 +14,14 @@
     "footer": "// Tab: autodecompletar  ·  ↑↓: historial de comandos  ·  hay easter eggs por descubrir 👀"
   },
   "menu": {
-    "about": "/about",
-    "experience": "/experience",
-    "skills": "/skills",
-    "neofetch": "/neofetch",
-    "projects": "/projects",
-    "education": "/education",
-    "cv": "/cv",
-    "help": "/help"
+    "about": "/Sobre mí",
+    "experience": "/Experiencia",
+    "skills": "/Habilidades",
+    "neofetch": "/Neofetch",
+    "projects": "/Proyectos",
+    "education": "/Educación",
+    "cv": "/CV",
+    "help": "/Ayuda"
   },
   "commands": {
     "about": {
