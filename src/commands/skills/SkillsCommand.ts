@@ -9,7 +9,8 @@ const skills = {
   'Backend & APIs': ['Node.js', 'REST APIs', 'Socket.io', 'Firebase'],
   Databases: ['Firestore', 'MongoDB', 'PostgreSQL', 'MySQL', 'SQLite'],
   'Full-stack & Mobile Ops': ['GCP', 'Docker', 'GitHub Actions', 'CI/CD'],
-  Tooling: ['Git', 'GitHub', 'Android Studio', 'VS Code', 'Claude Code', 'Linux'],
+  Tooling: ['Git', 'GitHub', 'Android Studio', 'VS Code', 'Linux'],
+  IA: ['Claude Code', 'Codex', 'OpenCode', 'Skills', 'MCP'],
 };
 
 const SkillsCommand: CommandModule = {
