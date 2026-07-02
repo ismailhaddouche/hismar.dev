@@ -27,7 +27,7 @@ export function init(container: HTMLElement): () => void {
     let lastCursor: { x: number; y: number } | null = null;
     let lastInteractionTs: number | null = null;
     let thinkingBlend = 1;
-  const particles: { x: number; y: number; vx: number; vy: number; life: number; decay: number }[] = [];
+    const particles: { x: number; y: number; vx: number; vy: number; life: number; decay: number }[] = [];
 
     const cleanup = CharacterBase.init(container, {
       drawAfter(state) {
@@ -206,18 +206,18 @@ export function init(container: HTMLElement): () => void {
     const rightShoulder = { x: cx + ox + 32, y: torsoY + 2 };
     const drop = 1 - blend;
 
-    const leftHand = { x: pcx - 22, y: torsoY + 48 };
-    const leftElbow = { x: leftShoulder.x - 16, y: torsoY + 28 };
+    const leftHand = { x: pcx - 22, y: torsoY + 34 };
+    const leftElbow = { x: leftShoulder.x - 18, y: torsoY + 30 };
 
     const chinTarget = { x: pcx - 8, y: pcy + 22 };
-    const lapTarget = { x: pcx + 22, y: torsoY + 48 };
+    const lapTarget = { x: pcx + 22, y: torsoY + 34 };
     const rightHand = {
       x: chinTarget.x * blend + lapTarget.x * drop,
       y: chinTarget.y * blend + lapTarget.y * drop,
     };
     const rightElbow = {
-      x: (rightShoulder.x + 8) * blend + (rightShoulder.x + 16) * drop,
-      y: (torsoY + 35) * blend + (torsoY + 28) * drop,
+      x: (rightShoulder.x + 12) * blend + (rightShoulder.x + 18) * drop,
+      y: (torsoY + 30) * blend + (torsoY + 30) * drop,
     };
 
     drawArm(ctx, state.C, leftShoulder, leftElbow, leftHand, 1);

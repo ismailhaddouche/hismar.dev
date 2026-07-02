@@ -34,7 +34,7 @@ test('spanish help keeps executable command names visible', async ({ page }) => 
   await expect(aboutItem.locator('.command-trigger')).toContainText('/about');
   await expect(aboutItem.locator('.command-label')).toContainText('Sobre mí');
   await expect(aboutItem).not.toContainText('/sobre-mi');
-  await expect(page.locator('.menu-item[data-command="about"]')).toHaveText('/about');
+  await expect(page.locator('.menu-item[data-command="about"]')).toHaveText('Sobre mí');
 });
 
 test('executes about command', async ({ page }) => {
@@ -128,13 +128,16 @@ test('Tab key autocompletes command', async ({ page }) => {
 test('language toggle switches content', async ({ page }) => {
   const langBtn = page.locator('.lang-toggle');
   const currentLabel = await langBtn.textContent();
+  const aboutMenuItem = page.locator('.menu-item[data-command="about"]');
 
   if (currentLabel?.trim() === 'ES') {
     await langBtn.click();
     await expect(page.locator('#command-input')).toHaveAttribute('placeholder', /Type/);
+    await expect(aboutMenuItem).toHaveText('About');
   } else {
     await langBtn.click();
     await expect(page.locator('#command-input')).toHaveAttribute('placeholder', /escribe/i);
+    await expect(aboutMenuItem).toHaveText('Sobre mí');
   }
 });
 

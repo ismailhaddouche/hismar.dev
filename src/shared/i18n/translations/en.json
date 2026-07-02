@@ -3,25 +3,24 @@
     "title": "// Welcome to my interactive terminal.",
     "subtitle": "// Explore who I am, what I build, and how I think.",
     "role": "Full-stack · Mobile · Murcia, Spain",
-    "help": "help       → list every available command",
     "about": "about      → personal background and contact",
     "experience": "experience → professional journey",
     "projects": "projects   → production & open-source work",
     "skills": "skills     → complete technology stack",
-    "neofetch": "neofetch   → visual stack of hismar.dev",
     "education": "education  → academic path",
     "cv": "cv         → download résumé",
-    "footer": "// Tab: autocomplete  ·  ↑↓: command history  ·  there are easter eggs to discover 👀"
+    "help": "help       → list every available command",
+    "footer": "// ↑↓: command history  ·  there are easter eggs to discover 👀"
   },
   "menu": {
-    "about": "/about",
-    "experience": "/experience",
-    "skills": "/skills",
-    "neofetch": "/neofetch",
-    "projects": "/projects",
-    "education": "/education",
-    "cv": "/cv",
-    "help": "/help"
+    "about": "About",
+    "experience": "Experience",
+    "skills": "Skills",
+    "neofetch": "Neofetch",
+    "projects": "Projects",
+    "education": "Education",
+    "cv": "CV",
+    "help": "Help"
   },
   "commands": {
     "about": {
@@ -37,15 +36,13 @@
       "story2": "Today, I manage an e-commerce platform in production, an open-source restaurant management system, and two native Android apps. To further deepen my craft and master the fundamentals, I am currently pursuing a Bachelor of Science (BSc) in Computer Engineering at UNED.",
       "story3": "I work comfortably across the full stack and native mobile. My focus is on building resilient software that thrives in production, not just demos that run on localhost.",
       "traits": "What sets me apart",
-      "trait1": "<strong>Production-grade delivery</strong> — elparedes.es with Redsys payments, ERP integration, and real customer traffic.",
-      "trait2": "<strong>Clean architectures</strong> — Clean Architecture, MVVM, and solid patterns across all my Android work.",
+      "trait1": "<strong>Production-grade delivery</strong> — products with Redsys payments, ERP integration, and real customer traffic.",
+      "trait2": "<strong>Clean architectures</strong> — Clean Architecture, MVVM, and solid patterns across all my projects.",
       "trait3": "<strong>Full-cycle developer</strong> — design, development, deployment, and maintenance. I can ship to production without external dependencies.",
       "trait4": "<strong>Product mindset</strong> — code is a means, not the end. I build things people actually use.",
       "beyond": "Beyond the keyboard",
-      "beyondText": "Board-game nerd, compulsive anime watcher, and epic-fantasy reader. If your stack includes strong coffee and architecture debates, we will get along.",
-      "contact": "Contact",
-      "volunteer_title": "Volunteering",
-      "volunteer_text": "Time dedicated to social and community causes. These are some moments from those experiences."
+      "beyondText": "Board-game nerd, compulsive anime watcher, and epic-fantasy reader. If your stack includes strong coffee and Tolkien debates, we will get along.",
+      "contact": "Contact"
     },
     "experience": {
       "label": "Experience",
@@ -111,8 +108,7 @@
         "mmcreampro": "Production e-commerce for a massage cream product line. Built with Next.js and Firebase, featuring Redsys payments, order management, and Correos API logistics integration.",
         "disherio": "Open-source, self-hosted restaurant management suite. Featuring QR-code ordering, real-time Kitchen Display System (KDS), and a multi-role POS (Admin, Waitstaff, Kitchen, and Cashier). Supports menu management with variants/allergens and flexible local or cloud deployment.",
         "timetutor": "Native Android app for private tutoring management. Interactive calendar, attendance tracking, automatic invoicing, push notifications, offline sync, and dedicated teacher/student roles.",
-        "episodeo": "Personal TV-series tracker for Android with TMDB search, smart lists (watching, pending, finished, abandoned), list sharing via codes, offline-first cache, and theme switching. Built with Clean Architecture + MVVM.",
-        "hismar": "Interactive portfolio built as a fully functional retro terminal. Vanilla JS/CSS/HTML, physics-based canvas animations, modular architecture, state manager, dynamic commands, and pixel-art design."
+        "episodeo": "Personal TV-series tracker for Android with TMDB search, smart lists (watching, pending, finished, abandoned), list sharing via codes, offline-first cache, and theme switching. Built with Clean Architecture + MVVM."
       }
     },
     "education": {
@@ -138,8 +134,7 @@
           "title": "High School Diploma",
           "institution": "IES Ricardo Ortega | 2004 — 2006",
           "status": "completed",
-          "statusLabel": "COMPLETED",
-          "details": "Status: Completed"
+          "statusLabel": "COMPLETED"
         }
       ]
     },
@@ -158,10 +153,8 @@
       "sys_group": "System",
       "tips_group": "Tips",
       "tip1": "Click any command to run it directly",
-      "tip2": "Use <kbd>Tab</kbd> to autocomplete",
       "tip3": "Navigate history with <kbd>↑</kbd> / <kbd>↓</kbd>",
-      "tip4": "Press <kbd>Esc</kbd> to skip animations",
-      "tip5": "There are several hidden easter eggs in this terminal—explore and have fun finding them",
+      "tip5": "There are several hidden easter eggs in this terminal—explore and have fun finding them (sudo, neofetch...)",
       "footer": "// Built with brain, far too much coffee, and watching",
       "about_desc": "Who I am, background, and contact",
       "exp_desc": "Professional trajectory and history",

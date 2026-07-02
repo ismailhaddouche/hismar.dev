@@ -6,7 +6,7 @@ interface EducationData {
   institution: string;
   status: string;
   statusLabel: string;
-  details: string;
+  details?: string;
 }
 
 const EducationCommand: CommandModule = {
@@ -24,13 +24,17 @@ const EducationCommand: CommandModule = {
       items.forEach((item) => {
         const card = document.createElement('div');
         card.className = `education-card education-card--${item.status}`;
+        const details = item.details
+          ? `<p class="education-card__details">${item.details}</p>`
+          : '';
+
         card.innerHTML = `
           <div class="education-card__header">
             <h3 class="education-card__title">${item.title}</h3>
             <span class="education-card__status education-card__status--${item.status}">${item.statusLabel}</span>
           </div>
           <p class="education-card__institution">${item.institution}</p>
-          <p class="education-card__details">${item.details}</p>
+          ${details}
         `;
         list.appendChild(card);
       });

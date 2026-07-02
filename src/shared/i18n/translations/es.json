@@ -3,25 +3,24 @@
     "title": "// Bienvenido a mi terminal interactiva.",
     "subtitle": "// Explora quién soy, qué construyo y cómo pienso.",
     "role": "Full-stack · Mobile · Murcia, España",
-    "help": "help       → listar todos los comandos disponibles",
     "about": "about      → información personal y contacto",
     "experience": "experience → trayectoria profesional",
     "projects": "projects   → proyectos en producción y open-source",
     "skills": "skills     → stack tecnológico completo",
-    "neofetch": "neofetch   → stack visual de hismar.dev",
     "education": "education  → formación académica",
     "cv": "cv         → descargar currículum",
-    "footer": "// Tab: autodecompletar  ·  ↑↓: historial de comandos  ·  hay easter eggs por descubrir 👀"
+    "help": "help       → listar todos los comandos disponibles",
+    "footer": "// ↑↓: historial de comandos  ·  hay easter eggs por descubrir 👀"
   },
   "menu": {
-    "about": "/about",
-    "experience": "/experience",
-    "skills": "/skills",
-    "neofetch": "/neofetch",
-    "projects": "/projects",
-    "education": "/education",
-    "cv": "/cv",
-    "help": "/help"
+    "about": "Sobre mí",
+    "experience": "Experiencia",
+    "skills": "Habilidades",
+    "neofetch": "Neofetch",
+    "projects": "Proyectos",
+    "education": "Educación",
+    "cv": "CV",
+    "help": "Ayuda"
   },
   "commands": {
     "about": {
@@ -37,15 +36,13 @@
       "story2": "Hoy en día, gestiono un e-commerce en producción, un sistema de gestión de restaurantes open-source y dos aplicaciones Android nativas. Para profundizar aún más en mi oficio y dominar los fundamentos, actualmente estoy cursando el Grado en Ingeniería Informática en la UNED.",
       "story3": "Me muevo con comodidad en todo el stack y en mobile nativo. Mi enfoque es construir software resiliente que prospere en producción, no solo demos que funcionen en localhost.",
       "traits": "Lo que me diferencia",
-      "trait1": "<strong>Entrega de nivel producción</strong> — elparedes.es con pagos Redsys, integración ERP y tráfico real.",
-      "trait2": "<strong>Arquitecturas limpias</strong> — Clean Architecture, MVVM y patrones sólidos en todo mi trabajo Android.",
+      "trait1": "<strong>Entrega de nivel producción</strong> — productos con pagos Redsys, integración ERP y tráfico real.",
+      "trait2": "<strong>Arquitecturas limpias</strong> — Clean Architecture, MVVM y patrones sólidos en todos mis proyectos.",
       "trait3": "<strong>Desarrollador de ciclo completo</strong> — diseño, desarrollo, despliegue y mantenimiento. Puedo poner en producción sin dependencias externas.",
       "trait4": "<strong>Mentalidad de producto</strong> — el código es un medio, no el fin. Construyo cosas que la gente realmente usa.",
       "beyond": "Más allá del teclado",
-      "beyondText": "Nerd de los juegos de mesa, consumidor compulsivo de anime y lector de fantasía épica. Si tu stack incluye café fuerte y debates sobre arquitectura, nos llevaremos bien.",
-      "contact": "Contacto",
-      "volunteer_title": "Voluntariado",
-      "volunteer_text": "Tiempo dedicado a causas sociales y comunitarias. Estos son algunos momentos de esas experiencias."
+      "beyondText": "Nerd de los juegos de mesa, consumidor compulsivo de anime y lector de fantasía épica. Si tu stack incluye café fuerte y debates sobre Tolkien, nos llevaremos bien.",
+      "contact": "Contacto"
     },
     "experience": {
       "label": "Experiencia",
@@ -53,12 +50,12 @@
       "title": "Experiencia Profesional",
       "items": [
         {
-          "role": "Responsable de IT (Head of IT)",
+          "role": "Responsable de IT",
           "company": "El Paredes Chico SL",
           "dates": "Oct 2025 — Actualidad",
           "status": "current",
           "statusLabel": "ACTUAL",
-          "details": "Liderando la transformación digital: despliegue de Odoo ERP, portal web corporativo (Next.js, Firebase) e integraciones de sistemas. Administración de servidores Linux y Windows, infraestructura GCP + Docker, pipelines CI/CD y configuración de redes/seguridad para productos full-stack y móviles."
+          "details": "Liderando la transformación digital: despliegue de Odoo ERP, portal web corporativo (Next.js, Firebase), e-commerce e integraciones de sistemas. Administración de servidores Linux y Windows, infraestructura GCP + Docker, pipelines CI/CD y configuración de redes/seguridad para productos full-stack y móviles."
         },
         {
           "role": "CEO & Fundador",
@@ -111,8 +108,7 @@
         "mmcreampro": "E-commerce en producción para una línea de cremas de masaje. Construido con Next.js y Firebase, con pagos Redsys, gestión de pedidos y logística integrada mediante API de Correos.",
         "disherio": "Suite de gestión de restaurantes de código abierto y auto-hospedada. Con pedidos mediante código QR, Sistema de Visualización de Cocina (KDS) en tiempo real y TPV multi-rol (Admin, Camarero, Cocina y Caja). Soporta gestión de menús con variantes/alérgenos y despliegue flexible en local o nube.",
         "timetutor": "App nativa Android para la gestión de tutorías privadas. Calendario interactivo, control de asistencia, facturación automática, notificaciones push, sincronización offline y roles dedicados para profesor/alumno.",
-        "episodeo": "Rastreador personal de series de TV para Android con búsqueda TMDB, listas inteligentes (viendo, pendiente, terminada, abandonada), uso compartido de listas mediante códigos, caché offline-first y cambio de tema. Construida con Clean Architecture + MVVM.",
-        "hismar": "Portfolio interactivo construido como una terminal retro totalmente funcional. Vanilla JS/CSS/HTML, animaciones canvas basadas en física, arquitectura modular, gestor de estado, comandos dinámicos y diseño pixel-art."
+        "episodeo": "Rastreador personal de series de TV para Android con búsqueda TMDB, listas inteligentes (viendo, pendiente, terminada, abandonada), uso compartido de listas mediante códigos, caché offline-first y cambio de tema. Construida con Clean Architecture + MVVM."
       }
     },
     "education": {
@@ -128,7 +124,7 @@
           "details": "Enfoque: Formación universitaria en ingeniería de software, algoritmos, arquitectura de computadores y sistemas distribuidos."
         },
         {
-          "title": "Técnico Superior (DTS) en Desarrollo de Aplicaciones Multiplataforma",
+          "title": "Técnico Superior en Desarrollo de Aplicaciones Multiplataforma",
           "institution": "ILERNA Online | Sept 2023 — Feb 2026",
           "status": "completed",
           "statusLabel": "COMPLETADO · NIVEL 5 EQF",
@@ -138,8 +134,7 @@
           "title": "Bachillerato",
           "institution": "IES Ricardo Ortega | 2004 — 2006",
           "status": "completed",
-          "statusLabel": "COMPLETADO",
-          "details": "Estado: Completado"
+          "statusLabel": "COMPLETADO"
         }
       ]
     },
@@ -158,10 +153,8 @@
       "sys_group": "Sistema",
       "tips_group": "Consejos",
       "tip1": "Haz clic en cualquier comando para ejecutarlo",
-      "tip2": "Usa <kbd>Tab</kbd> para autocompletar",
       "tip3": "Navega por el historial con <kbd>↑</kbd> / <kbd>↓</kbd>",
-      "tip4": "Pulsa <kbd>Esc</kbd> para saltar animaciones",
-      "tip5": "Hay varios easter eggs ocultos en la terminal: pruébala y diviértete encontrándolos",
+      "tip5": "Hay varios easter eggs ocultos en la terminal: pruébala y diviértete encontrándolos (sudo, neofetch...)",
       "footer": "// Construido con cerebro, demasiado café y viendo a",
       "about_desc": "Quién soy, trayectoria y contacto",
       "exp_desc": "Trayectoria profesional e historial",

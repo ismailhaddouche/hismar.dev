@@ -50,9 +50,7 @@ const HelpCommand: CommandModule = {
           <h3 class="group-title">${t('commands.help.tips_group')}</h3>
           <ul class="tips-list">
             <li>${t('commands.help.tip1')}</li>
-            <li>${t('commands.help.tip2')}</li>
             <li>${t('commands.help.tip3')}</li>
-            <li>${t('commands.help.tip4')}</li>
             <li>${t('commands.help.tip5')}</li>
           </ul>
         </div>

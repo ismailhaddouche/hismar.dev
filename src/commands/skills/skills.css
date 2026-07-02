@@ -50,3 +50,13 @@
   width: 18px;
   height: 18px;
 }
+
+.skills-content .devicon-nextjs-plain,
+.skills-content .devicon-socketio-original,
+.skills-content .devicon-github-original {
+  color: #f8fafc !important;
+}
+
+.skills-content .devicon-linux-plain {
+  color: #facc15 !important;
+}

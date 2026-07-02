@@ -46,14 +46,6 @@ const projectsData: ProjectData[] = [
     linkLabel: 'GitHub',
     badge: 'commands.projects.badges.android',
   },
-  {
-    name: 'hismar.dev',
-    description: 'commands.projects.items.hismar',
-    tech: ['JavaScript', 'HTML5', 'CSS3', 'Canvas API', 'Vanilla JS'],
-    link: 'https://github.com/ismailhaddouche/hismar.dev',
-    linkLabel: 'GitHub',
-    badge: 'commands.projects.badges.vanilla',
-  },
 ];
 
 interface ProjectManifestItem {

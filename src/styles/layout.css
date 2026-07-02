@@ -1868,10 +1868,6 @@ body::before {
         display: none;
     }
 
-    .terminal-status span:nth-child(4) {
-        display: none;
-    }
-
     .command-content {
         padding: 11px;
     }
@@ -1895,10 +1891,6 @@ body::before {
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    .terminal-status span:nth-child(3) {
-        display: none;
     }
 
     .command-meta::before {

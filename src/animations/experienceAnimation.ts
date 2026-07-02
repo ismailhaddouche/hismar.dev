@@ -101,7 +101,7 @@ export function init(container: HTMLElement): () => void {
     const torsoY = cy + oy + 42;
     const drop = (1 - blend) * 28;
     const pcx = cx + ox;
-    const pcy = torsoY + 55 + drop * 0.35;
+    const pcy = torsoY + 26 + drop * 0.35;
 
     const botW = 75;
     const topW = 61;
@@ -196,8 +196,8 @@ export function init(container: HTMLElement): () => void {
       y: rightHandTargetY * blend + glassesY * (1 - blend),
     };
 
-    const leftElbow = { x: leftShoulder.x - 14 - drop * 0.15, y: torsoY + 45 + drop * 0.45 };
-    const rightElbow = { x: rightShoulder.x + 14 + drop * 0.15, y: torsoY + 45 + drop * 0.45 };
+    const leftElbow = { x: leftShoulder.x - 18 - drop * 0.15, y: torsoY + 32 + drop * 0.45 };
+    const rightElbow = { x: rightShoulder.x + 18 + drop * 0.15, y: torsoY + 32 + drop * 0.45 };
 
     drawArm(ctx, C, leftShoulder, leftElbow, leftHand, blend);
     drawArm(ctx, C, rightShoulder, rightElbow, rightHand, blend);
