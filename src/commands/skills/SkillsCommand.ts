@@ -18,7 +18,7 @@ const SkillsCommand: CommandModule = {
 
     const { container, content } = terminal.createCommandContainer('skills');
 
-    let html = `<h2 class="section-title">${terminal.i18n.t('commands.skills.title')}</h2><div class="skills-content">`;
+    let html = `<h2 class="section-title">${terminal.i18n.t('commands.skills.title')}</h2><div class="skills-grid">`;
 
     for (const [category, skillList] of Object.entries(skills)) {
       const translated = terminal.i18n.t(`commands.skills.categories.${category}`);
