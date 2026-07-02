@@ -1,7 +1,7 @@
 import * as CharacterBase from './CharacterBase';
 import type { CharacterColors, CharacterState } from './CharacterBase';
 
-type Point = { x: number; y: number };
+interface Point { x: number; y: number }
 
 export function init(container: HTMLElement): () => void {
   let destroyCurrent: (() => void) | null = null;
@@ -271,13 +271,13 @@ export function init(container: HTMLElement): () => void {
   return masterCleanup;
 }
 
-type CvMotion = {
+interface CvMotion {
   phase: 'raise' | 'adjust' | 'lower' | 'serious';
   armLift: number;
   pullLeft: number;
   pullRight: number;
   settle: number;
-};
+}
 
 function getCvMotion(frame: number): CvMotion {
   const cycle = 280;

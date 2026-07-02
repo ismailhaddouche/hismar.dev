@@ -156,7 +156,7 @@ export class TerminalApp implements TerminalAppFacade {
     const { consoleOutput } = this.dom;
     if (!consoleOutput) return;
     if (!window.matchMedia('(pointer: coarse)').matches) return;
-    this.pullToRefresh = new PullToRefresh(consoleOutput, () => this.executeCommand('clear'));
+    this.pullToRefresh = new PullToRefresh(consoleOutput, () => void this.executeCommand('clear'));
   }
 
   private toggleMobileMenu(force?: boolean): void {

@@ -86,7 +86,7 @@ export class PullToRefresh {
     if (spinner) spinner.style.display = 'block';
     if (arrow) arrow.style.display = 'none';
 
-    Promise.resolve(this.onRefresh()).finally(() => this.reset());
+    void Promise.resolve(this.onRefresh()).finally(() => this.reset());
   }
 
   private reset(): void {

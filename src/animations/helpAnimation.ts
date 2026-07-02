@@ -1,7 +1,7 @@
 import * as CharacterBase from './CharacterBase';
 import type { CharacterColors, CharacterState } from './CharacterBase';
 
-type Point = { x: number; y: number };
+interface Point { x: number; y: number }
 type Quad = [Point, Point, Point, Point];
 
 export function init(container: HTMLElement): () => void {
