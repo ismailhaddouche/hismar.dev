@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CV — Ismail Haddouche Rhali</title>
+<style>
+  @page { margin: 14mm 16mm; size: A4; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.45; }
+  h1 { font-size: 22pt; color: #0b3d2c; letter-spacing: 0.5px; }
+  h2 { font-size: 12pt; color: #0b3d2c; border-bottom: 1.5px solid #0b3d2c; padding-bottom: 2px; margin: 14px 0 6px; text-transform: uppercase; letter-spacing: 1px; }
+  h3 { font-size: 11pt; color: #145a3e; margin-top: 8px; }
+  .header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #0b3d2c; padding-bottom: 8px; }
+  .header .role { font-size: 10.5pt; color: #555; font-style: italic; }
+  .contact { font-size: 9.5pt; color: #444; text-align: right; line-height: 1.5; }
+  .contact a { color: #0b3d2c; text-decoration: none; }
+  .meta { display: flex; gap: 14px; font-size: 9.5pt; color: #555; margin-top: 4px; }
+  .meta span::before { content: "▸ "; color: #0b3d2c; }
+  .summary { margin: 10px 0; }
+  .section { margin-bottom: 8px; }
+  .entry { margin-bottom: 7px; }
+  .entry .row { display: flex; justify-content: space-between; align-items: baseline; }
+  .entry .dates { font-size: 9.5pt; color: #777; font-style: italic; }
+  .entry .org { font-size: 10pt; color: #145a3e; font-weight: 600; }
+  .entry .status { font-size: 8.5pt; background: #0b3d2c; color: #fff; padding: 1px 7px; border-radius: 8px; margin-left: 6px; letter-spacing: 0.5px; }
+  .entry ul { margin: 3px 0 0 16px; }
+  .entry li { margin-bottom: 1px; }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 18px; }
+  .skills-grid div { font-size: 10pt; }
+  .skills-grid div strong { color: #0b3d2c; }
+  .projects .entry .badge { font-size: 8.5pt; background: #145a3e; color: #fff; padding: 1px 7px; border-radius: 8px; margin-left: 6px; letter-spacing: 0.5px; }
+  .footer { margin-top: 10px; font-size: 8.5pt; color: #888; text-align: center; border-top: 1px solid #ddd; padding-top: 5px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Ismail Haddouche Rhali</h1>
+    <div class="role">Full-stack · Mobile Developer</div>
+    <div class="meta">
+      <span>Murcia, España</span>
+      <span>38 años</span>
+    </div>
+  </div>
+  <div class="contact">
+    <a href="mailto:ismailhaddoucherhali@gmail.com">ismailhaddoucherhali@gmail.com</a><br>
+    <a href="https://github.com/ismailhaddouche">github.com/ismailhaddouche</a><br>
+    <a href="https://www.linkedin.com/in/ismail-haddouche-rhali-194305334">LinkedIn</a>
+  </div>
+</div>
+
+<p class="summary">
+Desarrollador full-stack y mobile con productos en producción real (e-commerce con Redsys, ERP Odoo, apps Android nativas). Actualmente cursando el Grado en Ingeniería Informática en la UNED. Enfocado en construir software resiliente que prospera en producción, no demos en localhost.
+</p>
+
+<div class="section">
+  <h2>Experiencia Profesional</h2>
+
+  <div class="entry">
+    <div class="row">
+      <h3>Responsable de IT <span class="status">ACTUAL</span></h3>
+      <span class="dates">Oct 2025 — Actualidad</span>
+    </div>
+    <div class="org">El Paredes Chico SL</div>
+    <ul>
+      <li>Liderando la transformación digital: despliegue de Odoo ERP, portal web corporativo y e-commerce (Next.js, Firebase), e integraciones de sistemas.</li>
+      <li>Administración de servidores Linux y Windows, infraestructura GCP + Docker, pipelines CI/CD y configuración de redes/seguridad para productos full-stack y móviles.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <h3>CEO &amp; Fundador <span class="status">COMPLETADO</span></h3>
+      <span class="dates">Ene 2016 — Dic 2020</span>
+    </div>
+    <div class="org">Adoptaunordenador.com · Autónomo</div>
+    <ul>
+      <li>Fundé y gestioné una startup social centrada en hardware reacondicionado. Construí y operé el e-commerce, la logística y el soporte técnico.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <h3>Responsable de Logística <span class="status">COMPLETADO</span></h3>
+      <span class="dates">Oct 2012 — Ago 2015</span>
+    </div>
+    <div class="org">Globalatc SL</div>
+    <ul>
+      <li>Gestión de operaciones logísticas internacionales, coordinación de proveedores y optimización de rutas.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section projects">
+  <h2>Proyectos Destacados</h2>
+
+  <div class="entry">
+    <div class="row">
+      <h3>El Paredes <span class="badge">EN PRODUCCIÓN</span></h3>
+      <span class="dates">elparedes.es</span>
+    </div>
+    <ul>
+      <li>E-commerce de nivel producción para vehículos industriales y maquinaria. Redsys (Tarjeta y Bizum), Google OAuth y sincronización en tiempo real con Odoo ERP.</li>
+      <li><strong>Tech:</strong> Next.js, Firebase, Firestore, Redsys, Odoo, App Hosting</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <h3>MMCREAMPRO <span class="badge">EN PRODUCCIÓN</span></h3>
+      <span class="dates">mmcreampro.com</span>
+    </div>
+    <ul>
+      <li>E-commerce en producción para línea de cremas de masaje. Pagos Redsys, gestión de pedidos y logística mediante API de Correos.</li>
+      <li><strong>Tech:</strong> Next.js, Firebase, Firestore, Redsys, Correos API</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <h3>Disherio <span class="badge">OPEN SOURCE</span></h3>
+      <span class="dates">github.com/ismailhaddouche/disherio</span>
+    </div>
+    <ul>
+      <li>Suite de gestión de restaurantes auto-hospedada. Pedidos QR, KDS en tiempo real, TPV multi-rol y despliegue flexible local o nube.</li>
+      <li><strong>Tech:</strong> TypeScript, Angular, Node.js, MongoDB, Socket.io, Docker</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <h3>TimeTutor <span class="badge">ANDROID</span></h3>
+      <span class="dates">github.com/ismailhaddouche/timetutor</span>
+    </div>
+    <ul>
+      <li>App nativa Android para gestión de tutorías privadas. Calendario interactivo, control de asistencia, facturación, notificaciones push y sincronización offline.</li>
+      <li><strong>Tech:</strong> Kotlin, Jetpack Compose, Clean Architecture, MVVM, Firebase</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <h3>Episodeo <span class="badge">ANDROID</span></h3>
+      <span class="dates">github.com/ismailhaddouche/episodeo</span>
+    </div>
+    <ul>
+      <li>Rastreador personal de series de TV con TMDB, listas inteligentes, uso compartido vía códigos, caché offline-first y cambio de tema. Clean Architecture + MVVM.</li>
+      <li><strong>Tech:</strong> Kotlin, Jetpack Compose, Firebase, Room, Retrofit, TMDB API, GitHub Actions</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Stack Tecnológico</h2>
+  <div class="skills-grid">
+    <div><strong>Lenguajes:</strong> Kotlin, TypeScript, JavaScript, Java, C#, SQL</div>
+    <div><strong>Móvil:</strong> Jetpack Compose, MVVM, Clean Architecture, Hilt, Retrofit, Room, Firebase</div>
+    <div><strong>Frontend:</strong> Angular, React, Next.js, Vite, HTML5, CSS3</div>
+    <div><strong>Backend &amp; APIs:</strong> Node.js, REST APIs, Socket.io, Firebase</div>
+    <div><strong>Bases de Datos:</strong> Firestore, MongoDB, PostgreSQL, MySQL, SQLite</div>
+    <div><strong>Full-stack &amp; Mobile Ops:</strong> GCP, Docker, GitHub Actions, CI/CD</div>
+    <div><strong>Herramientas:</strong> Git, GitHub, Android Studio, VS Code, Linux</div>
+    <div><strong>IA:</strong> Claude Code, Codex, OpenCode, Skills, MCP</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Educación</h2>
+
+  <div class="entry">
+    <div class="row">
+      <h3>Grado en Ingeniería Informática <span class="status">EN CURSO</span></h3>
+      <span class="dates">Feb 2026 — Actualidad</span>
+    </div>
+    <div class="org">UNED — Universidad Nacional de Educación a Distancia</div>
+    <ul><li>Enfoque: ingeniería de software, algoritmos, arquitectura de computadores y sistemas distribuidos. Nivel 6 EQF.</li></ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <h3>Técnico Superior en DAM <span class="status">COMPLETADO</span></h3>
+      <span class="dates">Sept 2023 — Feb 2026</span>
+    </div>
+    <div class="org">ILERNA Online</div>
+    <ul><li>Desarrollo móvil nativo (Kotlin/Android), arquitecturas multiplataforma, bases de datos y entornos cloud-native. Nivel 5 EQF.</li></ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <h3>Bachillerato <span class="status">COMPLETADO</span></h3>
+      <span class="dates">2004 — 2006</span>
+    </div>
+    <div class="org">IES Ricardo Ortega</div>
+  </div>
+</div>
+
+<div class="footer">
+  Curriculum Vitae — Ismail Haddouche Rhali · 2026 · Generated from hismar.dev
+</div>
+
+</body>
+</html>
