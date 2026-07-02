@@ -14,7 +14,7 @@ const NeofetchCommand: CommandModule = {
       { name: 'i18n ES/EN', icon: 'fa-solid fa-language' },
       { name: 'Canvas Animations', icon: 'fa-solid fa-wand-magic-sparkles' },
       { name: 'Firebase', icon: 'fa-solid fa-fire' },
-      { name: 'Vitest + Playwright', icon: 'fa-solid fa-vial-circle-check' },
+      { name: 'Vitest', icon: 'fa-solid fa-vial-circle-check' },
     ];
 
     const techRows = techStack
