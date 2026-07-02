@@ -10,7 +10,7 @@
     "education": "education  → formación académica",
     "cv": "cv         → descargar currículum",
     "help": "help       → listar todos los comandos disponibles",
-    "footer": "// ↑↓: historial de comandos  ·  hay easter eggs por descubrir 👀"
+    "footer": "// ↑↓: historial de comandos  ·  hay easter eggs por descubrir"
   },
   "menu": {
     "about": "Sobre mí",
@@ -156,7 +156,7 @@
       "tip1": "Haz clic en cualquier comando para ejecutarlo",
       "tip3": "Navega por el historial con <kbd>↑</kbd> / <kbd>↓</kbd>",
       "tip5": "Hay varios easter eggs ocultos en la terminal: pruébala y diviértete encontrándolos (sudo, neofetch...)",
-      "footer": "// Construido con cerebro, demasiado café y viendo a",
+      "footer": "// Construido con poco cerebro, demasiado café y viendo a",
       "about_desc": "Quién soy, trayectoria y contacto",
       "exp_desc": "Trayectoria profesional e historial",
       "skills_desc": "Stack tecnológico completo",
@@ -178,6 +178,6 @@
     "unrecognized": "Comando no reconocido: ",
     "help_hint": "Escribe 'help' para ver la lista de comandos.",
     "restarting": "Reiniciando terminal...",
-    "sudo_denied": "Permiso denegado: no tienes permisos para usar sudo 😅"
+    "sudo_denied": "Permiso denegado: no tienes permisos para usar sudo"
   }
 }

@@ -7,11 +7,14 @@ const NeofetchCommand: CommandModule = {
     container.style.gridTemplateColumns = '1fr 0px';
 
     const techStack = [
-      { name: 'JavaScript', icon: 'fa-brands fa-js' },
-      { name: 'CSS3', icon: 'fa-brands fa-css3-alt' },
-      { name: 'HTML5', icon: 'fa-brands fa-html5' },
+      { name: 'TypeScript', icon: 'fa-solid fa-code' },
+      { name: 'Vite', icon: 'fa-solid fa-bolt' },
+      { name: 'Modular Commands', icon: 'fa-solid fa-terminal' },
+      { name: 'Lazy Loading', icon: 'fa-solid fa-box-open' },
+      { name: 'i18n ES/EN', icon: 'fa-solid fa-language' },
+      { name: 'Canvas Animations', icon: 'fa-solid fa-wand-magic-sparkles' },
       { name: 'Firebase', icon: 'fa-solid fa-fire' },
-      { name: 'App Hosting', icon: 'fa-solid fa-cloud' },
+      { name: 'Vitest + Playwright', icon: 'fa-solid fa-vial-circle-check' },
     ];
 
     const techRows = techStack
@@ -25,10 +28,13 @@ const NeofetchCommand: CommandModule = {
       .join('');
 
     const specLines = [
-      { label: 'OS', value: 'Web Runtime' },
-      { label: 'Shell', value: 'hismar-terminal' },
+      { label: 'OS', value: 'Browser Runtime' },
+      { label: 'Shell', value: 'Command-driven portfolio' },
       { label: 'Host', value: 'hismar.dev' },
-      { label: 'Stack', value: 'Vanilla + Firebase' },
+      { label: 'Stack', value: 'TypeScript + Vite' },
+      { label: 'UI', value: 'Retro terminal + responsive menu' },
+      { label: 'Build', value: 'Static assets + lazy chunks' },
+      { label: 'Deploy', value: 'Firebase-ready static output' },
     ];
 
     const specRows = specLines
@@ -46,7 +52,7 @@ const NeofetchCommand: CommandModule = {
         </div>
         <div class="neofetch-specs">
           <div class="neo-headline">HISMAR.DEV</div>
-          <div class="neo-subline">Terminal Portfolio · Neofetch-style output</div>
+          <div class="neo-subline">Interactive terminal portfolio · TypeScript app</div>
           <div class="neo-meta">${specRows}</div>
           <div class="neo-tech-grid">${techRows}</div>
         </div>

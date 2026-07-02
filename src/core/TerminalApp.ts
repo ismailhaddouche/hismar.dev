@@ -36,6 +36,7 @@ export class TerminalApp implements TerminalAppFacade {
   private commandHistory: string[] = [];
   private historyIndex = -1;
   private autoFocusEnabled = true;
+  private restoreFocusAfterBusy = false;
 
   constructor(i18n: I18n) {
     this.eventBus = new EventBus();
@@ -102,11 +103,13 @@ export class TerminalApp implements TerminalAppFacade {
     if (!input) return;
 
     const coarsePointer = window.matchMedia('(pointer: coarse)');
-    this.autoFocusEnabled = !coarsePointer.matches;
+    const refreshAutoFocusPreference = (): void => {
+      this.autoFocusEnabled = !this.isTouchLikeInputEnvironment(coarsePointer);
+    };
+    refreshAutoFocusPreference();
 
-    coarsePointer.addEventListener?.('change', () => {
-      this.autoFocusEnabled = !coarsePointer.matches;
-    });
+    coarsePointer.addEventListener?.('change', refreshAutoFocusPreference);
+    window.addEventListener('resize', refreshAutoFocusPreference);
 
     input.addEventListener('keydown', (e) => this.handleInputKeydown(e));
     menuItems.forEach((item) => {
@@ -132,6 +135,11 @@ export class TerminalApp implements TerminalAppFacade {
     });
 
     if (this.autoFocusEnabled) input.focus();
+    document.addEventListener('pointerdown', (e) => {
+      if (this.autoFocusEnabled || !input) return;
+      const target = e.target as HTMLElement;
+      if (!target.closest('.input-line')) input.blur();
+    });
     document.addEventListener('click', (e) => {
       if (!this.autoFocusEnabled || !input) return;
       const target = e.target as HTMLElement;
@@ -144,6 +152,7 @@ export class TerminalApp implements TerminalAppFacade {
   private toggleMobileMenu(force?: boolean): void {
     const { hamburgerBtn, terminalMenu, menuOverlay } = this.dom;
     if (!hamburgerBtn || !terminalMenu || !menuOverlay) return;
+    if (!this.autoFocusEnabled) this.dom.input?.blur();
     const shouldOpen =
       typeof force === 'boolean' ? force : !terminalMenu.classList.contains('active');
     terminalMenu.classList.toggle('active', shouldOpen);
@@ -494,10 +503,16 @@ export class TerminalApp implements TerminalAppFacade {
   private setBusyState(isBusy: boolean): void {
     const input = this.dom.input;
     if (!input) return;
+    if (isBusy) {
+      this.restoreFocusAfterBusy = document.activeElement === input;
+    }
     input.disabled = isBusy;
     input.setAttribute('aria-busy', String(isBusy));
     input.closest('.input-line')?.classList.toggle('is-busy', isBusy);
-    if (!isBusy && this.autoFocusEnabled) input.focus();
+    if (!isBusy) {
+      if (this.autoFocusEnabled || this.restoreFocusAfterBusy) input.focus();
+      this.restoreFocusAfterBusy = false;
+    }
   }
 
   private pruneConsoleOutput(): void {
@@ -506,6 +521,12 @@ export class TerminalApp implements TerminalAppFacade {
     while (consoleOutput.childElementCount > MAX_CONSOLE_NODES) {
       consoleOutput.firstElementChild?.remove();
     }
+  }
+
+  private isTouchLikeInputEnvironment(coarsePointer: MediaQueryList): boolean {
+    const narrowViewport = window.innerWidth <= 768;
+    const touchCapable = navigator.maxTouchPoints > 0;
+    return coarsePointer.matches || touchCapable || narrowViewport;
   }
 
 }

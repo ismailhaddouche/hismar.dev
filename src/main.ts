@@ -43,11 +43,13 @@ const COMMAND_DEFINITIONS: CommandDefinition[] = [
   {
     name: 'cv',
     script: () => import('./commands/cv/CvCommand'),
+    animation: () => import('./animations/cvAnimation'),
     showInNav: true,
   },
   {
     name: 'help',
     script: () => import('./commands/help/HelpCommand'),
+    animation: () => import('./animations/helpAnimation'),
     showInNav: true,
   },
 ];

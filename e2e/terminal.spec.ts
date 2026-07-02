@@ -17,6 +17,21 @@ test('executes help command', async ({ page }) => {
   await input.press('Enter');
   await page.waitForSelector('.command-container');
   await expect(page.locator('.command-chip')).toContainText('/help');
+  const canvas = page.locator('.command-sidebar canvas');
+  await expect(canvas).toBeVisible();
+  await expect(canvas).toHaveAttribute('width', '200');
+  await expect(canvas).toHaveAttribute('height', '200');
+  const hasDrawing = await canvas.evaluate((node) => {
+    const canvasEl = node as HTMLCanvasElement;
+    const ctx = canvasEl.getContext('2d');
+    if (!ctx) return false;
+    const data = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height).data;
+    for (let i = 3; i < data.length; i += 4) {
+      if (data[i] !== 0) return true;
+    }
+    return false;
+  });
+  expect(hasDrawing).toBe(true);
 });
 
 test('spanish help keeps executable command names visible', async ({ page }) => {
@@ -91,6 +106,21 @@ test('executes cv command', async ({ page }) => {
   await input.press('Enter');
   await page.waitForSelector('.cv-content');
   await expect(page.locator('.command-chip')).toContainText('/cv');
+  const canvas = page.locator('.command-sidebar canvas');
+  await expect(canvas).toBeVisible();
+  await expect(canvas).toHaveAttribute('width', '200');
+  await expect(canvas).toHaveAttribute('height', '200');
+  const hasDrawing = await canvas.evaluate((node) => {
+    const canvasEl = node as HTMLCanvasElement;
+    const ctx = canvasEl.getContext('2d');
+    if (!ctx) return false;
+    const data = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height).data;
+    for (let i = 3; i < data.length; i += 4) {
+      if (data[i] !== 0) return true;
+    }
+    return false;
+  });
+  expect(hasDrawing).toBe(true);
 });
 
 test('clear command clears console', async ({ page }) => {
@@ -153,6 +183,23 @@ test('mobile menu opens and closes', async ({ page }) => {
 
   await overlay.click();
   await expect(menu).not.toHaveClass(/active/);
+});
+
+test('mobile does not focus command input until user taps it', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  await page.waitForSelector('.retro-badge');
+
+  await expect(page.locator('#command-input')).not.toBeFocused();
+
+  await page.locator('#hamburger-btn').click();
+  await page.locator('.menu-item[data-command="about"]').click();
+  await page.waitForSelector('.about-info');
+
+  await expect(page.locator('#command-input')).not.toBeFocused();
+
+  await page.locator('#command-input').click();
+  await expect(page.locator('#command-input')).toBeFocused();
 });
 
 test('command history navigation works', async ({ page }) => {

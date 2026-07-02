@@ -89,8 +89,7 @@
   gap: 6px;
 }
 .tips-list li {
-  padding: 8px 12px;
-  border-left: 2px solid var(--terminal-green, #00ff41);
+  padding: 8px 0;
   color: var(--text-color, #b8e0b8);
   font-size: 13px;
 }

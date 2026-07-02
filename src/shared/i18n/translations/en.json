@@ -10,7 +10,7 @@
     "education": "education  → academic path",
     "cv": "cv         → download résumé",
     "help": "help       → list every available command",
-    "footer": "// ↑↓: command history  ·  there are easter eggs to discover 👀"
+    "footer": "// ↑↓: command history  ·  there are easter eggs to discover"
   },
   "menu": {
     "about": "About",
@@ -156,7 +156,7 @@
       "tip1": "Click any command to run it directly",
       "tip3": "Navigate history with <kbd>↑</kbd> / <kbd>↓</kbd>",
       "tip5": "There are several hidden easter eggs in this terminal—explore and have fun finding them (sudo, neofetch...)",
-      "footer": "// Built with brain, far too much coffee, and watching",
+      "footer": "// Built with little brain, far too much coffee, and watching",
       "about_desc": "Who I am, background, and contact",
       "exp_desc": "Professional trajectory and history",
       "skills_desc": "Complete technology stack",
@@ -178,6 +178,6 @@
     "unrecognized": "Unrecognized command: ",
     "help_hint": "Type 'help' to list the available commands.",
     "restarting": "Restarting terminal...",
-    "sudo_denied": "Permission denied: you are not allowed to use sudo 😅"
+    "sudo_denied": "Permission denied: you are not allowed to use sudo"
   }
 }
