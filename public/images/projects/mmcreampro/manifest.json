@@ -1,0 +1,27 @@
+[
+  {
+    "src": "home.jpg",
+    "alt": "MMCREAMPRO homepage with product hero and purchase calls to action",
+    "orientation": "landscape"
+  },
+  {
+    "src": "producto-detalle.jpg",
+    "alt": "MMCREAMPRO product detail page with format selection and price",
+    "orientation": "landscape"
+  },
+  {
+    "src": "cart.jpg",
+    "alt": "MMCREAMPRO shopping cart page",
+    "orientation": "landscape"
+  },
+  {
+    "src": "contact.jpg",
+    "alt": "MMCREAMPRO contact page for distributors and affiliates",
+    "orientation": "landscape"
+  },
+  {
+    "src": "composicion.jpg",
+    "alt": "MMCREAMPRO composition section with ingredient information",
+    "orientation": "landscape"
+  }
+]

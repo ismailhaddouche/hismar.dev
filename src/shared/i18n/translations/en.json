@@ -108,6 +108,7 @@
       },
       "items": {
         "paredes": "Production-grade e-commerce for industrial vehicles and machinery featuring Redsys gateway (Card & Bizum), Google OAuth, and real-time Odoo ERP synchronization for automated inventory management.",
+        "mmcreampro": "Production e-commerce for a massage cream product line. Built with Next.js and Firebase, featuring Redsys payments, order management, and Correos API logistics integration.",
         "disherio": "Open-source, self-hosted restaurant management suite. Featuring QR-code ordering, real-time Kitchen Display System (KDS), and a multi-role POS (Admin, Waitstaff, Kitchen, and Cashier). Supports menu management with variants/allergens and flexible local or cloud deployment.",
         "timetutor": "Native Android app for private tutoring management. Interactive calendar, attendance tracking, automatic invoicing, push notifications, offline sync, and dedicated teacher/student roles.",
         "episodeo": "Personal TV-series tracker for Android with TMDB search, smart lists (watching, pending, finished, abandoned), list sharing via codes, offline-first cache, and theme switching. Built with Clean Architecture + MVVM.",

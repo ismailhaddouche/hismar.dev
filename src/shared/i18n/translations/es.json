@@ -108,6 +108,7 @@
       },
       "items": {
         "paredes": "E-commerce de nivel producción para vehículos industriales y maquinaria con pasarela Redsys (Tarjeta y Bizum), Google OAuth y sincronización en tiempo real con Odoo ERP para gestión automatizada de inventario.",
+        "mmcreampro": "E-commerce en producción para una línea de cremas de masaje. Construido con Next.js y Firebase, con pagos Redsys, gestión de pedidos y logística integrada mediante API de Correos.",
         "disherio": "Suite de gestión de restaurantes de código abierto y auto-hospedada. Con pedidos mediante código QR, Sistema de Visualización de Cocina (KDS) en tiempo real y TPV multi-rol (Admin, Camarero, Cocina y Caja). Soporta gestión de menús con variantes/alérgenos y despliegue flexible en local o nube.",
         "timetutor": "App nativa Android para la gestión de tutorías privadas. Calendario interactivo, control de asistencia, facturación automática, notificaciones push, sincronización offline y roles dedicados para profesor/alumno.",
         "episodeo": "Rastreador personal de series de TV para Android con búsqueda TMDB, listas inteligentes (viendo, pendiente, terminada, abandonada), uso compartido de listas mediante códigos, caché offline-first y cambio de tema. Construida con Clean Architecture + MVVM.",
