@@ -740,11 +740,13 @@ body.no-scroll {
         background: #131824;
         flex-direction: column;
         padding: 20px;
+        padding-top: 72px;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
         z-index: 1000;
         border-right: 1px solid var(--terminal-border);
         gap: 8px;
+        overflow-y: auto;
     }
 
     .terminal-menu.active {
