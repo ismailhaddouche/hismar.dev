@@ -1913,3 +1913,54 @@ body::before {
         transform: none;
     }
 }
+
+/* ===================================
+   PULL-TO-REFRESH (mobile)
+   =================================== */
+.ptr-indicator {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 255, 65, 0.12);
+    border: 1px solid var(--terminal-light-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.ptr-arrow {
+    width: 14px;
+    height: 14px;
+    border-right: 2px solid var(--terminal-light-green);
+    border-bottom: 2px solid var(--terminal-light-green);
+    transform: rotate(45deg);
+    transform-origin: center;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    margin-top: -4px;
+}
+
+.ptr-spinner {
+    display: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(0, 255, 65, 0.25);
+    border-top-color: var(--terminal-light-green);
+    border-radius: 50%;
+    animation: ptrSpin 0.8s linear infinite;
+}
+
+.ptr-indicator--refreshing {
+    opacity: 1;
+}
+
+@keyframes ptrSpin {
+    to { transform: rotate(360deg); }
+}

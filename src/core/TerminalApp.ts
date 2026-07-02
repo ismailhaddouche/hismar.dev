@@ -2,6 +2,7 @@ import type { TerminalAppFacade, I18n, AnimationManagerFacade, CommandContainer 
 import { CommandRegistry } from './CommandRegistry';
 import { AnimationManager } from './AnimationManager';
 import { EventBus } from './EventBus';
+import { PullToRefresh } from './PullToRefresh';
 import { formatTimestamp } from '@/shared/utils/strings';
 import { sleep } from '@/shared/utils/async';
 
@@ -29,6 +30,7 @@ export class TerminalApp implements TerminalAppFacade {
 
   private animationManager: AnimationManager;
   private dom!: DOMCache;
+  private pullToRefresh: PullToRefresh | null = null;
   private isTyping = false;
   private skipTyping = false;
   private pendingCommands = 0;
@@ -51,6 +53,7 @@ export class TerminalApp implements TerminalAppFacade {
   private init(): void {
     this.dom = this.cacheDomElements();
     this.setupEventListeners();
+    this.setupPullToRefresh();
     this.displayWelcome();
     this.handleResize();
     this.refreshUIStrings();
@@ -147,6 +150,13 @@ export class TerminalApp implements TerminalAppFacade {
         input.focus();
       }
     });
+  }
+
+  private setupPullToRefresh(): void {
+    const { consoleOutput } = this.dom;
+    if (!consoleOutput) return;
+    if (!window.matchMedia('(pointer: coarse)').matches) return;
+    this.pullToRefresh = new PullToRefresh(consoleOutput, () => this.executeCommand('clear'));
   }
 
   private toggleMobileMenu(force?: boolean): void {
