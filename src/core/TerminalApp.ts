@@ -353,7 +353,8 @@ export class TerminalApp implements TerminalAppFacade {
       } finally {
         (spinnerEl as HTMLElement & { _cleanup?: () => void })._cleanup?.();
         spinnerEl.remove();
-        this.autoScrollConsole();
+        const container = this.dom.commandContainers.get(command);
+        this.autoScrollConsole(container ?? undefined);
       }
     } else {
       this.setActiveMenuItem(null);
@@ -375,7 +376,8 @@ export class TerminalApp implements TerminalAppFacade {
     }, 120);
     (el as HTMLElement & { _cleanup?: () => void })._cleanup = () => clearInterval(interval);
     this.dom.consoleOutput?.appendChild(el);
-    this.autoScrollConsole();
+    const spinnerContainer = el;
+    this.autoScrollConsole(spinnerContainer);
     return el;
   }
 
