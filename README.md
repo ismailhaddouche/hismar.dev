@@ -1,162 +1,115 @@
-﻿# hismar.dev — Interactive Terminal Portfolio
+# hismar.dev - Interactive Terminal Portfolio
 
-hismar.dev is a terminal-inspired portfolio built with vanilla HTML, CSS, and JavaScript. It provides a command-driven user experience with modular features, dynamic loading, and production-focused frontend architecture.
+hismar.dev is a terminal-inspired portfolio built with TypeScript, Vite, HTML, and CSS. It provides a command-driven user experience with modular commands, lazy loading, project galleries, i18n, and static-hosting friendly output.
 
 Live site: https://hismar.dev/
-
-## Overview
-
-The project reproduces the interaction model of a terminal while keeping the implementation fully static and framework-free. Commands are loaded on demand, each command has isolated styles, and optional command-specific animations are safely cleaned up when the active view changes.
 
 ## Core Features
 
 - Terminal-like UI with command prompt and output stream
-- Modular command system (`about`, `experience`, `skills`, `neofetch`, `projects`, `education`, `cv`, `help`)
-- Built-in utility commands (`clear`, `exit`)
-- Command history navigation (`ArrowUp` / `ArrowDown`)
-- Autocomplete support (`Tab`)
+- Modular command system: `about`, `experience`, `skills`, `neofetch`, `projects`, `education`, `cv`, `help`
+- Built-in utility commands: `clear`, `exit`
+- Command history navigation with `ArrowUp` / `ArrowDown`
+- Autocomplete support with `Tab`
 - Mobile menu with command shortcuts
-- Language support (Spanish and English)
-- Accessibility improvements (landmarks, skip link, ARIA labels)
-- SEO enhancements (metadata, structured data, `robots.txt`, `sitemap.xml`, `llms.txt`)
+- Spanish and English language support
+- Project screenshot galleries with fullscreen modal
+- Accessibility improvements: landmarks, skip link, ARIA labels, keyboard navigation
+- SEO metadata, structured data, `robots.txt`, `sitemap.xml`, and `llms.txt`
 - Easter eggs, including `sudo` permission denial behavior
 
 ## Technology Stack
 
+- TypeScript
+- Vite
 - HTML5
 - CSS3
-- JavaScript (ES modules pattern via dynamic script loading)
-- Firebase ecosystem references in product presentation (e.g., Firebase/App Hosting context)
-- Static hosting-friendly architecture (no bundler required to run)
+- Canvas API
+- Three.js
+- Vitest
+- Playwright
 
 ## Project Structure
 
 ```text
 hismar.dev/
 ├── index.html
-├── main.js
-├── i18n.js
 ├── package.json
-├── styles/
-│   ├── layout.css
-│   └── layout.min.css
-├── commands/
-│   ├── about/
-│   ├── experience/
-│   ├── skills/
-│   ├── neofetch/
-│   ├── projects/
-│   ├── education/
-│   ├── cv/
-│   └── help/
-├── animations/
-├── robots.txt
-├── sitemap.xml
-├── llms.txt
-└── README.md
+├── vite.config.ts
+├── src/
+│   ├── animations/
+│   ├── commands/
+│   ├── core/
+│   ├── shared/
+│   ├── styles/
+│   └── main.ts
+├── images/
+│   └── projects/
+├── public/
+│   ├── curriculum/
+│   ├── images/
+│   ├── robots.txt
+│   ├── sitemap.xml
+│   └── llms.txt
+├── e2e/
+└── curriculum/
 ```
 
 ## Command Architecture
 
-Command modules are registered in `main.js` through `COMMAND_DEFINITIONS`.
+Command modules are registered in `src/main.ts` through `COMMAND_DEFINITIONS`.
 
 Each command can define:
 
 - `script`: command logic module path
-- `styles`: command-specific stylesheet path
-- `animation` (optional): animation module path
-- `showInNav`: whether it appears in navigation
+- `styles`: command-specific stylesheet imported by the command
+- `animation`: optional command-specific animation module
+- `showInNav`: whether it should be exposed as a navigable command
 
-At runtime, the terminal loads only what is needed for the executed command, then renders content via `createCommandContainer(commandName)`.
-
-## Available Commands
-
-- `about`: personal background and contact
-- `experience`: professional trajectory
-- `skills`: technical stack overview
-- `neofetch`: graphical neofetch-style summary of website technologies
-- `projects`: production and open-source work
-- `education`: academic background
-- `cv`: curriculum download
-- `help`: command guide
-- `clear`: clear terminal output
-- `exit`: restart terminal session
-
-Easter egg behavior:
-
-- Any command prefixed with `sudo` returns a permission denial message.
+At runtime, the terminal loads only what is needed for the executed command, then renders content through `createCommandContainer(commandName)`.
 
 ## Local Development
 
 ### Requirements
 
-- Node.js (recommended for npm scripts)
-- Optional: Python 3 for fallback local server
+- Node.js
+- npm
 
-### Start development server
+### Start Development Server
 
 ```bash
 npm run dev
 ```
 
-The default development server is available at:
+Vite prints the local URL when the server starts.
 
-- http://127.0.0.1:8000
+## Validation
 
-Alternative static server (Python):
-
-```bash
-python3 -m http.server 8000
-```
-
-## Build and Optimization
-
-Generate minified core assets:
+Create a production build:
 
 ```bash
 npm run build
 ```
 
-This updates:
-
-- `styles/layout.min.css`
-- `i18n.min.js`
-- `animations/character-base.min.js`
-- `main.min.js`
-
-## Validation Script
-
-A local validation helper is available as:
+Run unit tests:
 
 ```bash
-./validate.sh
+npm test
 ```
 
-It checks critical files/directories and can start a local Python server on an available port.
+Run end-to-end tests:
 
-## Accessibility and SEO
-
-Implemented improvements include:
-
-- Main landmark and skip link support
-- ARIA and accessible naming fixes
-- Image/icon accessibility adjustments where applicable
-- Structured metadata (Open Graph, Twitter, JSON-LD)
-- Crawl directives via `robots.txt`
-- `sitemap.xml` for indexing
-- `llms.txt` for machine-readable site guidance
+```bash
+npm run e2e
+```
 
 ## Deployment
 
-The project is static and can be deployed to:
+The app builds to static files in `dist/` and can be hosted on Firebase Hosting or any static file host.
 
-- Firebase Hosting
-- Netlify
-- Vercel
-- GitHub Pages
-- Any static file host
-
-Deployment requirement: preserve root-relative asset paths and command directories.
+```bash
+npm run deploy
+```
 
 ## License
 

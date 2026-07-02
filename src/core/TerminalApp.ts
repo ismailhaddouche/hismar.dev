@@ -35,6 +35,7 @@ export class TerminalApp implements TerminalAppFacade {
   private commandQueue: Promise<void> = Promise.resolve();
   private commandHistory: string[] = [];
   private historyIndex = -1;
+  private autoFocusEnabled = true;
 
   constructor(i18n: I18n) {
     this.eventBus = new EventBus();
@@ -76,6 +77,9 @@ export class TerminalApp implements TerminalAppFacade {
       const cmd = item.dataset.command;
       if (cmd) item.textContent = this.i18n.t(`menu.${cmd}`);
     });
+    const clearLabel = this.i18n.t('ui.clear_tooltip');
+    this.dom.clearBtn?.setAttribute('aria-label', clearLabel);
+    this.dom.clearBtn?.setAttribute('data-tooltip', clearLabel);
   }
 
   private handleResize(): void {
@@ -98,10 +102,10 @@ export class TerminalApp implements TerminalAppFacade {
     if (!input) return;
 
     const coarsePointer = window.matchMedia('(pointer: coarse)');
-    let autoFocusEnabled = !coarsePointer.matches;
+    this.autoFocusEnabled = !coarsePointer.matches;
 
     coarsePointer.addEventListener?.('change', () => {
-      autoFocusEnabled = !coarsePointer.matches;
+      this.autoFocusEnabled = !coarsePointer.matches;
     });
 
     input.addEventListener('keydown', (e) => this.handleInputKeydown(e));
@@ -127,9 +131,9 @@ export class TerminalApp implements TerminalAppFacade {
       }
     });
 
-    if (autoFocusEnabled) input.focus();
+    if (this.autoFocusEnabled) input.focus();
     document.addEventListener('click', (e) => {
-      if (!autoFocusEnabled || !input) return;
+      if (!this.autoFocusEnabled || !input) return;
       const target = e.target as HTMLElement;
       if (target.closest('.console-output') ?? target.closest('.input-line')) {
         input.focus();
@@ -370,12 +374,14 @@ export class TerminalApp implements TerminalAppFacade {
   private handleBuiltIn(command: string): boolean {
     switch (command) {
       case 'clear':
+        this.setActiveMenuItem(null);
         this.cleanupAnimations();
         if (this.dom.consoleOutput) this.dom.consoleOutput.innerHTML = '';
         this.dom.commandContainers.clear();
         this.displayWelcome();
         return true;
       case 'exit':
+        this.setActiveMenuItem(null);
         this.appendToConsole(this.i18n.t('ui.restarting'));
         setTimeout(() => window.location.reload(), 800);
         return true;
@@ -492,7 +498,7 @@ export class TerminalApp implements TerminalAppFacade {
     input.disabled = isBusy;
     input.setAttribute('aria-busy', String(isBusy));
     input.closest('.input-line')?.classList.toggle('is-busy', isBusy);
-    if (!isBusy) input.focus();
+    if (!isBusy && this.autoFocusEnabled) input.focus();
   }
 
   private pruneConsoleOutput(): void {

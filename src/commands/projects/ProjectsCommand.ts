@@ -190,7 +190,7 @@ function buildProjectGallery(
 
   let images: GalleryImage[] = [
     {
-      src: `https://dummyimage.com/900x520/050b13/39ff14&text=${encodeURIComponent(project.name)}`,
+      src: buildFallbackImage(project.name),
       alt: `${project.name} preview`,
       orientation: 'landscape',
     },
@@ -292,6 +292,27 @@ async function loadProjectImages(project: ProjectData, signal: AbortSignal): Pro
 
 function isGalleryTarget(target: HTMLElement | null): boolean {
   return Boolean(target?.closest('.project-gallery-frame') ?? target?.closest('.gallery-nav'));
+}
+
+function buildFallbackImage(projectName: string): string {
+  const safeName = escapeSvgText(projectName);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+      <rect width="900" height="520" fill="#050b13"/>
+      <rect x="32" y="32" width="836" height="456" fill="none" stroke="#39ff14" stroke-opacity="0.45" stroke-width="2"/>
+      <text x="450" y="252" text-anchor="middle" fill="#39ff14" font-family="Consolas, monospace" font-size="44" font-weight="700">${safeName}</text>
+      <text x="450" y="304" text-anchor="middle" fill="#75a47d" font-family="Consolas, monospace" font-size="20">screenshot pending</text>
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function escapeSvgText(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 }
 
 function isProjectManifest(value: unknown): value is ProjectManifestItem[] {
